@@ -29,6 +29,7 @@ AgentKit 是火山引擎推出的企业级 AI Agent 开发平台，为开发者�
 本代码库包含了一系列示例和教程，帮助您理解、实现和集成 AgentKit 的各项功能到您的应用中。
 
 ## 项目结构
+
 ```bash
 .
 ├── 01-tutorials
@@ -49,6 +50,7 @@ AgentKit 是火山引擎推出的企业级 AI Agent 开发平台，为开发者�
 │   │   └── README.md
 │   ├── customer_support
 │   └── video_gen
+├── template/ # Sample 项目模板
 ├── README.md
 └── README.zh.md
 ```
@@ -120,9 +122,10 @@ AgentKit 是火山引擎推出的企业级 AI Agent 开发平台，为开发者�
 
 1. Fork 本仓库
 2. 创建功能分支 (`git checkout -b feature/amazing-example`)
-3. 提交更改 (`git commit -m 'Add amazing example'`)
-4. 推送到分支 (`git push origin feature/amazing-example`)
-5. 创建 Pull Request
+3. 基于 `template/` 目录创建新的 Sample 工程
+4. 提交更改 (`git commit -m 'Add amazing example'`)
+5. 推送到分支 (`git push origin feature/amazing-example`)
+6. 创建 Pull Request
 
 ## 许可证
 本项目采用 [Apache 2.0 许可证](./LICENSE)

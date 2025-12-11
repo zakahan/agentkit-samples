@@ -1,18 +1,8 @@
-'''
-Author: haoxingjun
-Date: 2025-12-11 02:45:35
-Email: haoxingjun@bytedance.com
-LastEditors: haoxingjun
-LastEditTime: 2025-12-11 11:23:07
-Description: file information
-Company: ByteDance
-'''
 import os
 import json
 from typing import Optional, Tuple
 
 from rich.console import Console
-from openai import OpenAI
 from volcenginesdkarkruntime import Ark
 
 console = Console()
@@ -24,22 +14,7 @@ ARK_TEXT_EMBEDDING_MODEL = os.getenv("ARK_TEXT_EMBEDDING_MODEL", "doubao-embeddi
 ARK_MULTIMODAL_EMBEDDING_MODEL = os.getenv("ARK_MODEL_ID", "doubao-embedding-vision-250615")
 
 # Cached clients
-_openai_client: Optional[OpenAI] = None
 _ark_client: Optional[Ark] = None
-
-def get_openai_client() -> Tuple[Optional[OpenAI], Optional[str]]:
-    """Initialize and cache OpenAI client for Ark."""
-    global _openai_client
-    if _openai_client is not None:
-        return _openai_client, None
-
-    if not MODEL_AGENT_API_KEY:
-        return None, "MODEL_AGENT_API_KEY not set"
-    try:
-        _openai_client = OpenAI(api_key=MODEL_AGENT_API_KEY, base_url=ARK_BASE_URL)
-        return _openai_client, None
-    except Exception as e:
-        return None, f"Failed to init OpenAI client: {e}"
 
 def get_ark_client() -> Tuple[Optional[Ark], Optional[str]]:
     """Initialize and cache Ark client from volcenginesdkarkruntime."""
@@ -56,8 +31,8 @@ def get_ark_client() -> Tuple[Optional[Ark], Optional[str]]:
         return None, f"Failed to init Ark client: {e}"
 
 def get_text_embedding(text: str) -> Tuple[Optional[list], Optional[str]]:
-    """Get text embedding using OpenAI client."""
-    client, error_msg = get_openai_client()
+    """Get text embedding using Ark client."""
+    client, error_msg = get_ark_client()
     if error_msg:
         return None, error_msg
     try:

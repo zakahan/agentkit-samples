@@ -5,7 +5,8 @@ from rich.console import Console
 import lancedb
 import duckdb
 from pathlib import Path
-from dotenv import load_dotenv
+
+from veadk.auth.veauth.utils import get_credential_from_vefaas_iam
 
 console = Console()
 
@@ -14,8 +15,19 @@ class LanceDBManager:
         # Configuration from environment
         self.lancedb_uri = os.getenv("LANCEDB_URI", "s3://emr-serverless-sdk/lance_catalog/default/imdb_top_1000")
         self.lancedb_metadata_uri = os.getenv("LANCEDB_METADATA_URI", "s3://emr-serverless-sdk/lance_catalog/default/metadata_table")
-        self.volcengine_access_key = os.getenv("VOLCENGINE_ACCESS_KEY", "aaa")
-        self.volcengine_secret_key = os.getenv("VOLCENGINE_SECRET_KEY", "bbb==")
+
+        # Retrieve STS from IAM Role
+        self.access_key = os.getenv("VOLCENGINE_ACCESS_KEY")
+        self.secret_key = os.getenv("VOLCENGINE_SECRET_KEY")
+        self.session_token = ""
+
+        if not (self.access_key and self.secret_key):
+            # try to get from vefaas iam
+            cred = get_credential_from_vefaas_iam()
+            self.access_key = cred.access_key_id
+            self.secret_key = cred.secret_access_key
+            self.session_token = cred.session_token
+        
         self.tos_region = os.getenv("TOS_REGION", "cn-beijing")
         self.lancedb_aws_endpoint = os.getenv("LANCEDB_AWS_ENDPOINT", "")
         
@@ -57,9 +69,11 @@ class LanceDBManager:
             "aws_endpoint": endpoint,
             "virtual_hosted_style_request": "true",
         }
-        if self.volcengine_access_key and self.volcengine_secret_key:
-            opts["access_key_id"] = self.volcengine_access_key
-            opts["secret_access_key"] = self.volcengine_secret_key
+        if self.access_key and self.secret_key:
+            opts["access_key_id"] = self.access_key
+            opts["secret_access_key"] = self.secret_key
+            if self.session_token:
+                opts["session_token"] = self.session_token
         return opts
 
     def open_table(self, table_name: Optional[str] = None, uri: Optional[str] = None) -> Tuple[Optional[object], Optional[str]]:
@@ -67,6 +81,12 @@ class LanceDBManager:
         target_uri = uri or self.lancedb_uri
         cache_key = target_uri + (f":{table_name}" if table_name else "")
         
+        if not self.access_key or not self.secret_key:
+            console.error(
+                "Error: VOLCENGINE_ACCESS_KEY and VOLCENGINE_SECRET_KEY are not provided or IAM Role is not configured."
+            )
+            return None, "Error: VOLCENGINE_ACCESS_KEY and VOLCENGINE_SECRET_KEY are not provided or IAM Role is not configured."
+
         # Return cached table if exists
         if cache_key in self._tables:
             return self._tables[cache_key], None

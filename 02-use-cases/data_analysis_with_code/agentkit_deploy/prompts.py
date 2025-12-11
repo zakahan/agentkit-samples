@@ -3,7 +3,7 @@ Author: haoxingjun
 Date: 2025-12-11 02:45:35
 Email: haoxingjun@bytedance.com
 LastEditors: haoxingjun
-LastEditTime: 2025-12-11 11:14:50
+LastEditTime: 2025-12-11 13:30:40
 Description: file information
 Company: ByteDance
 '''
@@ -70,6 +70,16 @@ SYSTEM_PROMPT = '''
 
 **3. [generate_video_from_images]**
    - 仅用户明确要求生成视频时调用。
+   - 格式：
+     `generate_video_from_images(image_url="https://example.com/image.jpg")`
+   - 示例：
+     `generate_video_from_images(image_url="https://ark-project.tos-cn-beijing.volces.com/doc_image/see_i2v.jpeg")`
+   - 参数说明：
+     - `image_url`：图片的URL地址，用于生成视频
+   - 返回结果：JSON格式的视频生成结果，包含视频URL
+   - 注意：请确保image_url是有效的图片URL，支持jpeg、png等格式
+   - 示例返回：
+     `{"status": "ok", "task_status": "succeeded", "video_url": "https://example.com/video.mp4"}`
 
 ### 示例
 **User:** "Ang Lee 评分超过 7 分的电影中，有哪个电影海报中含有动物？"

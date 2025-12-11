@@ -3,7 +3,7 @@ Author: haoxingjun
 Date: 2025-12-11 03:40:10
 Email: haoxingjun@bytedance.com
 LastEditors: haoxingjun
-LastEditTime: 2025-12-11 10:12:56
+LastEditTime: 2025-12-11 11:41:12
 Description: file information
 Company: ByteDance
 '''
@@ -22,8 +22,8 @@ if __name__ == "__main__":
     app_name = "data_analysis_with_code"
     user_id = "agentkit_user"
     session_id = f"agentkit_sample_session"
-    base_url = "http://127.0.0.1:8000"
-    api_key = "test"
+    base_url = "https://sd4t3oidukdd9dols8tlg.apigateway-cn-beijing.volceapi.com"
+    api_key = "NbCUqdEiEy0YkP9qNq0QHRnj5klQBMUVB51g"
     
    
     

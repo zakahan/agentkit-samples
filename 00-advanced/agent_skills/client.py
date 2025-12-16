@@ -49,7 +49,7 @@ if __name__ == "__main__":
             "POST",
             f"{base_url}/run_sse",
             json=run_agent_request.model_dump(exclude_none=True),
-            timeout=120,
+            timeout=900,
             headers={"Authorization": f"Bearer {api_key}"},
         ) as r:
             for line in r.iter_lines():

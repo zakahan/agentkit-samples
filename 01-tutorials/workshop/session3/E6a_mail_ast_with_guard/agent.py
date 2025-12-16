@@ -23,10 +23,16 @@ import os
 from typing import Optional
 
 from agentkit.apps import AgentkitSimpleApp
-from veadk.prompts.agent_default_prompt import DEFAULT_DESCRIPTION, DEFAULT_INSTRUCTION
 
 from .colors import print_agent_permission
-from .tools import read_inbox, read_email, classify_email, forward_email, generate_report
+from .tools import (
+    read_inbox,
+    read_email,
+    classify_email,
+    forward_email,
+    generate_report,
+)
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -35,19 +41,22 @@ app = AgentkitSimpleApp()
 app_name = "simple_app"
 model_name = "deepseek-v3-250324"
 
-class BeforeModelPermissionCallback():
+
+class BeforeModelPermissionCallback:
     """模型调用前的权限检查回调"""
 
     def __init__(self, service_url, api_key):
         self.service_url = service_url
         self.api_key = api_key
 
-    def __call__(self, callback_context: CallbackContext, llm_request: LlmRequest) -> Optional[LlmResponse]:
+    def __call__(
+        self, callback_context: CallbackContext, llm_request: LlmRequest
+    ) -> Optional[LlmResponse]:
         """处理模型调用前的权限检查"""
         try:
             payload = {
-                'session_id': callback_context.session.id,
-                'llm_request': llm_request.model_dump()
+                "session_id": callback_context.session.id,
+                "llm_request": llm_request.model_dump(),
             }
 
             headers = {
@@ -55,71 +64,78 @@ class BeforeModelPermissionCallback():
                 "Content-Type": "application/json"
             }
 
-            resp = requests.post(f"{self.service_url}/before_check", json=payload, headers=headers, timeout=200)
+            resp = requests.post(
+                f"{self.service_url}/before_check",
+                json=payload,
+                headers=headers,
+                timeout=200,
+            )
             resp.raise_for_status()
 
             resp_json = resp.json()
-            status = resp_json.get('status', '')
-            data = resp_json.get('response', {})
+            status = resp_json.get("status", "")
+            data = resp_json.get("response", {})
 
             # 记录权限信息
-            if 'permissions' in data:
-                print_agent_permission(data.get('permissions', []))
+            if "permissions" in data:
+                print_agent_permission(data.get("permissions", []))
 
             # 检查权限结果
-            if status != 'success':
+            if status != "success":
                 error_msg = "智能体行为异常，流程终止"
                 return LlmResponse(
                     content=Content(
                         role="model",
-                        parts=[
-                            Part(text=error_msg)
-                        ],
+                        parts=[Part(text=error_msg)],
                     )
                 )
             return None
-        except requests.exceptions.RequestException as e:
+        except requests.exceptions.RequestException:
             return None
-        except Exception as e:
+        except Exception:
             return None
 
 
-class AfterModelPermissionCallback():
+class AfterModelPermissionCallback:
     """模型调用后的权限检查回调"""
 
     def __init__(self, service_url, api_key):
         self.service_url = service_url
         self.api_key = api_key
 
-    def __call__(self, callback_context: CallbackContext, llm_response: LlmResponse) -> LlmResponse | None:
+    def __call__(
+        self, callback_context: CallbackContext, llm_response: LlmResponse
+    ) -> LlmResponse | None:
         """处理模型调用后的权限检查"""
         try:
             payload = {
-                'session_id': callback_context.session.id,
-                'llm_response': llm_response.model_dump()
+                "session_id": callback_context.session.id,
+                "llm_response": llm_response.model_dump(),
             }
             headers = {
                 "Authorization": f"Bearer {self.api_key}",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             }
 
-            resp = requests.post(f"{self.service_url}/check", json=payload, headers=headers, timeout=200)
+            resp = requests.post(
+                f"{self.service_url}/check", json=payload, headers=headers, timeout=200
+            )
             resp.raise_for_status()
 
             resp_json = resp.json()
-            status = resp_json.get('status', '')
-            data = resp_json.get('response', {})
+            status = resp_json.get("status", "")
+            data = resp_json.get("response", {})
 
             # 记录权限信息
             if not llm_response.custom_metadata:
                 llm_response.custom_metadata = {}
             llm_response.custom_metadata.update(data)
 
-            if 'permissions' in data:
-                print_agent_permission(data.get('permissions', []))
+            if "permissions" in data:
+                print_agent_permission(data.get("permissions", []))
 
             # 检查权限结果
-            if status != 'success':
+            if status != "success":
                 error_msg = "智能体行为异常，流程终止"
                 llm_response.content.parts = [Part(text=error_msg)]
 
@@ -133,13 +149,7 @@ class AfterModelPermissionCallback():
             return llm_response
 
 
-tools = [
-    read_inbox,
-    read_email,
-    classify_email,
-    forward_email,
-    generate_report
-]
+tools = [read_inbox, read_email, classify_email, forward_email, generate_report]
 
 system_instruction = """
 你是一名企业级邮件助手智能体，核心职责是协助用户高效处理收件箱的各类业务事项，深度解析邮件中的业务诉求与落地需求，通过工具执行保障内外部业务沟通闭环，确保重要事务不遗漏。
@@ -181,13 +191,19 @@ agent = Agent(
 )
 
 # 设置权限围栏
-adaptive_permission_service_url = "http://sd4i3neu6omp034ocgsm0.apigateway-cn-beijing.volceapi.com"
+adaptive_permission_service_url = (
+    "http://sd4i3neu6omp034ocgsm0.apigateway-cn-beijing.volceapi.com"
+)
 adaptive_permission_api_key = os.getenv("ADAPTIVE_PERMISSION_SERVICE_KEY")
 
 if adaptive_permission_api_key:
     logger.info("权限围栏已开启")
-    agent.before_model_callback=BeforeModelPermissionCallback(adaptive_permission_service_url, adaptive_permission_api_key)
-    agent.after_model_callback=AfterModelPermissionCallback(adaptive_permission_service_url, adaptive_permission_api_key)
+    agent.before_model_callback=BeforeModelPermissionCallback(
+        adaptive_permission_service_url, adaptive_permission_api_key
+    )
+    agent.after_model_callback=AfterModelPermissionCallback(
+        adaptive_permission_service_url, adaptive_permission_api_key
+    )
 else:
     logger.warning("权限围栏未开启")
 
@@ -207,7 +223,9 @@ async def run(payload: dict, headers: dict) -> str:
     logger.info(
         f"Running agent with prompt: {prompt}, user_id: {user_id}, session_id: {session_id}"
     )
-    response = await runner.run(messages=prompt, user_id=user_id, session_id=session_id)  # 请勿修改此行，不要使用sse模式
+    response = await runner.run(
+        messages=prompt, user_id=user_id, session_id=session_id
+    )  # 请勿修改此行，不要使用sse模式
 
     logger.info(f"Run response: {response}")
 

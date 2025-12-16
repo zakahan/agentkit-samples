@@ -203,6 +203,7 @@ uv sync --force-reinstall
    访问 <https://console.volcengine.com/identity/region:identity+cn-beijing/outbound-credentials>。
 
 2. **新建凭据**
+
    - 点击 **「新建凭据」**，在弹窗中选择 **「OAuthClient」** 类型。
 
 3. **填写 OAuth 客户端信息**
@@ -214,6 +215,7 @@ uv sync --force-reinstall
      ```
 
 4. **完成创建**
+
    - 确认信息无误后点击 **「确认」**。
 
 ### 调试方法

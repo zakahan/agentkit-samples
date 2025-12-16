@@ -18,7 +18,10 @@ from veadk import Agent
 import json
 
 import lark_oapi as lark
-from lark_oapi.api.docx.v1 import *
+from lark_oapi.api.docx.v1 import (
+    RawContentDocumentRequest,
+    RawContentDocumentResponse,
+)
 from lark_oapi.core.model import RequestOption
 from veadk.integrations.ve_identity import (
     VeIdentityFunctionTool,
@@ -31,6 +34,7 @@ from veadk.integrations.ve_identity.auth_mixins import OAuth2AuthMixin
 from veadk.memory.short_term_memory import ShortTermMemory
 
 short_term_memory = ShortTermMemory(backend="local")
+
 
 async def lark_document_query(document_id: str, *, access_token: str) -> str:
     """
@@ -82,6 +86,7 @@ lark_doc_tool = VeIdentityFunctionTool(
         auth_flow="USER_FEDERATION",
     ),
 )
+
 
 async def clean_state(args: dict[str, Any], *, tool_context: ToolContext) -> None:
     """Clean user's Oauth identity state.

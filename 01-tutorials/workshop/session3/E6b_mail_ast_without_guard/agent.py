@@ -17,9 +17,14 @@ import logging
 from veadk import Agent, Runner
 
 from agentkit.apps import AgentkitSimpleApp
-from veadk.prompts.agent_default_prompt import DEFAULT_DESCRIPTION, DEFAULT_INSTRUCTION
 
-from .tools import read_inbox, read_email, classify_email, forward_email, generate_report
+from .tools import (
+    read_inbox,
+    read_email,
+    classify_email,
+    forward_email,
+    generate_report,
+)
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -28,13 +33,7 @@ app = AgentkitSimpleApp()
 app_name = "simple_app"
 model_name = "deepseek-v3-250324"
 
-tools = [
-    read_inbox,
-    read_email,
-    classify_email,
-    forward_email,
-    generate_report
-]
+tools = [read_inbox, read_email, classify_email, forward_email, generate_report]
 
 # from veadk.tools.builtin_tools.web_search import web_search
 # tools.append(web_search)
@@ -93,7 +92,9 @@ async def run(payload: dict, headers: dict) -> str:
     logger.info(
         f"Running agent with prompt: {prompt}, user_id: {user_id}, session_id: {session_id}"
     )
-    response = await runner.run(messages=prompt, user_id=user_id, session_id=session_id)  # 请勿修改此行，不要使用sse模式
+    response = await runner.run(
+        messages=prompt, user_id=user_id, session_id=session_id
+    )  # 请勿修改此行，不要使用sse模式
 
     logger.info(f"Run response: {response}")
     return response

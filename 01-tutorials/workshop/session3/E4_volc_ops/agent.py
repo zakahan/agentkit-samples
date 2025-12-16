@@ -1,4 +1,3 @@
-
 from typing import Any
 from google.adk.planners import BuiltInPlanner
 from google.adk.tools.mcp_tool.mcp_toolset import (
@@ -32,6 +31,8 @@ mcp_ecs = VeIdentityMcpToolset(
         timeout=30.0,
     ),
 )
+
+
 async def clean_state(args: dict[str, Any], *, tool_context: ToolContext) -> None:
     """Clean user's Oauth identity state.
 

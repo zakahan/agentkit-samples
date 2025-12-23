@@ -30,26 +30,8 @@ jobs:
           EOF
 
       - name: Run main.py in changed use-case directories
+        env:
+          BASE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
         run: |
-          BASE_SHA="${{ github.event.before }}"
-          HEAD_SHA="${{ github.sha }}"
-
-          CHANGED_DIRS=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | grep '^02-use-cases/' || true)
-
-          if [ -z "$CHANGED_DIRS" ]; then
-            echo "No changes under 02-use-cases, skipping main.py checks."
-            exit 0
-          fi
-
-          CANDIDATE_DIRS=$(echo "$CHANGED_DIRS" | sed 's|/[^/]*$||' | sort -u)
-
-          for d in $CANDIDATE_DIRS; do
-            if [ -f "$d/main.py" ]; then
-              echo "Running python main.py in $d"
-              cd "$d"
-              python main.py
-              cd -
-            else
-              echo "No main.py in $d, skipping."
-            fi
-          done
+          python -m samples_check.check_usecases

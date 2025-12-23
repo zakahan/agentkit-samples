@@ -11,6 +11,9 @@ jobs:
 
     env:
       GAODE_API_KEY: abc
+      VOLCENGINE_ACCESS_KEY: ${{ secrets.VOLCENGINE_ACCESS_KEY }}
+      VOLCENGINE_SECRET_KEY: ${{ secrets.VOLCENGINE_SECRET_KEY }}
+      MODEL_AGENT_API_KEY: ${{ secrets.MODEL_AGENT_API_KEY }}
 
     steps:
       - name: Checkout code

@@ -94,10 +94,6 @@ def main() -> None:
             "v1.0.0",
             "--region",
             "cn-beijing",
-            "-e",
-            "API_KEY=xxxxx",
-            "-e",
-            "MODEL_ENDPOINT=https://api.example.com",
         ]
         result = subprocess.run(config_cmd, cwd=str(d))
         if result.returncode != 0:

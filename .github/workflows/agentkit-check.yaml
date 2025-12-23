@@ -41,7 +41,7 @@ jobs:
             exit 0
           fi
 
-          CANDIDATE_DIRS=$(echo "$CHANGED_DIRS" | awk -F'/' '{print $1"/"$2"/"$3}' | sort -u)
+          CANDIDATE_DIRS=$(echo "$CHANGED_DIRS" | sed 's|/[^/]*$||' | sort -u)
 
           for d in $CANDIDATE_DIRS; do
             if [ -f "$d/main.py" ]; then

@@ -1,2 +1,2 @@
 print("hello world")
-raise Exception("test exception11")
+# raise Exception("test exception11")

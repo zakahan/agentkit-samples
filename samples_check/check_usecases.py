@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -50,16 +51,39 @@ def main() -> None:
 
     for d in sorted(candidate_dirs):
         main_py = d / "main.py"
-        if main_py.is_file():
-            print(f"Running python main.py in {d}")
+        if not main_py.is_file():
+            print(f"No main.py in {d}, skipping.")
+            continue
+
+        req = d / "requirements.txt"
+        if req.is_file():
+            print(f"Installing dependencies from {req}")
             result = subprocess.run(
-                [sys.executable, "main.py"],
+                [sys.executable, "-m", "pip", "install", "-r", str(req)],
                 cwd=str(d),
             )
             if result.returncode != 0:
                 failed_dirs.append(d)
-        else:
-            print(f"No main.py in {d}, skipping.")
+                print(f"Dependency installation failed in {d}, skipping main.py.")
+                continue
+
+        for env_example in d.rglob(".env.example"):
+            target = env_example.with_name(".env")
+            print(f"Copying {env_example} -> {target}")
+            shutil.copyfile(env_example, target)
+
+        for cfg_example in d.rglob("config.yaml.example"):
+            target = cfg_example.with_name("config.yaml")
+            print(f"Copying {cfg_example} -> {target}")
+            shutil.copyfile(cfg_example, target)
+
+        print(f"Running python main.py in {d}")
+        result = subprocess.run(
+            [sys.executable, "main.py"],
+            cwd=str(d),
+        )
+        if result.returncode != 0:
+            failed_dirs.append(d)
 
     if failed_dirs:
         sys.stderr.write(

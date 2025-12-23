@@ -1,0 +1,59 @@
+name: agentkit-check
+
+on:
+  push:
+    branches:
+      - feat/agentkit_check
+
+jobs:
+  agentkit-launch:
+    runs-on: ubuntu-latest
+
+    env:
+      GAODE_API_KEY: abc
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Generate .env for CI
+        run: |
+          cat > .env << 'EOF'
+          GAODE_API_KEY=${GAODE_API_KEY}
+          EOF
+
+      - name: Run main.py in changed use-case directories
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+
+          CHANGED_DIRS=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | grep '^02-use-cases/' || true)
+
+          if [ -z "$CHANGED_DIRS" ]; then
+            echo "No changes under 02-use-cases, skipping main.py checks."
+            exit 0
+          fi
+
+          CANDIDATE_DIRS=$(echo "$CHANGED_DIRS" | awk -F'/' '{print $1"/"$2"/"$3}' | sort -u)
+
+          for d in $CANDIDATE_DIRS; do
+            if [ -f "$d/main.py" ]; then
+              echo "Running python main.py in $d"
+              cd "$d"
+              python main.py
+              cd -
+            else
+              echo "No main.py in $d, skipping."
+            fi
+          done

@@ -23,6 +23,11 @@ jobs:
         with:
           python-version: "3.10"
 
+      - name: Install AgentKit CLI
+        run: |
+          python -m pip install --upgrade pip
+          pip install agentkit-sdk-python
+
       - name: Generate .env for CI
         run: |
           cat > .env << 'EOF'

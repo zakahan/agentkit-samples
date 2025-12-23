@@ -50,9 +50,9 @@ def main() -> None:
     failed_dirs: list[Path] = []
 
     for d in sorted(candidate_dirs):
-        main_py = d / "main.py"
-        if not main_py.is_file():
-            print(f"No main.py in {d}, skipping.")
+        agent_py = d / "agent.py"
+        if not agent_py.is_file():
+            print(f"No agent.py in {d}, skipping agentkit commands.")
             continue
 
         req = d / "requirements.txt"
@@ -64,7 +64,7 @@ def main() -> None:
             )
             if result.returncode != 0:
                 failed_dirs.append(d)
-                print(f"Dependency installation failed in {d}, skipping main.py.")
+                print(f"Dependency installation failed in {d}, skipping agentkit.")
                 continue
 
         for env_example in d.rglob(".env.example"):
@@ -77,17 +77,43 @@ def main() -> None:
             print(f"Copying {cfg_example} -> {target}")
             shutil.copyfile(cfg_example, target)
 
-        print(f"Running python main.py in {d}")
-        result = subprocess.run(
-            [sys.executable, "main.py"],
-            cwd=str(d),
-        )
+        agent_name = d.name
+        print(f"Running 'agentkit config' in {d} for agent_name={agent_name}")
+        config_cmd = [
+            "agentkit",
+            "config",
+            "--agent_name",
+            agent_name,
+            "--entry_point",
+            "agent.py",
+            "--description",
+            "a helpful agent",
+            "--launch_type",
+            "cloud",
+            "--image_tag",
+            "v1.0.0",
+            "--region",
+            "cn-beijing",
+            "-e",
+            "API_KEY=xxxxx",
+            "-e",
+            "MODEL_ENDPOINT=https://api.example.com",
+        ]
+        result = subprocess.run(config_cmd, cwd=str(d))
+        if result.returncode != 0:
+            failed_dirs.append(d)
+            print(f"'agentkit config' failed in {d}, skipping launch.")
+            continue
+
+        print(f"Running 'agentkit launch' in {d}")
+        launch_cmd = ["agentkit", "launch"]
+        result = subprocess.run(launch_cmd, cwd=str(d))
         if result.returncode != 0:
             failed_dirs.append(d)
 
     if failed_dirs:
         sys.stderr.write(
-            "main.py checks failed in directories: "
+            "agentkit checks failed in directories: "
             + ", ".join(str(d) for d in failed_dirs)
             + "\n"
         )

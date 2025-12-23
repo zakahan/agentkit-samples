@@ -59,7 +59,7 @@ def main() -> None:
         if req.is_file():
             print(f"Installing dependencies from {req}")
             result = subprocess.run(
-                [sys.executable, "-m", "pip", "install", "-r", str(req)],
+                [sys.executable, "-m", "pip", "install", "-r", "requirements.txt"],
                 cwd=str(d),
             )
             if result.returncode != 0:

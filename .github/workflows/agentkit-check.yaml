@@ -12,7 +12,7 @@ jobs:
     env:
       VOLCENGINE_ACCESS_KEY: ${{ secrets.VOLCENGINE_ACCESS_KEY }}
       VOLCENGINE_SECRET_KEY: ${{ secrets.VOLCENGINE_SECRET_KEY }}
-
+      VOLCENGINE_ACCESS_KEY_MOCK: ${{ secrets.VOLCENGINE_ACCESS_KEY_MOCK }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

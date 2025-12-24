@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+echo "VOLCENGINE_ACCESS_KEY_MOCK=$VOLCENGINE_ACCESS_KEY_MOCK"
+

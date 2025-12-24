@@ -50,6 +50,14 @@ def main() -> None:
     failed_dirs: list[Path] = []
 
     for d in sorted(candidate_dirs):
+        deploy_sh = d / "deploy.sh"
+        if deploy_sh.is_file():
+            print(f"Found deploy.sh in {d}, running it")
+            result = subprocess.run(["bash", "deploy.sh"], cwd=str(d))
+            if result.returncode != 0:
+                failed_dirs.append(d)
+            continue
+
         agent_py = d / "agent.py"
         if not agent_py.is_file():
             print(f"No agent.py in {d}, skipping agentkit commands.")

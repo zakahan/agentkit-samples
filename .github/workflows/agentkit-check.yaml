@@ -10,10 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GAODE_API_KEY: abc
       VOLCENGINE_ACCESS_KEY: ${{ secrets.VOLCENGINE_ACCESS_KEY }}
       VOLCENGINE_SECRET_KEY: ${{ secrets.VOLCENGINE_SECRET_KEY }}
-      MODEL_AGENT_API_KEY: ${{ secrets.MODEL_AGENT_API_KEY }}
 
     steps:
       - name: Checkout code
@@ -34,7 +32,6 @@ jobs:
       - name: Generate .env for CI
         run: |
           cat > .env << 'EOF'
-          GAODE_API_KEY=${GAODE_API_KEY}
           EOF
 
       - name: Run main.py in changed use-case directories

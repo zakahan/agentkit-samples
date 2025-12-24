@@ -12,7 +12,6 @@ jobs:
     env:
       VOLCENGINE_ACCESS_KEY: ${{ secrets.VOLCENGINE_ACCESS_KEY }}
       VOLCENGINE_SECRET_KEY: ${{ secrets.VOLCENGINE_SECRET_KEY }}
-      VOLCENGINE_ACCESS_KEY_MOCK: ${{ secrets.VOLCENGINE_ACCESS_KEY_MOCK }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,7 +21,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
 
       - name: Install AgentKit CLI
         run: |

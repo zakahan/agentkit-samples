@@ -60,7 +60,7 @@ def main() -> None:
         agent_py = d / "agent.py"
 
         if not agent_py.is_file():
-            print(f"No agent.py in {d}, skipping agentkit commands.")
+            print(f"No agent.py in {d}, skipping agentkit commands now.")
             continue
 
         agent_name = d.name

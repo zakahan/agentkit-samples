@@ -40,4 +40,4 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           AGENTKIT_COMMAND: build
         run: |
-          python -m samples_check.check_usecases
+          python -m workflow_utils.check_usecases

@@ -36,4 +36,4 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          python -m samples_check.check_usecases
+          python -m workflow_utils.check_usecases

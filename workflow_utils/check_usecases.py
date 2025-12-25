@@ -33,7 +33,7 @@ def main() -> None:
     candidate_dirs: set[Path] = set()
     for rel_path in changed_use_cases:
         parts = Path(rel_path).parts
-        if len(parts) >= 2 and parts[0] == "02-use-cases":
+        if len(parts) >= 2 and parts[0] == "02-use-cases" and parts[1] != "beginner":
             candidate_dirs.add(Path(parts[0]) / parts[1])
 
     if not candidate_dirs:

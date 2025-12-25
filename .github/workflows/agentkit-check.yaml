@@ -1,9 +1,7 @@
 name: agentkit-check
 
 on:
-  push:
-    branches:
-      - feat/agentkit_check
+  pull_request:
 
 jobs:
   agentkit-launch:
@@ -35,7 +33,7 @@ jobs:
 
       - name: Run main.py in changed use-case directories
         env:
-          BASE_SHA: ${{ github.event.before }}
-          HEAD_SHA: ${{ github.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           python -m samples_check.check_usecases

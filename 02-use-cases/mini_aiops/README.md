@@ -1,3 +1,18 @@
+---
+name: mini_aiops
+description: 基于 VeADK 的 AI 运维 Agent 示例，用于云资源巡检与故障诊断
+senarios:
+  - 通过 Web 控制台体验 AI 运维助手对话
+  - 对云上资源进行巡检并发现潜在风险
+  - 根据日志与监控进行一键故障诊断
+  - 基于运维知识库获取 SOP 建议与操作步骤
+components:
+  - name: Identity
+    desc: 提供访问 Agent 所需的身份与鉴权配置
+  - name: MCP Toolset
+    desc: 通过 CCAPI 等 MCP 工具访问云资源与运维能力
+---
+
 # AI运维 Agent - Mini AIOps
 
 ## 概述

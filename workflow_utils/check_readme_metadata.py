@@ -75,10 +75,14 @@ def main() -> None:
         base_sha = os.environ.get("BASE_SHA", "")
         head_sha = os.environ.get("HEAD_SHA", "")
         changed = get_changed_files(base_sha, head_sha)
-        readme_paths = [Path(p) for p in changed if Path(p).name.lower() == "readme.md"]
+        readme_paths = [
+            Path(p)
+            for p in changed
+            if p.startswith("02-use-cases/") and Path(p).name.lower() == "readme.md"
+        ]
 
     if not readme_paths:
-        print("No README.md files to check, skipping.")
+        print("No README.md files under 02-use-cases to check, skipping.")
         return
 
     failed: list[Path] = []

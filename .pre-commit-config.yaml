@@ -23,3 +23,11 @@ repos:
         - markdownlint-cli2
       language: system
       pass_filenames: false
+    - id: check-use-cases-readme-metadata
+      name: check-use-cases-readme-metadata
+      entry: python
+      args:
+        - workflow_utils/check_readme_metadata.py
+      language: system
+      files: ^02-use-cases/.*/README\.md$
+      types_or: [ markdown ]

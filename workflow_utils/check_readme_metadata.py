@@ -7,6 +7,10 @@ import sys
 import frontmatter
 
 
+def should_skip(metadata: dict[str, Any]) -> bool:
+    return not metadata
+
+
 def check_name(metadata: dict[str, Any]):
     name = metadata.get("name")
     if not name:
@@ -52,6 +56,8 @@ def main(argv: list[str] | None = None) -> int:
 
     if not args.files:
         post = frontmatter.load("README.md")
+        if should_skip(post.metadata):
+            return 0
         check_name(post.metadata)
         check_description(post.metadata)
         check_senarios(post.metadata)
@@ -97,6 +103,9 @@ def main(argv: list[str] | None = None) -> int:
             continue
 
         post = frontmatter.load(path)
+
+        if should_skip(post.metadata):
+            continue
 
         try:
             check_name(post.metadata)

@@ -17,6 +17,14 @@ import os
 from agentkit.apps import AgentkitAgentServerApp
 from veadk import Agent, Runner
 from veadk.memory import LongTermMemory, ShortTermMemory
+from google.adk.agents.callback_context import CallbackContext
+
+
+# 这里仅做记忆保存的演示，实际根据需求选择会话保存到长期记忆中
+async def after_agent_execution(callback_context: CallbackContext):
+    session = callback_context._invocation_context.session
+    await long_term_memory.add_session_to_memory(session)
+
 
 vikingmem_app_name = os.getenv("VIKINGMEM_APP_NAME", "vikingmem_agent_app")
 
@@ -26,6 +34,7 @@ root_agent = Agent(
     name="vikingmem_agent",
     instruction="Use LoadMemory tool to search previous info.",
     long_term_memory=long_term_memory,
+    after_agent_callback=after_agent_execution,
 )
 
 runner = Runner(

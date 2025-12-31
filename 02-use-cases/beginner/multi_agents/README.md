@@ -250,7 +250,7 @@ agentkit config
 agentkit launch
 
 # 测试部署的 Agent
-agentkit invoke '我想买一台火山引擎虚拟机，用来做图像处理，可以帮我介绍一下哪个规格更适合我吗'
+agentkit invoke '我想买一台手机，用来玩游戏，可以帮我介绍一下哪个款式更适合我吗？'
 ```
 
 ## 示例提示词
@@ -273,19 +273,18 @@ Agent：[Pre-process Agent 分析需求]
 ### 场景二：产品咨询（并行搜索）
 
 ```text
-用户：我想买一台火山引擎虚拟机，用来做图像处理，可以帮我介绍一下哪个规格更适合我吗？
+用户：我想买一台手机，用来玩游戏，可以帮我介绍一下哪个款式更适合我吗？
 
 Agent 执行流程：
 1. [Pre-process Agent] 提取关键信息：
-   - 需求：虚拟机
-   - 用途：图像处理
-   - 目标：规格推荐
+   - 需求：手机
+   - 用途：玩游戏
+   - 目标：款式推荐
 
 2. [Sequential Service Agent] 启动工作流
 
 3. [Parallel Get Info Agent] 并行获取信息：
-   ├── [RAG Search Agent] 搜索内部知识库
-   │   找到：GPU 实例规格文档
+   ├── [RAG Search Agent] 搜索内部知识库 # 这里简化，没有真正去读 RAG
    └── [Web Search Agent] 搜索互联网
        找到：图像处理性能对比
 
@@ -296,22 +295,10 @@ Agent 执行流程：
        优化：增加礼貌用语和结构化
 
 Agent：根据您的图像处理需求，我为您推荐以下规格：
-
-      1. **GPU 通用型 - ecs.g2n.2xlarge**
-         - GPU: NVIDIA V100 16GB
-         - vCPU: 8核
-         - 内存: 32GB
-         - 适合: 深度学习图像处理
-         - 价格: 约5元/小时
-
-      2. **GPU 计算型 - ecs.gn6v.xlarge**
-         - GPU: NVIDIA T4 16GB
-         - vCPU: 4核
-         - 内存: 16GB
-         - 适合: 图像识别和渲染
-         - 价格: 约3元/小时
-
-      如需更详细的配置方案或有其他问题，欢迎随时咨询！
+        商品名称：星辰智能手机Pro
+        价格：4999元
+        核心配置：骁龙8 Gen3（高性能处理器，适合游戏运行）、5000mAh（大电池支持长时间游戏）
+        其他福利：支持12期免息
 ```
 
 ### 场景三：订单问题（完整流程）
@@ -328,7 +315,7 @@ Agent 执行流程：
 2. [Sequential Service Agent] 启动工作流
 
 3. [Parallel Get Info Agent] 并行查询：
-   ├── [RAG Search Agent] 查询订单系统
+   ├── [RAG Search Agent] 查询订单系统  # 这里简化，没有真正去读 RAG
    │   结果：订单已发货，物流单号 SF123456
    └── [Web Search Agent] 查询物流信息
        结果：快件在途中，预计明天送达

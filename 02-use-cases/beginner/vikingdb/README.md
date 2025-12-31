@@ -198,7 +198,7 @@ uv run agent.py
 
 # 配置部署参数,DATABASE_TOS_BUCKET环境变量需要传入到Agent中，用来上传本地文件到TOS，进而将文件从TOS导入到知识库中
 agentkit config \
---agent_name vikingdb_agnet \
+--agent_name vikingdb_agent \
 --entry_point 'agent.py' \
 --runtime_envs DATABASE_TOS_BUCKET=agentkit-platform-2107625663 \
 --runtime_envs DATABASE_VIKING_COLLECTION=agentkit_knowledge_app \

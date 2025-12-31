@@ -200,7 +200,7 @@ cd vikingmem
 
 # 配置部署参数
 agentkit config \
---agent_name vikingmem_agnet \
+--agent_name vikingmem_agent \
 --entry_point 'agent.py' \
 --runtime_envs VIKINGMEM_APP_NAME=vikingmem_agent_app \
 --launch_type cloud
@@ -219,25 +219,17 @@ agentkit invoke 'What is my habby?'
 **存入信息到短期记忆**：
 
 ```text
-用户：My habby is 0xabcd
-Agent：Got it! Your hobby is 0xabcd.
+用户：我的爱好是 0xabcd
+Agent：你的爱好是 0xabcd.
 （信息存储在 session: history_session）
 ```
 
 **同会话查询（成功）**：
 
 ```text
-用户：What is my habby?
-Agent：Your hobby is 0xabcd.
+用户：我的爱好是什么？
+Agent：你的爱好是 0xabcd.
 （使用相同的 session_id: history_session）
-```
-
-**新会话查询（失败）**：
-
-```text
-用户：What is my habby?
-Agent：I don't have that information.
-（使用不同的 session_id: new_session，短期记忆不可用）
 ```
 
 ### 长期记忆测试
@@ -245,15 +237,18 @@ Agent：I don't have that information.
 **转换为长期记忆**：
 
 ```python
-# 将短期记忆保存到长期记忆
-await runner1.save_session_to_long_term_memory(session_id=history_session_id)
+# 将短期记忆保存到长期记忆，这里我们已经默认给加到了长期记忆中
+# 仅做记忆保存的演示，可以实现一个 tools，然后让 agent 根据实际需求选择会话内容保存到长期记忆中
+async def after_agent_execution(callback_context: CallbackContext):
+    session = callback_context._invocation_context.session
+    await long_term_memory.add_session_to_memory(session)
 ```
 
 **跨会话查询（成功）**：
 
 ```text
-用户：What is my habby?
-Agent：Based on my memory, your hobby is 0xabcd.
+用户：我的爱好是什么？
+Agent：根据记忆，你的爱好是 0xabcd.
 （使用新的 session_id: new_session，长期记忆生效）
 （Agent 自动调用 LoadMemory 工具检索历史信息）
 ```
@@ -263,15 +258,15 @@ Agent：Based on my memory, your hobby is 0xabcd.
 运行 `local_test.py` 可以看到完整的记忆功能演示：
 
 ```text
-Response 1: Got it! Your hobby is 0xabcd.
+Response 1: 你的爱好是 0xabcd.
 
-Response 2: Your hobby is 0xabcd.
+Response 2: 你的爱好是 0xabcd.
 （短期记忆生效）
 
-Response 3: I don't have that information.
+Response 3: 我没有这个信息.
 （新会话，短期记忆失效）
 
-Response 4: Based on my memory, your hobby is 0xabcd.
+Response 4: 根据我的记忆，你的爱好是 0xabcd.
 （长期记忆生效，跨会话检索成功）
 ```
 

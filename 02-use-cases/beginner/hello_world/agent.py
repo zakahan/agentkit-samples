@@ -7,7 +7,11 @@ app_name = "veadk_playground_app_short_term_local"
 user_id = "veadk_playground_user_short_term_local"
 session_id = "veadk_playground_session_short_term_local"
 
-agent = Agent()
+agent = Agent(
+    name="hello_world",
+    description="hello world agent",
+    instruction="""你是一个智能助手，擅长用中文礼貌回复用户的问题。""",
+)
 short_term_memory = ShortTermMemory(backend="local")
 
 runner = Runner(

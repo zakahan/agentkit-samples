@@ -2,7 +2,7 @@ from agentkit.apps import AgentkitAgentServerApp
 from veadk import Agent, Runner
 from veadk.memory import ShortTermMemory
 
-from .callbacks import (
+from callbacks import (
     after_agent_callback,
     after_model_callback,
     after_tool_callback,
@@ -10,7 +10,7 @@ from .callbacks import (
     before_model_callback,
     before_tool_callback,
 )
-from .tools import write_article
+from tools import write_article
 
 root_agent = Agent(
     name="ChineseContentModerator",

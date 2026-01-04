@@ -27,7 +27,9 @@ parallel_get_info_agent = ParallelAgent(
     name="parallel_get_info_agent",
     description="根据用户需求，并行执行子任务，快速获取相关信息",
     instruction=PARALLEL_GET_INFO_AGENT_PROMPT,
-    sub_agents=[rag_search_agent, web_search_agent],
+    # enable web_search_agent if you want to observe how two parallel agents work
+    # sub_agents=[rag_search_agent, web_search_agent],
+    sub_agents=[rag_search_agent],
 )
 
 

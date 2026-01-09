@@ -183,9 +183,7 @@ flowchart LR
 
 ---
 
-## 卖点话术
-
-> **给销售/PDSA 的参考话术：**
+## 核心能力回顾
 >
 > "通过 Agent Identity，您可以在 **10 分钟内**为智能体配置企业级访问控制，
 > 确保只有授权用户才能使用 Agent 服务。
@@ -197,25 +195,6 @@ flowchart LR
 
 ---
 
-## 核心代码解析
-
-```python
-# main.py 核心配置
-
-from veadk import Agent, Runner
-
-# Agent 定义
-agent = Agent(
-    name="my_secure_agent",
-    model_name="doubao-seed-1-6-250615",
-    instruction="你是一个安全的智能助手..."
-)
-
-runner = Runner(agent=agent)
-
-# 启动命令自动集成 Inbound 认证
-# uv run veadk web --config ...
-```
 
 **关键点说明：**
 - `veadk web` 命令自动读取环境变量中的 OAuth2 配置
@@ -229,10 +208,6 @@ runner = Runner(agent=agent)
 想让用户使用飞书账号登录？请参考：
 
 → [实验2: 飞书 IdP 联合登录](../tutorial-2-feishu-idp/README.md)
-
-想让 Agent 安全访问飞书文档？请参考：
-
-→ [实验3: 让智能体安全访问飞书文档](../tutorial-3-feishu-outbound/README.md)
 
 ---
 

@@ -6,6 +6,10 @@
 >
 > 该示例以单个 Root Agent 对外提供服务，内部由多个子 Agent 按固定顺序执行，便于本地调试与云端部署。
 
+- 本项目是`multimedia`的衍生，对其进行了agentkit平台部署的适配。
+- 本项目是sequential-agent，而multimedia是使用的是a2a 方式进行agent交互
+- 本项目能够在agentkit 平台进行部署
+
 ## 核心功能
 
 本项目提供以下核心功能：
@@ -31,11 +35,11 @@
 
 ### 费用说明
 
-| 相关服务                                                                                                                        | 描述 | 计费说明 |
-|-----------------------------------------------------------------------------------------------------------------------------| --- | --- |
-| [Doubao-Seed-1.6](https://console.volcengine.com/ark/region:ark+cn-beijing/model/detail?Id=doubao-seed-1-6)                 | 负责理解用户信息并转化为工具调用。 | [多种计费方式](https://www.volcengine.com/docs/82379/1099320) |
+| 相关服务 | 描述 | 计费说明 |
+| --- | --- | --- |
+| [Doubao-Seed-1.6](https://console.volcengine.com/ark/region:ark+cn-beijing/model/detail?Id=doubao-seed-1-6) | 负责理解用户信息并转化为工具调用。 | [多种计费方式](https://www.volcengine.com/docs/82379/1099320) |
 | [Doubao-Seedance 1.5 pro](https://console.volcengine.com/ark/region:ark+cn-beijing/model/detail?Id=doubao-seedance-1-5-pro) | 负责将图片和文字描述转为视频。 | [多种计费方式](https://www.volcengine.com/docs/82379/1099320) |
-| [Doubao-Seedream 4.5 pro](https://console.volcengine.com/ark/region:ark+cn-beijing/model/detail?Id=doubao-seedream-4-5)     | 负责根据文字或参考图生成图片 | [多种计费方式](https://www.volcengine.com/docs/82379/1099320) |
+| [Doubao-Seedream 4.5 pro](https://console.volcengine.com/ark/region:ark+cn-beijing/model/detail?Id=doubao-seedream-4-5) | 负责根据文字或参考图生成图片 | [多种计费方式](https://www.volcengine.com/docs/82379/1099320) |
 
 ## 本地运行
 

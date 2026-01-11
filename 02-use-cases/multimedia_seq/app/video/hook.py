@@ -55,7 +55,7 @@ def get_callback_agent_output(success_list: list[dict[str, Any]]) -> str:
             continue
 
     html_parts = []
-    html_parts.append("\n\n### 图片展示")
+    html_parts.append("\n\n### 视频展示")
     for shot_idx, codes in enumerate(code_list):
         if not codes:
             continue

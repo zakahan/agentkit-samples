@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import time
 
 from google.genai import types
 from veadk import Agent
@@ -41,6 +42,7 @@ def get_video_agent():
                 "caching": {
                     "type": "disabled",
                 },
+                "expire_at": int(time.time()) + 259200,
             },
         },
     )

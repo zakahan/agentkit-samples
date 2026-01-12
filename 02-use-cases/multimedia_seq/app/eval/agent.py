@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import time
 from typing import Literal
 
 from veadk import Agent
@@ -36,6 +37,7 @@ def get_eval_agent(eval_type: Literal["image", "video"]):
                 "caching": {
                     "type": "disabled",
                 },
+                "expire_at": int(time.time()) + 259200,
             }
         },
     )

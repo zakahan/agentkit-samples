@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import time
 
 from veadk import Agent
 
@@ -35,6 +36,7 @@ def get_release_agent() -> Agent:
                 "caching": {
                     "type": "disabled",
                 },
+                "expire_at": int(time.time()) + 259200,
             }
         },
     )

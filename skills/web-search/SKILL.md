@@ -18,8 +18,13 @@ license: Complete terms in LICENSE.txt
 
 ## 认证与凭据来源
 
-- 优先读取 `VOLCENGINE_ACCESS_KEY` 与 `VOLCENGINE_SECRET_KEY` 环境变量。
-- 若未配置，将尝试使用 VeFaaS IAM 临时凭据。
+- 该技能默认使用 `TOOL_WEB_SEARCH_ACCESS_KEY` 与 `TOOL_WEB_SEARCH_SECRET_KEY` 环境变量。
+- 若未配置，将尝试使用 `VOLCENGINE_ACCESS_KEY` 与 `VOLCENGINE_SECRET_KEY` 环境变量。
+- 若未配置，在 VeFaaS 环境中将尝试使用 VeFaaS IAM 临时凭据。
+
+## 错误处理
+- 如果出现'PermissionError: AK/SK not found.'错误，则提示用户需要提供`VOLCENGINE_ACCESS_KE`和`VOLCENGINE_SECRET_KEY`，并把它们写入到workspace下的环境变量文件中，如果这个文件已存在则追加到文件末尾，确保环境变量格式正确，使这个环境变量生效，并重试刚才失败的搜索。
+
 
 ## 输出格式
 

@@ -252,8 +252,6 @@ def ve_request_with_apikey(
     if not api_key:
         raise ValueError("API key is required")
 
-    now = datetime.datetime.utcnow()
-    # Body的格式需要配合Content-Type，API使用的类型请阅读具体的官方文档，如:json格式需要json.dumps(obj)
     import json
 
     try:

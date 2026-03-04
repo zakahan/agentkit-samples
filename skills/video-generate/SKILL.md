@@ -90,20 +90,26 @@ The video_generate.py script will return these info:
 }
 ```
 
-Based on the script return info, the final response returned to the user consists of a description of the video generation task and the video URL(s) and local path(s). You may download the video from the URL, but the video URL should still be provided to the user for viewing and downloading.
+Based on the script return info, the final response returned to the user consists of a description of the video generation task and the video URL(s). You may download the video from the URL, but the video URL should still be provided to the user for viewing and downloading.
 
 Note: the URL is the 'url' in the success_list of script return info.
+The URL must return in two ways:
 
 ## Final Return Info
-You should return three types of information:
-1. File format, return the video and the local path of the video, for example:
-local_path: /root/.openclaw/workspace/skills/video-generate/xxx.mp4
+
+You must return three types of information:
+
+1. File format, return both file (if you have some other methods to send the video file) and local path, for example:
+/root/.openclaw/workspace/skills/video-generate/xxx.mp4
+
 2. URL format, for example:
-URL (https://example.com/video1.mp4)
+URL (`https://example.com/video1.mp4`)
+
 3. Markdown format, for example:
-```
-![video1](https://example.com/video1.mp4)
-![video2](https://example.com/video2.mp4)
+
+```markdown
+<video src="https://example.com/video1.mp4" width="640" controls>视频1</video>
+<video src="https://example.com/video2.mp4" width="640" controls>视频2</video>
 ```
 
 ## Code Implementation

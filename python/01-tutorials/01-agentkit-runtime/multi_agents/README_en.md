@@ -37,17 +37,17 @@ Customer Service Agent (Main Customer Service Agent)
 
 | Component | Description |
 | - | - |
-| **Main Agent** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/agent.py) - The main customer service agent, responsible for overall scheduling. |
-| **Sub-Agents** | [sub_agents/](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents) - Three specialized sub-agents. |
-| **- Sequential** | [sequential_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/sequential_agent.py) - Executes a sequential workflow. |
-| **- Parallel** | [parallel_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/parallel_agent.py) - Retrieves information in parallel. |
-| **- Loop** | [loop_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/loop_agent.py) - Cyclically optimizes response quality. |
-| **Prompts** | [prompts.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/prompts.py) - System instructions for each agent. |
-| **Test Client** | [client.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/client.py) - SSE streaming client for testing. |
+| **Main Agent** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/agent.py) - The main customer service agent, responsible for overall scheduling. |
+| **Sub-Agents** | [sub_agents/](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents) - Three specialized sub-agents. |
+| **- Sequential** | [sequential_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/sequential_agent.py) - Executes a sequential workflow. |
+| **- Parallel** | [parallel_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/parallel_agent.py) - Retrieves information in parallel. |
+| **- Loop** | [loop_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/loop_agent.py) - Cyclically optimizes response quality. |
+| **Prompts** | [prompts.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/prompts.py) - System instructions for each agent. |
+| **Test Client** | [client.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/client.py) - SSE streaming client for testing. |
 
 ### Code Highlights
 
-**Hierarchical Agent Definition** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/agent.py#L11-L22)):
+**Hierarchical Agent Definition** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/agent.py#L11-L22)):
 
 ```python
 pre_process_agent = Agent(
@@ -64,7 +64,7 @@ customer_service_agent = Agent(
 )
 ```
 
-**Sequential Agent** ([sub_agents/sequential_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/sequential_agent.py#L10-L15)):
+**Sequential Agent** ([sub_agents/sequential_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/sequential_agent.py#L10-L15)):
 
 ```python
 sequential_service_agent = SequentialAgent(
@@ -75,7 +75,7 @@ sequential_service_agent = SequentialAgent(
 )
 ```
 
-**Parallel Agent** ([sub_agents/parallel_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/parallel_agent.py#L19-L24)):
+**Parallel Agent** ([sub_agents/parallel_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/parallel_agent.py#L19-L24)):
 
 ```python
 parallel_get_info_agent = ParallelAgent(
@@ -86,7 +86,7 @@ parallel_get_info_agent = ParallelAgent(
 )
 ```
 
-**Loop Agent** ([sub_agents/loop_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/loop_agent.py#L24-L31)):
+**Loop Agent** ([sub_agents/loop_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/loop_agent.py#L24-L31)):
 
 ```python
 loop_refine_response_agent = LoopAgent(
@@ -435,7 +435,7 @@ agent = LoopAgent(
 
 ### Tool Integration
 
-**Web Search Tool** ([sub_agents/parallel_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/parallel_agent.py#L12-L17)):
+**Web Search Tool** ([sub_agents/parallel_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/parallel_agent.py#L12-L17)):
 
 ```python
 from veadk.tools.builtin_tools.web_search import web_search
@@ -448,7 +448,7 @@ web_search_agent = Agent(
 )
 ```
 
-**Exit Loop Tool** ([sub_agents/loop_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/loop_agent.py#L18-L23)):
+**Exit Loop Tool** ([sub_agents/loop_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/multi_agents/sub_agents/loop_agent.py#L18-L23)):
 
 ```python
 def exit_tool(tool_context: ToolContext) -> str:

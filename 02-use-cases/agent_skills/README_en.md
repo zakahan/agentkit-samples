@@ -31,15 +31,15 @@ Agent Skills
 
 | Component | Description |
 | - | - |
-| **Agent Service** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py) - Main application, defines the Agent and memory components. |
-| **Test Client** | [client.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/client.py) - SSE streaming invocation client. |
-| **Project Configuration** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/pyproject.toml) - Dependency management (uv tool). |
+| **Agent Service** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py) - Main application, defines the Agent and memory components. |
+| **Test Client** | [client.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/client.py) - SSE streaming invocation client. |
+| **Project Configuration** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/pyproject.toml) - Dependency management (uv tool). |
 | **AgentKit Configuration** | agentkit.yaml - Cloud deployment configuration file. |
 | **Short-term Memory** | Uses a local backend to store session context. |
 
 ### Code Features
 
-**Agent Definition** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py#L11-L18)):
+**Agent Definition** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py#L11-L18)):
 
 ```python
 agent = Agent()

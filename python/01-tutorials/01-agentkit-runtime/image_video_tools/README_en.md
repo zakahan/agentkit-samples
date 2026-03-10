@@ -28,15 +28,15 @@ Main Agent (image_video_tools_agent)
 
 | Component | Description |
 | - | - |
-| **Main Agent** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L38-L69) - image_video_tools_agent, responsible for understanding user intent and calling tools |
+| **Main Agent** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L38-L69) - image_video_tools_agent, responsible for understanding user intent and calling tools |
 | **Built-in Tools** | `image_generate`, `video_generate`, `web_search` |
-| **Service Framework** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L81-L89) - AgentkitAgentServerApp, provides HTTP service interface |
-| **Client Test** | [client.py](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/client.py) - Test client, used to call deployed cloud service |
-| **Project Configuration** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/pyproject.toml) - dependency management |
+| **Service Framework** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L81-L89) - AgentkitAgentServerApp, provides HTTP service interface |
+| **Client Test** | [client.py](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/client.py) - Test client, used to call deployed cloud service |
+| **Project Configuration** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/pyproject.toml) - dependency management |
 
 ### Code Features
 
-**Main Agent Configuration** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L38-L69)):
+**Main Agent Configuration** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L38-L69)):
 
 ```python
 root_agent = Agent(
@@ -69,7 +69,7 @@ root_agent = Agent(
 )
 ```
 
-**Service Startup** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L81-L89)):
+**Service Startup** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L81-L89)):
 
 ```python
 short_term_memory = ShortTermMemory(backend="local")
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     agent_server_app.run(host="0.0.0.0", port=8000)
 ```
 
-**Usage Example** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L71-L79)):
+**Usage Example** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L71-L79)):
 
 
 ```python

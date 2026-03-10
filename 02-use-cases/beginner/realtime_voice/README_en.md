@@ -27,14 +27,14 @@ NaviGo AI Agent
 
 | Component | Description |
 | - | - |
-| **Agent Service** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/realtime_voice/agent.py) - Main application, defines how the Agent handles audio and text transcription. |
-| **Test Client** | [interface.html](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/realtime_voice/client/interface.html) - Real-time voice assistant interface implemented based on HTML5. |
-| **Project Configuration** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/realtime_voice/pyproject.toml) - Dependency management (uv tool). |
+| **Agent Service** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/realtime_voice/agent.py) - Main application, defines how the Agent handles audio and text transcription. |
+| **Test Client** | [interface.html](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/realtime_voice/client/interface.html) - Real-time voice assistant interface implemented based on HTML5. |
+| **Project Configuration** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/realtime_voice/pyproject.toml) - Dependency management (uv tool). |
 | **AgentKit Configuration** | agentkit.yaml - Cloud deployment configuration file. |
 
 ### Code Features
 
-**Agent Definition** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/realtime_voice/agent.py#L38-L42)):
+**Agent Definition** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/realtime_voice/agent.py#L38-L42)):
 
 ```python
 agent = Agent(
@@ -44,7 +44,7 @@ agent = Agent(
 )
 ```
 
-**Voice Configuration** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/realtime_voice/agent.py#L72-L84)):
+**Voice Configuration** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/realtime_voice/agent.py#L72-L84)):
 
 ```python
 # Create run config with audio settings

@@ -49,16 +49,16 @@ a2a_simple/
 
 | 组件 | 描述 |
 | - | - |
-| **Agent 服务** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/agent.py) - hello_world_agent，提供工具服务（端口 8000） |
-| **本地客户端** | [local_client.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/local_client.py) - A2ASimpleClient，调用 Agent 服务 |
-| **工具：roll_die** | [tools/roll_die.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/tools/roll_die.py) - 投掷骰子 |
-| **工具：check_prime** | [tools/check_prime.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/tools/check_prime.py) - 检查质数 |
+| **Agent 服务** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/agent.py) - hello_world_agent，提供工具服务（端口 8000） |
+| **本地客户端** | [local_client.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/local_client.py) - A2ASimpleClient，调用 Agent 服务 |
+| **工具：roll_die** | [tools/roll_die.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/tools/roll_die.py) - 投掷骰子 |
+| **工具：check_prime** | [tools/check_prime.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/tools/check_prime.py) - 检查质数 |
 | **AgentCard** | Agent 元数据和能力描述 |
-| **项目配置** | [agentkit.yaml](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/agentkit.yaml) - AgentKit 部署配置 |
+| **项目配置** | [agentkit.yaml](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/agentkit.yaml) - AgentKit 部署配置 |
 
 ### 代码特点
 
-**Agent 定义**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/agent.py#L9-L35)）：
+**Agent 定义**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/agent.py#L9-L35)）：
 
 ```python
 root_agent = Agent(
@@ -90,7 +90,7 @@ root_agent = Agent(
 )
 ```
 
-**AgentCard 配置**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/agent.py#L45-L55)）：
+**AgentCard 配置**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/agent.py#L45-L55)）：
 
 ```python
 agent_card = AgentCard(
@@ -106,7 +106,7 @@ agent_card = AgentCard(
 )
 ```
 
-**本地客户端调用**（[local_client.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/local_client.py#L28-L88)）：
+**本地客户端调用**（[local_client.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/local_client.py#L28-L88)）：
 
 ```python
 async def create_task(self, agent_url: str, message: str) -> str:
@@ -125,7 +125,7 @@ async def create_task(self, agent_url: str, message: str) -> str:
         responses.append(response)
 ```
 
-**工具状态管理**（[tools/roll_die.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/tools/roll_die.py#L6-L21)）：
+**工具状态管理**（[tools/roll_die.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/a2a_simple/tools/roll_die.py#L6-L21)）：
 
 ```python
 def roll_die(sides: int, tool_context: ToolContext) -> int:
@@ -396,9 +396,9 @@ a2a_app.run(agent_card=agent_card, host="0.0.0.0", port=8000)
 
 完成 A2A Simple 示例后，可以探索更多功能：
 
-1. **[Multi Agents](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/multi_agents/README.md)** - 构建多智能体协作系统
-2. **[Restaurant Ordering](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/restaurant_ordering/README.md)** - 高级 Agent 特性
-3. **[Travel Concierge](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/travel_concierge/README.md)** - 使用 Web 搜索工具
+1. **[Multi Agents](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/multi_agents/README.md)** - 构建多智能体协作系统
+2. **[Restaurant Ordering](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/restaurant_ordering/README.md)** - 高级 Agent 特性
+3. **[Travel Concierge](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/travel_concierge/README.md)** - 使用 Web 搜索工具
 
 ## 常见问题
 

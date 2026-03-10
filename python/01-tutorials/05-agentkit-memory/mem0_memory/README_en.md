@@ -33,10 +33,10 @@ Agent + Runner
 
 | Component | Description |
 | - | - |
-| **Agent Service** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/05-agentkit-memory/mem0_memory/agent.py) - Main application, integrating short-term and long-term memory |
+| **Agent Service** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/05-agentkit-memory/mem0_memory/agent.py) - Main application, integrating short-term and long-term memory |
 | **Short-term Memory** | ShortTermMemory - Session-level temporary storage |
 | **Long-term Memory** | LongTermMemory - mem0 persistent storage |
-| **Project Configuration** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/05-agentkit-memory/mem0_memory/pyproject.toml) - Dependency management (uv tool) |
+| **Project Configuration** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/05-agentkit-memory/mem0_memory/pyproject.toml) - Dependency management (uv tool) |
 
 ### Code Features
 

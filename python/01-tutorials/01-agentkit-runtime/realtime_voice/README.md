@@ -27,14 +27,14 @@ NaviGo AI Agent
 
 | 组件 | 描述 |
 | - | - |
-| **Agent 服务** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/realtime_voice/agent.py) - 主应用程序，定义 Agent 处理音频和文本转录 |
-| **测试客户端** | [interface.html](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/realtime_voice/client/interface.html) - 基于 HTML5 实现的实时语音助手界面 |
-| **项目配置** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/realtime_voice/pyproject.toml) - 依赖管理（uv 工具） |
+| **Agent 服务** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/realtime_voice/agent.py) - 主应用程序，定义 Agent 处理音频和文本转录 |
+| **测试客户端** | [interface.html](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/realtime_voice/client/interface.html) - 基于 HTML5 实现的实时语音助手界面 |
+| **项目配置** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/realtime_voice/pyproject.toml) - 依赖管理（uv 工具） |
 | **AgentKit 配置** | agentkit.yaml - 云端部署配置文件 |
 
 ### 代码特点
 
-**Agent 定义**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/realtime_voice/agent.py#L38-L42)）：
+**Agent 定义**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/realtime_voice/agent.py#L38-L42)）：
 
 ```python
 
@@ -47,7 +47,7 @@ agent = Agent(
 
 ```
 
-**语音配置**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/realtime_voice/agent.py#L72-L84)）：
+**语音配置**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/realtime_voice/agent.py#L72-L84)）：
 
 ```python
 # Create run config with audio settings

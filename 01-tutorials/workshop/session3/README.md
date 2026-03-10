@@ -47,7 +47,7 @@ session3
 #### 拉取代码
 
 ```bash
-git clone https://github.com/volcengine/agentkit-samples.git
+git clone https://github.com/bytedance/agentkit-samples.git
 cd agentkit-samples/01-tutorials/workshop/session3
 ```
 

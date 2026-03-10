@@ -16,7 +16,7 @@
 8. 在本仓库中创建 Pull Request 来申请合并您的变更
 
 > [!IMPORTANT]
-> 请您务必遵守 `template` 目录下的文件结构和命名规范，并遵循 [README.md](https://github.com/volcengine/agentkit-samples/blob/main/template/README.md) 文件中的**二级标题**规范。
+> 请您务必遵守 `template` 目录下的文件结构和命名规范，并遵循 [README.md](https://github.com/bytedance/agentkit-samples/blob/main/template/README.md) 文件中的**二级标题**规范。
 >
 > 请您务必安装 `pre-commit` 工具，以确保您的提交符合规范。
 >

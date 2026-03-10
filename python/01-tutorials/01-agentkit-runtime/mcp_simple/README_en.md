@@ -33,14 +33,14 @@ TOS MCP Agent
 
 | Component | Description |
 | - | - |
-| **Agent Service** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/agent.py) - Agent application integrating MCP tools |
-| **Test Client** | [client.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/client.py) - SSE streaming client |
-| **Project Configuration** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/pyproject.toml) - Dependency management (uv tool) |
+| **Agent Service** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/agent.py) - Agent application integrating MCP tools |
+| **Test Client** | [client.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/client.py) - SSE streaming client |
+| **Project Configuration** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/pyproject.toml) - Dependency management (uv tool) |
 | **Short Term Memory** | Local backend storage for session context |
 
 ### Code Features
 
-**Agent Configuration** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/agent.py#L10-L20)):
+**Agent Configuration** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/agent.py#L10-L20)):
 
 ```python
 root_agent = Agent(

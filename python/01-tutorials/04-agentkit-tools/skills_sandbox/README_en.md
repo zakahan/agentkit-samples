@@ -30,9 +30,9 @@ Skills Sandbox
 
 | Component | Description |
 | - | - |
-| **Agent Service** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/04-agentkit-tools/skills_sandbox/agent.py) - Main application, defines the Agent and memory components |
-| **Test Client** | [client.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/04-agentkit-tools/skills_sandbox/client.py) - SSE streaming client |
-| **Project Configuration** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/04-agentkit-tools/skills_sandbox/pyproject.toml) - Dependency management (uv tool) |
+| **Agent Service** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/04-agentkit-tools/skills_sandbox/agent.py) - Main application, defines the Agent and memory components |
+| **Test Client** | [client.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/04-agentkit-tools/skills_sandbox/client.py) - SSE streaming client |
+| **Project Configuration** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/04-agentkit-tools/skills_sandbox/pyproject.toml) - Dependency management (uv tool) |
 | **AgentKit Configuration** | agentkit.yaml - Cloud deployment configuration file |
 | **Short-term Memory** | Uses a local backend to store session context |
 

@@ -41,7 +41,7 @@ Follow these steps to deploy and run this project locally.
 
 ```bash
 # Clone the code repository
-git clone https://github.com/volcengine/agentkit-samples.git
+git clone https://github.com/bytedance/agentkit-samples.git
 cd python/02-use-cases/mini_aiops
 
 # Install project dependencies

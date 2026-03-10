@@ -33,15 +33,15 @@ Agent + Runner
 
 | Component | Description |
 | - | - |
-| **Agent Service** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/vikingmem/agent.py) - The main application, integrating short-term and long-term memory. |
-| **Test Script** | [local_test.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/vikingmem/local_test.py) - A complete demonstration of memory functions. |
+| **Agent Service** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/vikingmem/agent.py) - The main application, integrating short-term and long-term memory. |
+| **Test Script** | [local_test.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/vikingmem/local_test.py) - A complete demonstration of memory functions. |
 | **Short-term Memory** | `ShortTermMemory` - Session-level temporary storage. |
 | **Long-term Memory** | `LongTermMemory` - Persistent storage in VikingDB. |
-| **Project Configuration** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/vikingmem/pyproject.toml) - Dependency management (with `uv`). |
+| **Project Configuration** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/vikingmem/pyproject.toml) - Dependency management (with `uv`). |
 
 ### Code Highlights
 
-**Short-term Memory Configuration** ([local_test.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/vikingmem/local_test.py#L26-L34)):
+**Short-term Memory Configuration** ([local_test.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/vikingmem/local_test.py#L26-L34)):
 
 ```python
 # Short-term memory: effective only within the same session
@@ -55,7 +55,7 @@ runner1 = Runner(
 )
 ```
 
-**Long-term Memory Configuration** ([local_test.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/vikingmem/local_test.py#L56-L69)):
+**Long-term Memory Configuration** ([local_test.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/vikingmem/local_test.py#L56-L69)):
 
 ```python
 # Initialize long-term memory (Viking backend)
@@ -325,10 +325,10 @@ agent_server_app = AgentkitAgentServerApp(
 
 After completing the VikingMem example, you can explore more features:
 
-1. **[VikingDB](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/vikingdb/README.md)** - Build a document knowledge base.
-2. **[Episode Generation](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/episode_generation/README.md)** - Generate image and video content.
-3. **[Restaurant Ordering](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/restaurant_ordering/README.md)** - Build a complex business process Agent.
-4. **[Multi Agents](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/multi_agents/README.md)** - Build a multi-agent collaboration system.
+1. **[VikingDB](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/vikingdb/README.md)** - Build a document knowledge base.
+2. **[Episode Generation](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/episode_generation/README.md)** - Generate image and video content.
+3. **[Restaurant Ordering](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/restaurant_ordering/README.md)** - Build a complex business process Agent.
+4. **[Multi Agents](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/multi_agents/README.md)** - Build a multi-agent collaboration system.
 
 ## FAQ
 

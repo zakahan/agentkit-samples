@@ -39,15 +39,15 @@ Restaurant Ordering Agent
 
 | Component | Description |
 | - | - |
-| **Agent Service** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/restaurant_ordering/agent.py#L82-L117) - order_agent, the ordering assistant |
-| **Test Script** | [main.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/restaurant_ordering/main.py) - Complete ordering process demonstration |
+| **Agent Service** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/restaurant_ordering/agent.py#L82-L117) - order_agent, the ordering assistant |
+| **Test Script** | [main.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/restaurant_ordering/main.py) - Complete ordering process demonstration |
 | **Custom Tools** | add_to_order, summarize_order |
 | **Custom Plugin** | CountInvocationPlugin - Counts invocation times |
 | **Context Management** | EventsCompactionConfig + ContextFilterPlugin |
 
 ### Code Features
 
-**Asynchronous Tool Definition** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/restaurant_ordering/agent.py#L52-L79)):
+**Asynchronous Tool Definition** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/restaurant_ordering/agent.py#L52-L79)):
 
 ```python
 async def add_to_order(dish_name: str, tool_context: ToolContext = None) -> str:
@@ -68,7 +68,7 @@ async def summarize_order(tool_context: ToolContext = None) -> str:
     return summary
 ```
 
-**Agent Configuration and Parallel Calls** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/restaurant_ordering/agent.py#L82-L117)):
+**Agent Configuration and Parallel Calls** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/restaurant_ordering/agent.py#L82-L117)):
 
 ```python
 order_agent = Agent(
@@ -89,7 +89,7 @@ order_agent = Agent(
 )
 ```
 
-**Custom Plugin** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/restaurant_ordering/agent.py#L120-L144)):
+**Custom Plugin** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/restaurant_ordering/agent.py#L120-L144)):
 
 ```python
 class CountInvocationPlugin(BasePlugin):
@@ -113,7 +113,7 @@ class CountInvocationPlugin(BasePlugin):
         print(f"[Plugin] LLM request count: {self.llm_request_count}")
 ```
 
-**Context Management Configuration** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/restaurant_ordering/agent.py#L151-L167)):
+**Context Management Configuration** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/restaurant_ordering/agent.py#L151-L167)):
 
 ```python
 app = App(
@@ -432,9 +432,9 @@ agent_server_app = AgentkitAgentServerApp(
 
 After completing the Restaurant Ordering example, you can explore more features:
 
-1. **[A2A Simple](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/a2a_simple/README.md)** - Learn the Agent-to-Agent communication protocol
-2. **[Multi Agents](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/multi_agents/README.md)** - Build more complex multi-agent collaboration systems
-3. **[Travel Concierge](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/travel_concierge/README.md)** - Use web search tools to plan trips
+1. **[A2A Simple](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/a2a_simple/README.md)** - Learn the Agent-to-Agent communication protocol
+2. **[Multi Agents](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/multi_agents/README.md)** - Build more complex multi-agent collaboration systems
+3. **[Travel Concierge](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/travel_concierge/README.md)** - Use web search tools to plan trips
 4. **[Video Generator](../../video_gen/README.md)** - Advanced video generation example
 
 ## FAQ

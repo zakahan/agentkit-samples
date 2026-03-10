@@ -33,14 +33,14 @@ TOS MCP Agent
 
 | 组件 | 描述 |
 | - | - |
-| **Agent 服务** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/agent.py) - 集成 MCP 工具的 Agent 应用 |
-| **测试客户端** | [client.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/client.py) - SSE 流式调用客户端 |
-| **项目配置** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/pyproject.toml) - 依赖管理（uv 工具） |
+| **Agent 服务** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/agent.py) - 集成 MCP 工具的 Agent 应用 |
+| **测试客户端** | [client.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/client.py) - SSE 流式调用客户端 |
+| **项目配置** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/pyproject.toml) - 依赖管理（uv 工具） |
 | **短期记忆** | 本地后端存储会话上下文 |
 
 ### 代码特点
 
-**Agent 配置**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/agent.py#L10-L20)）：
+**Agent 配置**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/01-agentkit-runtime/mcp_simple/agent.py#L10-L20)）：
 
 ```python
 root_agent = Agent(

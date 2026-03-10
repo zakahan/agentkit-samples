@@ -32,15 +32,15 @@ LLM Generates Answer
 
 | Component | Description |
 | - | - |
-| **Agent Service** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/vikingdb/agent.py) - The main application that integrates KnowledgeBase and VikingDB. |
+| **Agent Service** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/vikingdb/agent.py) - The main application that integrates KnowledgeBase and VikingDB. |
 | **Knowledge Base** | VikingDB vector database, storing document vector indexes. |
 | **Document Sources** | tech.txt (technical documents), products.txt (product information). |
-| **Project Configuration** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/vikingdb/pyproject.toml) - Dependency management (uv tool). |
+| **Project Configuration** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/vikingdb/pyproject.toml) - Dependency management (uv tool). |
 | **Short-term Memory** | Maintains session context. |
 
 ### Code Features
 
-**Knowledge Base Creation** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/vikingdb/agent.py#L22-L29)):
+**Knowledge Base Creation** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/vikingdb/agent.py#L22-L29)):
 
 ```python
 # Prepare knowledge sources
@@ -54,7 +54,7 @@ kb = KnowledgeBase(backend="viking", app_name="test_app")
 kb.add_from_files(files=["/tmp/product_info.txt", "/tmp/service_policy.txt"])
 ```
 
-**Agent Configuration** ([agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/vikingdb/agent.py#L31-L36)):
+**Agent Configuration** ([agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/vikingdb/agent.py#L31-L36)):
 
 ```python
 root_agent = Agent(
@@ -295,10 +295,10 @@ agent_server_app = AgentkitAgentServerApp(
 
 After completing the VikingDB example, you can explore more features:
 
-1. **[VikingMem](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/vikingmem/README.md)** - Implement long-term memory using VikingDB.
-2. **[Episode Generation](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/episode_generation/README.md)** - Generate images and video content.
-3. **[Restaurant Ordering](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/restaurant_ordering/README.md)** - Build complex business process Agents.
-4. **[Travel Concierge](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/travel_concierge/README.md)** - Use web search tools to plan trips.
+1. **[VikingMem](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/vikingmem/README.md)** - Implement long-term memory using VikingDB.
+2. **[Episode Generation](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/episode_generation/README.md)** - Generate images and video content.
+3. **[Restaurant Ordering](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/restaurant_ordering/README.md)** - Build complex business process Agents.
+4. **[Travel Concierge](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/travel_concierge/README.md)** - Use web search tools to plan trips.
 
 ## FAQ
 

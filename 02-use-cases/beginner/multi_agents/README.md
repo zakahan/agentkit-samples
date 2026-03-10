@@ -37,17 +37,17 @@ Customer Service Agent（客服主 Agent）
 
 | 组件 | 描述 |
 | - | - |
-| **主 Agent** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/agent.py) - 客服主 Agent，负责整体调度 |
-| **子 Agent** | [sub_agents/](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/multi_agents/sub_agents) - 三个专业子 Agent |
-| **- Sequential** | [sequential_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/sequential_agent.py) - 顺序执行工作流 |
-| **- Parallel** | [parallel_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/parallel_agent.py) - 并行信息获取 |
-| **- Loop** | [loop_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/loop_agent.py) - 循环优化回复质量 |
-| **Prompts** | [prompts.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/prompts.py) - 各 Agent 的系统指令 |
-| **测试客户端** | [client.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/client.py) - SSE 流式调用客户端 |
+| **主 Agent** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/agent.py) - 客服主 Agent，负责整体调度 |
+| **子 Agent** | [sub_agents/](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/multi_agents/sub_agents) - 三个专业子 Agent |
+| **- Sequential** | [sequential_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/sequential_agent.py) - 顺序执行工作流 |
+| **- Parallel** | [parallel_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/parallel_agent.py) - 并行信息获取 |
+| **- Loop** | [loop_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/loop_agent.py) - 循环优化回复质量 |
+| **Prompts** | [prompts.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/prompts.py) - 各 Agent 的系统指令 |
+| **测试客户端** | [client.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/client.py) - SSE 流式调用客户端 |
 
 ### 代码特点
 
-**层级 Agent 定义**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/agent.py#L11-L22)）：
+**层级 Agent 定义**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/agent.py#L11-L22)）：
 
 ```python
 pre_process_agent = Agent(
@@ -64,7 +64,7 @@ customer_service_agent = Agent(
 )
 ```
 
-**顺序执行 Agent**（[sub_agents/sequential_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/sequential_agent.py#L10-L15)）：
+**顺序执行 Agent**（[sub_agents/sequential_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/sequential_agent.py#L10-L15)）：
 
 ```python
 sequential_service_agent = SequentialAgent(
@@ -75,7 +75,7 @@ sequential_service_agent = SequentialAgent(
 )
 ```
 
-**并行执行 Agent**（[sub_agents/parallel_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/parallel_agent.py#L19-L24)）：
+**并行执行 Agent**（[sub_agents/parallel_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/parallel_agent.py#L19-L24)）：
 
 ```python
 parallel_get_info_agent = ParallelAgent(
@@ -86,7 +86,7 @@ parallel_get_info_agent = ParallelAgent(
 )
 ```
 
-**循环优化 Agent**（[sub_agents/loop_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/loop_agent.py#L24-L31)）：
+**循环优化 Agent**（[sub_agents/loop_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/loop_agent.py#L24-L31)）：
 
 ```python
 loop_refine_response_agent = LoopAgent(
@@ -435,7 +435,7 @@ agent = LoopAgent(
 
 ### 工具集成
 
-**Web 搜索工具**（[sub_agents/parallel_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/parallel_agent.py#L12-L17)）：
+**Web 搜索工具**（[sub_agents/parallel_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/parallel_agent.py#L12-L17)）：
 
 ```python
 from veadk.tools.builtin_tools.web_search import web_search
@@ -448,7 +448,7 @@ web_search_agent = Agent(
 )
 ```
 
-**退出循环工具**（[sub_agents/loop_agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/loop_agent.py#L18-L23)）：
+**退出循环工具**（[sub_agents/loop_agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/multi_agents/sub_agents/loop_agent.py#L18-L23)）：
 
 ```python
 def exit_tool(tool_context: ToolContext) -> str:
@@ -480,9 +480,9 @@ def exit_tool(tool_context: ToolContext) -> str:
 
 完成 Multi Agents 后，可以探索：
 
-1. **[Hello World](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/hello_world/README.md)** - 了解单 Agent 基础
-2. **[MCP Simple](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/mcp_simple/README.md)** - 集成远程工具服务
-3. **[Travel Concierge](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/travel_concierge/README.md)** - 单 Agent 多工具
+1. **[Hello World](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/hello_world/README.md)** - 了解单 Agent 基础
+2. **[MCP Simple](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/mcp_simple/README.md)** - 集成远程工具服务
+3. **[Travel Concierge](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/travel_concierge/README.md)** - 单 Agent 多工具
 4. **[Video Generator](../../video_gen/README.md)** - 复杂工具链编排
 
 ## 常见问题

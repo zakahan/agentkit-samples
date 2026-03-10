@@ -31,15 +31,15 @@ Agent Skills
 
 | 组件 | 描述 |
 | - | - |
-| **Agent 服务** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py) - 主应用程序，定义 Agent 和记忆组件 |
-| **测试客户端** | [client.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/client.py) - SSE 流式调用客户端 |
-| **项目配置** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/pyproject.toml) - 依赖管理（uv 工具） |
+| **Agent 服务** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py) - 主应用程序，定义 Agent 和记忆组件 |
+| **测试客户端** | [client.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/client.py) - SSE 流式调用客户端 |
+| **项目配置** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/pyproject.toml) - 依赖管理（uv 工具） |
 | **AgentKit 配置** | agentkit.yaml - 云端部署配置文件 |
 | **短期记忆** | 使用本地后端存储会话上下文 |
 
 ### 代码特点
 
-**Agent 定义**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py#L11-L18)）：
+**Agent 定义**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py#L11-L18)）：
 
 ```python
 agent = Agent()

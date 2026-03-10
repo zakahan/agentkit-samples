@@ -39,15 +39,15 @@ Restaurant Ordering Agent
 
 | 组件 | 描述 |
 | - | - |
-| **Agent 服务** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/02-use-cases/restaurant_ordering/agent.py#L82-L117) - order_agent，点餐助手 |
-| **测试脚本** | [main.py](https://github.com/volcengine/agentkit-samples/blob/main/python/02-use-cases/restaurant_ordering/main.py) - 完整的点餐流程演示 |
+| **Agent 服务** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/02-use-cases/restaurant_ordering/agent.py#L82-L117) - order_agent，点餐助手 |
+| **测试脚本** | [main.py](https://github.com/bytedance/agentkit-samples/blob/main/python/02-use-cases/restaurant_ordering/main.py) - 完整的点餐流程演示 |
 | **自定义工具** | add_to_order, summarize_order |
 | **自定义插件** | CountInvocationPlugin - 统计调用次数 |
 | **上下文管理** | EventsCompactionConfig + ContextFilterPlugin |
 
 ### 代码特点
 
-**异步工具定义**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/02-use-cases/restaurant_ordering/agent.py#L52-L79)）：
+**异步工具定义**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/02-use-cases/restaurant_ordering/agent.py#L52-L79)）：
 
 ```python
 async def add_to_order(dish_name: str, tool_context: ToolContext = None) -> str:
@@ -68,7 +68,7 @@ async def summarize_order(tool_context: ToolContext = None) -> str:
     return summary
 ```
 
-**Agent 配置与并行调用**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/02-use-cases/restaurant_ordering/agent.py#L82-L117)）：
+**Agent 配置与并行调用**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/02-use-cases/restaurant_ordering/agent.py#L82-L117)）：
 
 ```python
 order_agent = Agent(
@@ -90,7 +90,7 @@ order_agent = Agent(
 )
 ```
 
-**自定义插件**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/02-use-cases/restaurant_ordering/agent.py#L120-L144)）：
+**自定义插件**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/02-use-cases/restaurant_ordering/agent.py#L120-L144)）：
 
 ```python
 class CountInvocationPlugin(BasePlugin):
@@ -114,7 +114,7 @@ class CountInvocationPlugin(BasePlugin):
         print(f"[Plugin] LLM request count: {self.llm_request_count}")
 ```
 
-**上下文管理配置**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/02-use-cases/restaurant_ordering/agent.py#L151-L167)）：
+**上下文管理配置**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/02-use-cases/restaurant_ordering/agent.py#L151-L167)）：
 
 ```python
 app = App(
@@ -433,9 +433,9 @@ agent_server_app = AgentkitAgentServerApp(
 
 完成 Restaurant Ordering 示例后，可以探索更多功能：
 
-1. **[A2A Simple](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/a2a_simple/README.md)** - 学习 Agent-to-Agent 通信协议
-2. **[Multi Agents](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/multi_agents/README.md)** - 构建更复杂的多智能体协作系统
-3. **[Travel Concierge](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/travel_concierge/README.md)** - 使用 Web 搜索工具规划旅行
+1. **[A2A Simple](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/a2a_simple/README.md)** - 学习 Agent-to-Agent 通信协议
+2. **[Multi Agents](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/multi_agents/README.md)** - 构建更复杂的多智能体协作系统
+3. **[Travel Concierge](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/travel_concierge/README.md)** - 使用 Web 搜索工具规划旅行
 4. **[Video Generator](../../video_gen/README.md)** - 高级视频生成示例
 
 ## 常见问题

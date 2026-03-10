@@ -33,10 +33,10 @@ Agent + Runner
 
 | 组件 | 描述 |
 | - | - |
-| **Agent 服务** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/05-agentkit-memory/mem0_memory/agent.py) - 主应用程序，集成短期和长期记忆 |
+| **Agent 服务** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/05-agentkit-memory/mem0_memory/agent.py) - 主应用程序，集成短期和长期记忆 |
 | **短期记忆** | ShortTermMemory - 会话级别的临时存储 |
 | **长期记忆** | LongTermMemory - mem0 持久化存储 |
-| **项目配置** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/main/python/01-tutorials/05-agentkit-memory/mem0_memory/pyproject.toml) - 依赖管理（uv 工具） |
+| **项目配置** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/main/python/01-tutorials/05-agentkit-memory/mem0_memory/pyproject.toml) - 依赖管理（uv 工具） |
 
 ### 代码特点
 

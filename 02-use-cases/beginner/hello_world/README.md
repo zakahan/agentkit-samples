@@ -30,15 +30,15 @@ Hello World Agent
 
 | 组件 | 描述 |
 | - | - |
-| **Agent 服务** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py) - 主应用程序，定义 Agent 和记忆组件 |
-| **测试客户端** | [client.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/client.py) - SSE 流式调用客户端 |
-| **项目配置** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/pyproject.toml) - 依赖管理（uv 工具） |
+| **Agent 服务** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py) - 主应用程序，定义 Agent 和记忆组件 |
+| **测试客户端** | [client.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/client.py) - SSE 流式调用客户端 |
+| **项目配置** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/pyproject.toml) - 依赖管理（uv 工具） |
 | **AgentKit 配置** | agentkit.yaml - 云端部署配置文件 |
 | **短期记忆** | 使用本地后端存储会话上下文 |
 
 ### 代码特点
 
-**Agent 定义**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py#L11-L18)）：
+**Agent 定义**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py#L11-L18)）：
 
 ```python
 agent = Agent()
@@ -52,7 +52,7 @@ runner = Runner(
 )
 ```
 
-**多轮对话测试**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py#L21-L26)）：
+**多轮对话测试**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/main/02-use-cases/beginner/hello_world/agent.py#L21-L26)）：
 
 ```python
 async def main():
@@ -271,9 +271,9 @@ agent_server_app = AgentkitAgentServerApp(
 
 完成 Hello World 后，可以探索更多功能：
 
-1. **[MCP Simple](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/mcp_simple/README.md)** - 集成 MCP 工具，实现对象存储管理
-2. **[Multi Agents](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/multi_agents/README.md)** - 构建多智能体协作系统
-3. **[Travel Concierge](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/beginner/travel_concierge/README.md)** - 使用 Web 搜索工具规划旅行
+1. **[MCP Simple](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/mcp_simple/README.md)** - 集成 MCP 工具，实现对象存储管理
+2. **[Multi Agents](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/multi_agents/README.md)** - 构建多智能体协作系统
+3. **[Travel Concierge](https://github.com/bytedance/agentkit-samples/tree/main/02-use-cases/beginner/travel_concierge/README.md)** - 使用 Web 搜索工具规划旅行
 4. **[Video Generator](../../video_gen/README.md)** - 生成故事绘本视频
 
 ## 常见问题

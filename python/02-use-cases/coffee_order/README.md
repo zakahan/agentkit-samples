@@ -85,7 +85,7 @@ coffee_order/
 
 ```bash
 # 克隆代码仓库
-git clone https://github.com/volcengine/agentkit-samples.git
+git clone https://github.com/bytedance/agentkit-samples.git
 cd agentkit-samples/python/02-use-cases/coffee_order
 
 # 安装项目依赖

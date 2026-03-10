@@ -28,15 +28,15 @@
 
 | 组件 | 描述 |
 | - | - |
-| **主 Agent** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L38-L69) - image_video_tools_agent，负责理解用户意图并调用工具 |
+| **主 Agent** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L38-L69) - image_video_tools_agent，负责理解用户意图并调用工具 |
 | **内置工具** | `image_generate`, `video_generate`, `web_search` |
-| **服务框架** | [agent.py](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L81-L89) - AgentkitAgentServerApp，提供 HTTP 服务接口 |
-| **客户端测试** | [client.py](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/client.py) - 测试客户端，用于调用部署的云端服务 |
-| **项目配置** | [pyproject.toml](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/pyproject.toml) - 依赖管理 |
+| **服务框架** | [agent.py](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L81-L89) - AgentkitAgentServerApp，提供 HTTP 服务接口 |
+| **客户端测试** | [client.py](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/client.py) - 测试客户端，用于调用部署的云端服务 |
+| **项目配置** | [pyproject.toml](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/pyproject.toml) - 依赖管理 |
 
 ### 代码特点
 
-**主 Agent 配置**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L38-L69)）：
+**主 Agent 配置**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L38-L69)）：
 
 ```python
 root_agent = Agent(
@@ -69,7 +69,7 @@ root_agent = Agent(
 )
 ```
 
-**服务启动**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L81-L89)）：
+**服务启动**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L81-L89)）：
 
 ```python
 short_term_memory = ShortTermMemory(backend="local")
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     agent_server_app.run(host="0.0.0.0", port=8000)
 ```
 
-**使用示例**（[agent.py](https://github.com/volcengine/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L71-L79)）：
+**使用示例**（[agent.py](https://github.com/bytedance/agentkit-samples/blob/3bc92248d02a71c3a75d737931ed96b796aafc10/python/01-tutorials/01-agentkit-runtime/image_video_tools/agent.py#L71-L79)）：
 
 
 ```python

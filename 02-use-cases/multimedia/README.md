@@ -51,7 +51,7 @@
 
 ```bash
 # 克隆代码仓库
-git clone https://github.com/volcengine/agentkit-samples.git
+git clone https://github.com/bytedance/agentkit-samples.git
 cd agentkit-samples/02-use-cases/multimedia
 
 # 安装项目依赖

@@ -1,36 +1,34 @@
 ---
 name: byted-text-to-speech
-description: 将文本合成为语音（TTS）。使用火山引擎豆包语音合成 API，支持流式/一次性合成。当用户需要把文字转成语音、生成朗读音频、或需要 TTS 能力时使用本技能。
+version: 1.0.0
+author: volcengine-speech-team
+description: 将文本合成为语音（TTS）。使用火山引擎豆包语音合成 API，支持流式合成、多种音色、语速/音调/音量调节、Markdown 过滤和 LaTeX 公式播报。当用户需要把文字转成语音、生成朗读音频、配音、旁白、播报，或提到「文字转语音」「TTS」「语音合成」「朗读」「配音」时使用本技能。
 license: Complete terms in LICENSE
+homepage: https://www.volcengine.com/docs/6561/1257543
 ---
 
 # Byted-Text-to-Speech Skill
 
 基于[火山引擎豆包语音合成](https://www.volcengine.com/docs/6561/1598757)（HTTP Chunked/SSE 单向流式-V3）将文本转为语音并保存为音频文件。
 
-## 适用场景
+## 何时使用
 
-1. 用户要求把一段文字转成语音/朗读
-2. 用户需要生成配音、旁白或播报音频
-3. 用户提到「文字转语音」「TTS」「语音合成」
+当用户有以下需求时，优先使用本 skill：
 
-## 使用步骤
+- 需要把一段文字转成语音、朗读音频
+- 需要生成配音、旁白、播报、有声读物片段
+- 需要将代码注释、文档、文章等内容转为音频便于收听
+- 需要生成多语言语音（中文、英文等）
+- 用户提到「文字转语音」「TTS」「语音合成」「朗读」「配音」「念出来」「读给我听」
+- 用户没有明确说"语音合成"，但任务本质上需要将文本内容转为可播放的音频时
 
-1. 准备要合成的文本 `text`（中文或英文，避免特殊字符）。
-2. 运行脚本前先 `cd` 到本技能目录：`skills/byted-text-to-speech`。
-3. 执行：`python scripts/text_to_speech.py --text "要合成的文字" [选项]`。
-4. 根据返回的 `local_path` 或 `url` 将生成的音频提供给用户。
+## 使用前检查
 
-## 环境变量与鉴权（新版控制台）
+优先检查是否已配置以下凭证：
 
-鉴权采用**新版控制台方案**，详见：[API Key 管理](https://console.volcengine.com/speech/new/setting/apikeys)。
+- `MODEL_SPEECH_API_KEY`
 
-使用前需配置：
-
-- **必填**：`MODEL_SPEECH_API_KEY` — 在豆包语音新版控制台创建/获取的 API Key。
-- **可选**：`MODEL_SPEECH_API_BASE`（API 域名，默认 `openspeech.bytedance.com`）、`MODEL_SPEECH_TTS_RESOURCE_ID`（资源 ID，默认 `seed-tts-2.0`）。
-
-控制台与开通说明见：[豆包语音-产品简介](https://www.volcengine.com/docs/6561/1257543)。
+如果缺少凭证，打开 `references/setup-guide.md` 查看开通、申请和配置方式，并给予用户开通建议
 
 ## 脚本参数
 
@@ -64,12 +62,18 @@ license: Complete terms in LICENSE
 - 若报错 `PermissionError: MODEL_SPEECH_API_KEY ... 需在环境变量中配置`：提示用户在 [API Key 管理](https://console.volcengine.com/speech/new/setting/apikeys) 获取并配置 `MODEL_SPEECH_API_KEY`，写入 workspace 下的环境变量文件后重试。
 - 若返回 4xx/5xx 或业务错误码：根据错误信息提示用户检查文本内容、发音人 ID 及账号是否已开通豆包语音服务。
 
-## 参考文档
+## 故障排查
 
-- [API Key 管理](https://console.volcengine.com/speech/new/setting/apikeys) — 鉴权与开通
-- [HTTP Chunked/SSE 单向流式-V3](https://www.volcengine.com/docs/6561/1598757)
-- [音色列表](https://www.volcengine.com/docs/6561/1257544)
-- [SSML 标记语言](https://www.volcengine.com/docs/6561/1330194)（高级用法）
+- 缺少凭证：打开 `references/setup-guide.md`
+- 需要查 API 参数、字段、错误码：打开 `references/docs-index.md`
+- 如果脚本返回权限错误，优先检查服务是否已开通、凭证是否有效，给予用户明确的操作指引
+
+## 参考资料
+
+按需打开以下文件，不必默认全部加载：
+
+- `references/setup-guide.md`：服务开通、凭证申请、环境变量配置
+- `references/docs-index.md`：API 文档索引、参数说明、音色列表、错误码速查
 
 ## 示例
 

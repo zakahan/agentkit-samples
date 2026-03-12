@@ -169,33 +169,34 @@ def text_to_speech(
 
     try:
         with httpx.Client(timeout=timeout) as client:
-            resp = client.post(TTS_ENDPOINT, headers=headers, json=body)
+            with client.stream("POST", TTS_ENDPOINT, headers=headers, json=body) as resp:
+                resp.raise_for_status()
 
-        audio_chunks = []
-        for line in resp.text.splitlines():
-            if not line.startswith("data:"):
-                continue
-            try:
-                d = json.loads(line[5:].strip())
-                code = d.get("code", 0)
-                if code not in (0, 20000000):
-                    return {
-                        "status": "error",
-                        "local_path": None,
-                        "format": audio_format,
-                        "error": f"API error code={code}: {d.get('message', '')}",
-                    }
-                if d.get("data"):
-                    audio_chunks.append(base64.b64decode(d["data"]))
-            except (json.JSONDecodeError, KeyError):
-                continue
+                audio_chunks = []
+                for line in resp.iter_lines():
+                    if not line.startswith("data:"):
+                        continue
+                    try:
+                        d = json.loads(line[5:].strip())
+                        code = d.get("code", 0)
+                        if code not in (0, 20000000):
+                            return {
+                                "status": "error",
+                                "local_path": None,
+                                "format": audio_format,
+                                "error": f"API error code={code}: {d.get('message', '')}",
+                            }
+                        if d.get("data"):
+                            audio_chunks.append(base64.b64decode(d["data"]))
+                    except (json.JSONDecodeError, KeyError):
+                        continue
 
         if not audio_chunks:
             return {
                 "status": "error",
                 "local_path": None,
                 "format": audio_format,
-                "error": f"No audio data returned. Response: {resp.text[:500]}",
+                "error": "No audio data returned.",
             }
 
         with open(output_path, "wb") as f:

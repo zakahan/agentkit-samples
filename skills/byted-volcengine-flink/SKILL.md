@@ -1,6 +1,6 @@
 ---
 name: byted-volcengine-flink
-description: Aggregated Volcengine Flink skill entrypoint. Routes requests to four sub-skills (development/deployment, read-only diagnosis, resource troubleshooting, and SRE operations) based on user intent, and relies on flink-mcp for tool capabilities.
+description: Entrypoint for managing Volcengine Flink (based on Apache Flink) workloads. Use it for developing and deploying streaming and batch jobs, diagnosing real-time issues (e.g., backpressure, checkpoint failures, OOM), troubleshooting resources, and performing SRE actions (stop/start/restart/scale/config changes). It intelligently routes requests to four specialized sub-skills and leverages flink-mcp for tool execution.
 license: Complete terms in LICENSE
 ---
 

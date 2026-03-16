@@ -1,5 +1,5 @@
 ---
-name: byted-volcengine-flink-router
+name: byted-volcengine-flink
 description: Aggregated Volcengine Flink skill entrypoint. Routes requests to four sub-skills (development/deployment, read-only diagnosis, resource troubleshooting, and SRE operations) based on user intent, and relies on flink-mcp for tool capabilities.
 license: Complete terms in LICENSE
 ---

@@ -143,12 +143,6 @@ def upload_video(
             "follow_up_hint": (
                 "Use this attachment_id in create_evaluation_task.py as --attachment-id."
             ),
-            "validation": {
-                "max_videos_per_request": 50,
-                "current_request_video_count": 1,
-                "max_size_mb_per_video": 50,
-                "mime_type": ALLOWED_MIME_TYPE,
-            },
             "known_create_endpoint": build_url(CREATE_TASK_PATH),
         },
         request_id=request_id,

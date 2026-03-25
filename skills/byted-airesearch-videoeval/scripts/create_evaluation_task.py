@@ -25,8 +25,11 @@ from common import (
     build_request_id,
     build_url,
     create_session,
+    extract_business_error,
     failure,
+    format_quota_exceeded_message,
     handle_top_level_exception,
+    is_quota_exceeded_message,
     normalize_task,
     parse_json_response,
     print_json,
@@ -39,7 +42,7 @@ FIXED_AUDIENCE_ID = 3664529
 FIXED_FORM_ID = 0
 VALID_LANGUAGES = ("auto", "zh", "en")
 VALID_TYPICAL_USER_SELECTION_MODES = ("VIEWPOINT", "PROFILE")
-MAX_ATTACHMENT_IDS = 50
+MAX_ATTACHMENT_IDS = 10
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -130,10 +133,18 @@ def create_task(body: dict[str, Any], api_key: str | None = None, timeout: float
     session = create_session(api_key)
     response = session.post(build_url(CREATE_TASK_PATH), json=body, timeout=timeout)
     raw_body = parse_json_response(response)
+    business_code, business_message = extract_business_error(raw_body)
 
-    if response.status_code >= 400:
+    if response.status_code >= 400 or business_code is not None:
+        message = "Task creation failed."
+        if business_message:
+            message = (
+                format_quota_exceeded_message(business_message)
+                if is_quota_exceeded_message(business_message)
+                else f"Task creation failed. Service message: {business_message}"
+            )
         return failure(
-            message="Task creation failed.",
+            message=message,
             code="CREATE_TASK_FAILED",
             details=request_error_details(response, raw_body),
             request_id=request_id,

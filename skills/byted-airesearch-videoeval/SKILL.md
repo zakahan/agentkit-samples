@@ -39,6 +39,17 @@ This workflow is intentionally non-blocking. Do not poll automatically after tas
 
 For multi-file submissions, use the orchestration entrypoint so the whole batch is validated before the first upload starts.
 
+## Submission limits
+
+- A single task can include at most 10 videos.
+- Non-enabled users have a rolling free quota of at most 10 submitted videos within the last 24 hours.
+- The new task's video count is added to the number of videos already submitted in the last 24 hours. If the total exceeds 10, the service rejects the task and asks the user to contact Volcengine sales to enable access.
+- Enabled users are not restricted by this rolling 24-hour free quota.
+- Quota accounting is based on the actual number of videos submitted per task, with no deduplication.
+- Any task created within the last 24 hours counts toward the rolling quota, including running tasks.
+- Login-based access and API key access share the same quota pool.
+- The skill enforces the per-task limit locally before upload starts. The rolling 24-hour quota is enforced by the service, and the skill should surface the service rejection with a clear explanation.
+
 ## Authentication
 
 The current APIs use API key authentication.
@@ -95,8 +106,8 @@ The `upload_video.py` script is an internal helper for the create-task workflow.
   - `is_report_enabled`
   - `attachment_ids`
 - Create constraints:
-  - one task submission can include at most 50 videos
-  - `attachment_ids` must contain at most 50 items per request
+  - one task submission can include at most 10 videos
+  - `attachment_ids` must contain at most 10 items per request
 
 The create step should send the uploaded `attachment_id` as a one-element `attachment_ids` array unless multiple attachment IDs are explicitly provided.
 
@@ -181,8 +192,9 @@ Important normalized fields:
 
 - For new submissions, use the orchestration flow rather than exposing upload as a standalone step to the user.
 - Validate the local file before upload. Reject non-MP4 files, files with non-`video/mp4` MIME types, or files larger than 50MB with a direct and actionable error message.
-- Validate the task creation input before calling the API. Reject any request that contains more than 50 attachment IDs with a direct and actionable error message.
-- For a multi-video submit flow, validate the full batch size before any upload starts. If the batch contains more than 50 files, fail immediately and do not upload anything.
+- Validate the task creation input before calling the API. Reject any request that contains more than 10 attachment IDs with a direct and actionable error message.
+- For a multi-video submit flow, validate the full batch size before any upload starts. If the batch contains more than 10 files, fail immediately and do not upload anything.
+- If the service rejects task creation because the rolling 24-hour free quota was exceeded, use this standard Chinese wording for the user-facing message: `免费版用户每24小时最多提交10个评估视频，如需购买请联系火山引擎销售人员`
 - After create succeeds, tell the user the task has been submitted successfully and can be checked later.
 - Use task list when the user wants to browse or find historical tasks.
 - Use task detail when the user already knows the task ID and wants the final result.

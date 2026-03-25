@@ -113,6 +113,44 @@ def parse_json_response(response: requests.Response) -> Any:
         ) from exc
 
 
+def extract_business_error(payload: Any) -> tuple[Optional[str], Optional[str]]:
+    if not isinstance(payload, dict):
+        return None, None
+
+    code = payload.get("code")
+    message = payload.get("message")
+    if not isinstance(message, str) or not message.strip():
+        return None, None
+
+    if isinstance(code, int):
+        if code != 0:
+            return str(code), message
+        return None, None
+
+    if isinstance(code, str):
+        normalized = code.strip()
+        if not normalized or normalized in {"0", "success", "ok", "OK", "SUCCESS"}:
+            return None, None
+        return normalized, message
+
+    return None, None
+
+
+def is_quota_exceeded_message(message: Optional[str]) -> bool:
+    if not message:
+        return False
+
+    normalized = message.lower()
+    return "free usage limit" in normalized or "24 hours" in normalized
+
+
+def format_quota_exceeded_message(message: str) -> str:
+    return (
+        "免费版用户每24小时最多提交10个评估视频，如需购买请联系火山引擎销售人员。 "
+        f"Service message: {message}"
+    )
+
+
 def unwrap_payload(payload: Any) -> Any:
     if isinstance(payload, dict):
         for key in ("data", "result", "payload"):

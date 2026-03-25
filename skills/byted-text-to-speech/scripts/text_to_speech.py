@@ -32,6 +32,12 @@ from typing import Optional
 
 import httpx
 
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+if _SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, _SCRIPT_DIR)
+
+from api_key import get_speech_api_key
+
 TTS_API_BASE = os.getenv("MODEL_SPEECH_API_BASE", "openspeech.bytedance.com")
 TTS_ENDPOINT = f"https://{TTS_API_BASE}/api/v3/tts/unidirectional/sse"
 TTS_RESOURCE_ID = os.getenv("MODEL_SPEECH_TTS_RESOURCE_ID", "seed-tts-2.0")
@@ -49,7 +55,7 @@ def _build_headers() -> dict:
         "X-Api-Resource-Id": TTS_RESOURCE_ID,
         "X-Api-Request-Id": str(uuid.uuid4()),
     }
-    api_key = os.getenv("MODEL_SPEECH_API_KEY", "").strip()
+    api_key = get_speech_api_key().strip()
 
     if not api_key:
         raise PermissionError(

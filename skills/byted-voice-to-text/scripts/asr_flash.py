@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2025 Beijing Volcano Engine Technology Co., Ltd. and/or its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,6 +29,12 @@ import sys
 import tempfile
 import time
 import uuid
+
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+if _SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, _SCRIPT_DIR)
+
+from api_key import get_speech_api_key
 
 ASR_ENDPOINT = os.getenv(
     "MODEL_SPEECH_ASR_API_BASE",
@@ -103,7 +110,7 @@ def file_to_base64(file_path: str) -> str:
 def _build_headers(appid: str | None = None, token: str | None = None) -> dict:
     """构建请求头。支持新版控制台(X-Api-Key)和旧版(X-Api-App-Key + X-Api-Access-Key)。"""
     app_id = appid or os.getenv("MODEL_SPEECH_APP_ID", "").strip()
-    api_key = token or os.getenv("MODEL_SPEECH_API_KEY", "").strip()
+    api_key = token or get_speech_api_key().strip()
 
     if not api_key:
         raise PermissionError(
@@ -207,13 +214,13 @@ def main() -> None:
 示例用法:
 
   # 方式1: 直接传音频 URL
-  python asr.py --url "https://example.com/audio.mp3"
+  python asr_flash.py --url "https://example.com/audio.mp3"
 
   # 方式2: 传本地音频文件
-  python asr.py --file "/path/to/audio.ogg"
+  python asr_flash.py --file "/path/to/audio.ogg"
 
   # 方式3: 传飞书语音消息的 file_key
-  python asr.py --file-key "file_v2_xxxx" --feishu-token "t-g104xxx"
+  python asr_flash.py --file-key "file_v2_xxxx" --feishu-token "t-g104xxx"
 
 飞书语音消息处理流程:
   收到 audio 消息 → 提取 content.file_key → 本脚本下载+识别 → 返回文字

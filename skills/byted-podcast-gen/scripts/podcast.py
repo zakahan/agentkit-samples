@@ -10,9 +10,10 @@ import uuid
 import websockets
 
 _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.dirname(_SCRIPT_DIR))
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(_SCRIPT_DIR))))
+if _SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, _SCRIPT_DIR)
 
+from api_key import get_speech_api_key
 from protocols import (EventType, MsgType, finish_connection,  # noqa: E402
                        finish_session, receive_message, start_connection,
                        start_session, wait_for_event)
@@ -47,7 +48,7 @@ def _final_extension(encoding: str) -> str:
 
 
 async def _generate(args) -> dict:
-    api_key = os.getenv("MODEL_SPEECH_API_KEY", "")
+    api_key = get_speech_api_key()
     if not api_key:
         raise ValueError("Missing MODEL_SPEECH_API_KEY")
     resource_id ="volc.service_type.10050"

@@ -1,6 +1,6 @@
 ---
 name: byted-sms-sender
-version: 1.1.0
+version: 1.2.0
 author: volcengine-sms-team
 description: 火山引擎短信服务管理工具。在需要使用云通信能力，包括发送短信，查询消息组，模板信息，发送详情，状态以及整体发送统计时，可以使用这个能力。
 homepage: https://www.volcengine.com/docs/6361/66704?lang=zh
@@ -33,9 +33,20 @@ homepage: https://www.volcengine.com/docs/6361/66704?lang=zh
 
 检查是否已配置以下凭证:
 
-- `VOLCENGINE_ACCESS_KEY` + `VOLCENGINE_SECRET_KEY`
+- `ARK_SKILL_API_KEY` - API 密钥
+- `ARK_SKILL_API_BASE` - API 基础地址
 
-如果缺少凭证,打开 `references/setup-guide.md` 查看开通、申请和配置方式,并给予用户开通建议。
+这些凭证由 **ArkClaw** 预先配置在终端环境中，配置文件位置: `/root/.openclaw/.env`
+
+检查方式:
+```bash
+echo $ARK_SKILL_API_KEY
+echo $ARK_SKILL_API_BASE
+```
+
+如果缺少凭证:
+1. 检查配置文件 `/root/.openclaw/.env` 是否存在
+2. 如果仍然找不到，请联系 **oncall** 获取帮助
 
 ## 6个接口说明
 
@@ -47,8 +58,6 @@ homepage: https://www.volcengine.com/docs/6361/66704?lang=zh
 
 ```bash
 python3 scripts/volc_sms.py send_sms \
-  --access-key "AKLT..." \
-  --secret-key "Wm1..." \
   --sub-account "消息组ID" \
   --signature "签名" \
   --template-id "模板ID" \
@@ -71,9 +80,7 @@ python3 scripts/volc_sms.py send_sms \
 **使用方式:**
 
 ```bash
-python3 scripts/volc_sms.py list_sub_account \
-  --access-key "AKLT..." \
-  --secret-key "Wm1..."
+python3 scripts/volc_sms.py list_sub_account
 ```
 
 **参数说明:**
@@ -87,10 +94,7 @@ python3 scripts/volc_sms.py list_sub_account \
 **使用方式:**
 
 ```bash
-python3 scripts/volc_sms.py list_signature \
-  --access-key "AKLT..." \
-  --secret-key "Wm1..." \
-  --signature "火山引擎"
+python3 scripts/volc_sms.py list_signature --signature "火山引擎"
 ```
 
 **参数说明:**
@@ -107,10 +111,7 @@ python3 scripts/volc_sms.py list_signature \
 **使用方式:**
 
 ```bash
-python3 scripts/volc_sms.py list_sms_template \
-  --access-key "AKLT..." \
-  --secret-key "Wm1..." \
-  --signatures "火山引擎"
+python3 scripts/volc_sms.py list_sms_template --signatures "火山引擎"
 ```
 
 **参数说明:**
@@ -129,8 +130,6 @@ python3 scripts/volc_sms.py list_sms_template \
 
 ```bash
 python3 scripts/volc_sms.py list_sms_send_log \
-  --access-key "AKLT..." \
-  --secret-key "Wm1..." \
   --sub-account "消息组ID" \
   --from-time 1773113285 \
   --to-time 1773213285
@@ -156,8 +155,6 @@ python3 scripts/volc_sms.py list_sms_send_log \
 
 ```bash
 python3 scripts/volc_sms.py list_total_send_count_stat \
-  --access-key "AKLT..." \
-  --secret-key "Wm1..." \
   --start-time 1773113285 \
   --end-time 1773213285
 ```
@@ -185,30 +182,30 @@ python3 scripts/volc_sms.py list_total_send_count_stat \
 
 1. **查询可用的消息组**
    ```bash
-   python3 scripts/volc_sms.py list_sub_account --access-key AKLT... --secret-key "Wm1..."
+   python3 scripts/volc_sms.py list_sub_account
    ```
 2. **查询可用的签名**
    ```bash
-   python3 scripts/volc_sms.py list_signature --access-key AKLT... --secret-key "Wm1..."
+   python3 scripts/volc_sms.py list_signature
    ```
 3. **查询可用的模板**
    ```bash
-   python3 scripts/volc_sms.py list_sms_template --access-key AKLT... --secret-key "Wm1..." --signatures "火山引擎"
+   python3 scripts/volc_sms.py list_sms_template --signatures "火山引擎"
    ```
 4. **发送短信**
    ```bash
-   python3 scripts/volc_sms.py send_sms --access-key AKLT... --secret-key "Wm1..." \
-     --sub-account "77da1acf" \
-     --signature "火山引擎" \
-     --template-id "ST_85087022" \
-     --mobiles "18810792528" \
+   python3 scripts/volc_sms.py send_sms \
+     --sub-account "xxxx" \
+     --signature "xxx" \
+     --template-id "ST_xxxx" \
+     --mobiles "188xxxxxxx8" \
      --template-param '{"code":"888888"}'
    ```
 
 ### 查询发送状态
 
 ```bash
-python3 scripts/volc_sms.py list_sms_send_log --access-key AKLT... --secret-key "Wm1..." \
+python3 scripts/volc_sms.py list_sms_send_log \
   --sub-account "77da1acf" \
   --from-time 1773113285 \
   --to-time 1773213285
@@ -236,8 +233,8 @@ python3 scripts/volc_sms.py list_sms_send_log --access-key AKLT... --secret-key 
 
 ## 故障排查
 
-- 缺少凭证: 打开 `references/setup-guide.md`
+- 缺少凭证: 检查 `/root/.openclaw/.env` 文件，如仍找不到请联系 oncall
 - 发送失败: 先用 list\_sub\_account、list\_signature、list\_sms\_template 确认参数正确
-- 权限错误: 检查服务是否已开通、凭证是否有效,子账号是否已授权
-- 欠费错误: 通过 `references/setup-guide.md` 指导用户充值
-
+- 鉴权失败: 检查自己配置的 AK/SK 是否开通正确
+- 权限错误: 检查凭证是否正确，如问题持续请联系 oncall
+- 欠费错误: 请联系 oncall 处理

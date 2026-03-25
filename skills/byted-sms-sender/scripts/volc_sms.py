@@ -31,159 +31,78 @@ Usage:
 
 Examples:
     # 发送短信
-    python volc_sms.py send_sms --access-key AKLT... --secret-key "Wm1..." \
+    python volc_sms.py send_sms \
         --sub-account 77da1acf --signature "火山引擎" --template-id "ST_xxx" \
         --mobiles "13800138000" --template-param '{"code":"123456"}'
 
     # 查询消息组
-    python volc_sms.py list_sub_account --access-key AKLT... --secret-key "Wm1..."
+    python volc_sms.py list_sub_account
 
     # 查询签名
-    python volc_sms.py list_signature --access-key AKLT... --secret-key "Wm1..." --signature "火山引擎"
+    python volc_sms.py list_signature --signature "火山引擎"
 
     # 查询模板
-    python volc_sms.py list_sms_template --access-key AKLT... --secret-key "Wm1..." --signatures "火山引擎"
+    python volc_sms.py list_sms_template --signatures "火山引擎"
 
     # 查询发送记录
-    python volc_sms.py list_sms_send_log --access-key AKLT... --secret-key "Wm1..." \
+    python volc_sms.py list_sms_send_log \
         --sub-account 77da1acf --from-time 1773113285 --to-time 1773213285
 
     # 查询发送统计
-    python volc_sms.py list_total_send_count_stat --access-key AKLT... --secret-key "Wm1..." \
+    python volc_sms.py list_total_send_count_stat \
         --start-time 1773113285 --end-time 1773213285
 """
 
 import argparse
-import datetime
-import hashlib
-import hmac
 import json
 import os
 import sys
-from urllib.parse import quote
 
 SERVICE = "volcSMS"
 VERSION = "2026-01-01"
-REGION = "cn-north-1"
-HOST = "sms.volcengineapi.com"
 
 
-def hmac_sha256(key: bytes, content: str) -> bytes:
-    return hmac.new(key, content.encode("utf-8"), hashlib.sha256).digest()
+def get_credentials() -> tuple:
+    api_key = os.getenv("ARK_SKILL_API_KEY")
+    api_base = os.getenv("ARK_SKILL_API_BASE")
+    if not api_key or not api_base:
+        raise ValueError(
+            "未找到凭证，请设置环境变量 ARK_SKILL_API_KEY 和 ARK_SKILL_API_BASE\n"
+            "配置文件位置: /root/.openclaw/.env\n"
+            "示例:\n"
+            "  ARK_SKILL_API_KEY=sk-xxxx\n"
+            "  ARK_SKILL_API_BASE=http://xxx"
+        )
+    return api_key, api_base
 
 
-def hash_sha256(content: str) -> str:
-    return hashlib.sha256(content.encode("utf-8")).hexdigest()
-
-
-def norm_query(params: dict) -> str:
-    query = ""
-    for key in sorted(params.keys()):
-        if isinstance(params[key], list):
-            for value in params[key]:
-                query += quote(key, safe="-_.~") + "=" + quote(str(value), safe="-_.~") + "&"
-        else:
-            query += quote(key, safe="-_.~") + "=" + quote(str(params[key]), safe="-_.~") + "&"
-    return query[:-1].replace("+", "%20") if query else ""
-
-
-def utc_now():
-    try:
-        from datetime import timezone
-        return datetime.datetime.now(timezone.utc)
-    except ImportError:
-        return datetime.datetime.utcnow()
-
-
-def sign_request(action: str, ak: str, sk: str, body: str) -> dict:
-    now = utc_now()
-    x_date = now.strftime("%Y%m%dT%H%M%SZ")
-    short_date = x_date[:8]
-    x_content_sha256 = hash_sha256(body)
-    content_type = "application/json"
-
-    query_params = {"Action": action, "Version": VERSION}
-
-    signed_header_keys = ["content-type", "host", "x-content-sha256", "x-date"]
-    signed_header_keys.sort()
-    signed_headers_str = ";".join(signed_header_keys)
-
-    canonical_header_lines = [
-        f"content-type:{content_type}",
-        f"host:{HOST}",
-        f"x-content-sha256:{x_content_sha256}",
-        f"x-date:{x_date}",
-    ]
-
-    canonical_request = "\n".join(
-        [
-            "POST",
-            "/",
-            norm_query(query_params),
-            "\n".join(canonical_header_lines),
-            "",
-            signed_headers_str,
-            x_content_sha256,
-        ]
-    )
-
-    credential_scope = f"{short_date}/{REGION}/{SERVICE}/request"
-    string_to_sign = "\n".join(
-        [
-            "HMAC-SHA256",
-            x_date,
-            credential_scope,
-            hash_sha256(canonical_request),
-        ]
-    )
-
-    k_date = hmac_sha256(sk.encode("utf-8"), short_date)
-    k_region = hmac_sha256(k_date, REGION)
-    k_service = hmac_sha256(k_region, SERVICE)
-    k_signing = hmac_sha256(k_service, "request")
-    signature = hmac_sha256(k_signing, string_to_sign).hex()
-
-    authorization = (
-        f"HMAC-SHA256 Credential={ak}/{credential_scope}, "
-        f"SignedHeaders={signed_headers_str}, "
-        f"Signature={signature}"
-    )
-
-    headers = {
-        "Content-Type": content_type,
-        "Host": HOST,
-        "X-Date": x_date,
-        "X-Content-Sha256": x_content_sha256,
-        "Authorization": authorization,
-    }
-    return headers
-
-
-def get_credentials(args) -> tuple:
-    ak = args.access_key or os.getenv("VOLCENGINE_ACCESS_KEY")
-    sk = args.secret_key or os.getenv("VOLCENGINE_SECRET_KEY")
-    if not ak or not sk:
-        raise ValueError("未找到凭证，请设置 --access-key --secret-key 或环境变量 VOLCENGINE_ACCESS_KEY VOLCENGINE_SECRET_KEY")
-    return ak, sk
-
-
-def call_api(action: str, body: dict, ak: str, sk: str) -> dict:
+def call_api(action: str, body: dict) -> dict:
     try:
         import requests
     except ImportError:
         print("Error: requests not installed. Run: pip install requests", file=sys.stderr)
         sys.exit(1)
 
+    api_key, api_base = get_credentials()
+    
+    api_base = api_base.rstrip("/")
+    
+    url = f"{api_base}?Action={action}&Version={VERSION}"
+    
+    headers = {
+        "Content-Type": "application/json",
+        "ServiceName": SERVICE,
+        "Authorization": f"Bearer {api_key}",
+    }
+    
     body_str = json.dumps(body, ensure_ascii=False)
-    headers = sign_request(action, ak, sk, body_str)
-    url = f"https://{HOST}?Action={action}&Version={VERSION}"
-
+    
     response = requests.post(url, headers=headers, data=body_str.encode("utf-8"), timeout=30)
     response.raise_for_status()
     return response.json()
 
 
-def send_sms(args, ak: str, sk: str) -> dict:
+def send_sms(args) -> dict:
     """发送短信 (SendSmsForAgent).
 
     Request:
@@ -209,10 +128,10 @@ def send_sms(args, ak: str, sk: str) -> dict:
     if args.template_param:
         body["TemplateParam"] = args.template_param
 
-    return call_api("SendSmsForAgent", body, ak, sk)
+    return call_api("SendSmsForAgent", body)
 
 
-def list_sms_send_log(args, ak: str, sk: str) -> dict:
+def list_sms_send_log(args) -> dict:
     """查询发送记录 (ListSmsSendLogForAgent).
 
     Request:
@@ -249,10 +168,10 @@ def list_sms_send_log(args, ak: str, sk: str) -> dict:
     if args.message_id:
         body["MessageId"] = args.message_id
 
-    return call_api("ListSmsSendLogForAgent", body, ak, sk)
+    return call_api("ListSmsSendLogForAgent", body)
 
 
-def list_sub_account(args, ak: str, sk: str) -> dict:
+def list_sub_account(args) -> dict:
     """查询消息组列表 (ListSubAccountForAgent).
 
     说明: 只返回审核通过的消息组
@@ -267,10 +186,10 @@ def list_sub_account(args, ak: str, sk: str) -> dict:
     body = {}
     if args.sub_account_name:
         body["SubAccountName"] = args.sub_account_name
-    return call_api("ListSubAccountForAgent", body, ak, sk)
+    return call_api("ListSubAccountForAgent", body)
 
 
-def list_signature(args, ak: str, sk: str) -> dict:
+def list_signature(args) -> dict:
     """查询签名列表 (ListSignatureForAgent).
 
     说明: 返回审核通过的签名
@@ -295,10 +214,10 @@ def list_signature(args, ak: str, sk: str) -> dict:
     if args.sub_accounts:
         body["SubAccounts"] = args.sub_accounts.split(",")
 
-    return call_api("ListSignatureForAgent", body, ak, sk)
+    return call_api("ListSignatureForAgent", body)
 
 
-def list_sms_template(args, ak: str, sk: str) -> dict:
+def list_sms_template(args) -> dict:
     """查询模板列表 (ListSmsTemplateForAgent).
 
     说明: 返回审核通过的模板信息
@@ -326,10 +245,10 @@ def list_sms_template(args, ak: str, sk: str) -> dict:
     if args.signatures:
         body["Signatures"] = args.signatures.split(",")
 
-    return call_api("ListSmsTemplateForAgent", body, ak, sk)
+    return call_api("ListSmsTemplateForAgent", body)
 
 
-def list_total_send_count_stat(args, ak: str, sk: str) -> dict:
+def list_total_send_count_stat(args) -> dict:
     """查询发送统计 (ListTotalSendCountStatForAgent).
 
     Request:
@@ -363,7 +282,7 @@ def list_total_send_count_stat(args, ak: str, sk: str) -> dict:
     if args.template_id:
         body["TemplateId"] = args.template_id
 
-    return call_api("ListTotalSendCountStatForAgent", body, ak, sk)
+    return call_api("ListTotalSendCountStatForAgent", body)
 
 
 def main():
@@ -373,16 +292,6 @@ def main():
         epilog=__doc__
     )
     parser.add_argument("action", help="操作: send_sms, list_sms_send_log, list_sub_account, list_signature, list_sms_template, list_total_send_count_stat")
-    parser.add_argument(
-        "--access-key",
-        required=False,
-        help="Access Key ID（可选，默认读取 VOLCENGINE_ACCESS_KEY）",
-    )
-    parser.add_argument(
-        "--secret-key",
-        required=False,
-        help="Secret Access Key（可选，默认读取 VOLCENGINE_SECRET_KEY）",
-    )
 
     # send_sms 参数
     parser.add_argument("--account", help="账号")
@@ -415,11 +324,6 @@ def main():
     parser.add_argument("--channel-type", help="通道类型")
 
     args = parser.parse_args()
-    try:
-        ak, sk = get_credentials(args)
-    except ValueError as exc:
-        print(f"Error: {exc}", file=sys.stderr)
-        sys.exit(1)
 
     action_map = {
         "send_sms": send_sms,
@@ -436,7 +340,10 @@ def main():
         sys.exit(1)
 
     try:
-        result = action_map[args.action](args, ak, sk)
+        result = action_map[args.action](args)
+    except ValueError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        sys.exit(1)
     except Exception as exc:
         response = getattr(exc, "response", None)
         if response is not None:

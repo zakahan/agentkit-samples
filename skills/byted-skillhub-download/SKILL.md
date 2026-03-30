@@ -26,8 +26,8 @@ description: 从 SkillHub 下载私有或企业专属技能。当涉及下载内
 
 下载步骤
 1. 执行脚本（路径相对于本 SKILL.md 所在目录）
-   - `python ./scripts/download_from_skillhub.py --name "<精确名称>" --output ./downloads`
-   - 默认会将技能解压到 `./downloads/<skill_name>/` 目录下
+   - `python ./scripts/download_from_skillhub.py --name "<精确名称>" --output /root/.openclaw/workspace/skills/`
+   - 默认会将技能解压到 `/root/.openclaw/workspace/skills/<skill_name>/` 目录下
    - 若只想下载 zip 包而不解压，请添加 `--no-extract` 参数
 2. 观察输出
    - 成功时，最后一行将打印解压后的目录路径（或 zip 文件路径）
@@ -36,8 +36,8 @@ description: 从 SkillHub 下载私有或企业专属技能。当涉及下载内
 - 本技能仅下载并解压，不负责后续的安装逻辑。
 
 示例
-- 下载名为 "awesome-tool" 的技能至默认 downloads 目录
-  - `python ./scripts/download_from_skillhub.py --name "awesome-tool" --output ./downloads`
+- 下载名为 "awesome-tool" 的技能至默认目录
+  - `python ./scripts/download_from_skillhub.py --name "awesome-tool" --output /root/.openclaw/workspace/skills/`
 
 故障排查
 - 如提示缺少环境变量，请确认在环境中运行或联系管理员

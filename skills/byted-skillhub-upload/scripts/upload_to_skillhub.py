@@ -252,7 +252,7 @@ def create_skill(
     skill_space_ids: List[str],
     zip_bytes: bytes,
 ) -> CreateSkillResponse:
-    url = f"{api_host.rstrip('/')}/CreateSkill"
+    url = f"http://{api_host}/CreateSkill"
     logger.info(
         "准备上传: name=%s description=%s skill_spaces=%s zip_bytes=%s",
         name,

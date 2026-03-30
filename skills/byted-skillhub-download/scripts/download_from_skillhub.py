@@ -57,7 +57,7 @@ def _sanitize_name(name: str) -> str:
 def list_skills(
     api_host: str, api_key: str, skill_space_id: Optional[str], name: str
 ) -> Dict[str, Any]:
-    url = f"{api_host}/ListSkills"
+    url = f"http://{api_host}/ListSkills"
     filter_obj: Dict[str, Any] = {"Name": name}
     if skill_space_id:
         filter_obj["SkillSpaceId"] = skill_space_id
@@ -144,7 +144,7 @@ def extract_version_info(skill: Dict[str, Any]) -> Tuple[Optional[str], Optional
 def download_skill(
     api_host: str, api_key: str, skill_id: str, version_id: Optional[str]
 ) -> Tuple[bytes, Dict[str, str]]:
-    url = f"{api_host}/DownloadSkill"
+    url = f"http://{api_host}/DownloadSkill"
     payload: Dict[str, Any] = {"SkillId": skill_id, "IsPreview": False}
     if version_id:
         payload["SkillVersionId"] = version_id
@@ -180,7 +180,7 @@ def main():
     parser = argparse.ArgumentParser(prog="download_from_skillhub")
     parser.add_argument("--name", required=True, help="Skill 名称，精确匹配")
     parser.add_argument(
-        "--output", default="downloads", help="输出路径。可为目录或文件名"
+        "--output", default="/root/.openclaw/workspace/skills/", help="输出路径。可为目录或文件名"
     )
     parser.add_argument(
         "--no-extract", action="store_true", help="只下载 zip 包，不自动解压"

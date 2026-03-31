@@ -3,6 +3,7 @@ name: byted-seedream-image-generate
 description: Generate high-quality images from text prompts using Volcano Engine Seedream models. Supports multiple artistic styles and aspect ratios. Use this skill when users want to create images from text descriptions, generate artwork in various styles, create visual content for creative projects, or need AI-powered image generation capabilities.
 license: Apache-2.0
 tags: ["image-generation", "seedream", "volcengine", "ai-art", "text-to-image", "image-to-image"]
+version: 1.0.0
 ---
 
 # byted-seedream-image-generate
@@ -208,6 +209,29 @@ asyncio.run(main())
 
 
 ## Final Return Info
+
+### For OpenClaw
+1. **First, save/download the generated image to an allowed directory**:
+   - Recommended: `~/.openclaw/workspace/`
+
+2. **Use the `message tool` to send the image** with these parameters:
+   ```json
+   {
+     "action": "send",
+     "message": "Optional text description",
+     "media": "/root/.openclaw/workspace/generated-image.jpg"
+   }
+   ```
+   - The tool will automatically: read the local file, upload to the channel server as a web URL, and send as an image message
+
+3. **Verify success**: Check that the tool returns `{"ok": true}` to confirm the image was sent successfully
+
+4. **Normal Text** not message tool: After generation, show list of images with Markdown format, for example：
+      ![generated-image-1](https://example.com/image1.png)
+    **Very important**:
+    The image URL must be an **original online resource link** starting with `https://`, **not** a local image address you have downloaded.
+
+### For Normal
 You should return three types of information:
 1. File format, return the image file (if you have some other methods to send the image file) and the local path of the image, for example:
 local_path: /root/.openclaw/workspace/skills/image-generate/xxx.png

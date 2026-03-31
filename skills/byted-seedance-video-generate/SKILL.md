@@ -1,6 +1,7 @@
 ---
 name: byted-seedance-video-generate
 description: Generate videos using Seedance models. Invoke when user wants to create videos from text prompts, images, or reference materials.
+version: 1.0.0
 ---
 
 # Video Generate Skill
@@ -97,12 +98,34 @@ The URL must return in two ways:
 
 ## Final Return Info
 
-You must return three types of information:
+### For OpenClaw
+1. **First, save/download the generated video to an allowed directory**:
+   - Recommended: `~/.openclaw/workspace/`
 
-1. File format, return both file (if you have some other methods to send the video file) and local path, for example:
-/root/.openclaw/workspace/skills/video-generate/xxx.mp4
+2. **Use the `message tool` to send the video** with these parameters:
+   ```json
+   {
+     "action": "send",
+     "message": "Optional text description",
+     "media": "/root/.openclaw/workspace/generated-video.mp4"
+   }
+   ```
+   - The tool will automatically: read the local file, upload to the channel server as a web URL, and send as a video message
 
-2. After generation,  present list of video URL in Markdown format, for example:
+3. **Verify success**: Check that the tool returns `{"ok": true}` to confirm the video was sent successfully
+
+4. **Normal Text** not message tool: After generation, show list of videos with Markdown format, for example：
+   ```
+   <video src="https://example.com/video1.mp4" width="640" controls>video-1</video>
+   ```
+   **Very important**:
+   The video URL must be an **original online resource link** starting with `https://`, **not** a local video address you have downloaded.
+
+### For Normal
+You should return three types of information:
+1. File format, return the video file (if you have some other methods to send the video file) and the local path of the video, for example:
+local_path: /root/.openclaw/workspace/skills/video-generate/xxx.mp4
+2. After generation, show list of videos with Markdown format, for example:
 ```
 <video src="https://example.com/video1.mp4" width="640" controls>video-1</video>
 <video src="https://example.com/video2.mp4" width="640" controls>video-2</video>

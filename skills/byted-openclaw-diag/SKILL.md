@@ -14,6 +14,7 @@ metadata:
     tools:
       - exec
       - read
+version: 1.0.0
 ---
 
 # OpenClaw 诊断工具

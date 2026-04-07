@@ -264,7 +264,7 @@ def create_client(
     """创建 ToolboxClient，自动从环境变量 / .env 文件加载凭证。
 
     Args:
-        region: 区域，默认从 VOLCENGINE_REGION 读取
+        region: 区域（RegionId），默认从 VOLCENGINE_REGION 读取
         ak: Access Key，默认从 VOLCENGINE_ACCESS_KEY 读取
         sk: Secret Key，默认从 VOLCENGINE_SECRET_KEY 读取
         instance_id: 默认实例 ID，默认从 VOLCENGINE_INSTANCE_ID 读取
@@ -841,7 +841,6 @@ def _pg_get_table_info(
 def list_instances(
     client: ToolboxClient,
     ds_type: Optional[Literal["MySQL", "Postgres", "Mongo", "Redis", "MSSQL", "VeDBMySQL", "External"]] = None,
-    region_id: Optional[str] = None,
     instance_name: Optional[str] = None,
     instance_id: Optional[str] = None,
     instance_status: Optional[str] = None,
@@ -861,8 +860,6 @@ def list_instances(
         }
         if ds_type:
             args["DSType"] = ds_type
-        if region_id:
-            args["RegionId"] = region_id
         if instance_name:
             args["InstanceName"] = instance_name
         if instance_id:
@@ -899,10 +896,13 @@ def list_instances(
                         "storage": spec.get("storage", 0),
                     })
                 normalized.append(item)
+            total = result.get("total", 0)
             return _ok({
-                "total": result.get("total", 0),
+                "total": total,
+                "page_number": page_number,
+                "page_size": page_size,
                 "instances": normalized,
-            }, f"共 {len(normalized)} 个实例", context=ctx)
+            }, f"共 {total} 个实例，当前第 {page_number} 页（{len(normalized)} 条）", context=ctx)
 
         return _to_result(result, context=ctx)
     except Exception as e:
@@ -1413,21 +1413,19 @@ def describe_full_sql_detail(
 
 def describe_health_summary(
     client: ToolboxClient,
-    start_time: int,
     end_time: int,
     instance_id: Optional[str] = None,
     node_ids: Optional[List[str]] = None,
     diag_type: str = "ALL",
 ) -> dict[str, Any]:
-    """查询实例健康概览（CPU、内存、磁盘、连接数、慢查询等综合指标）。
+    """查询最近一小时的实例健康概览（CPU、内存、连接数、QPS/TPS 等）。
 
-    start_time/end_time 为 Unix 时间戳（秒）。时间范围不要超过 1 小时，
-    打点数量固定，范围越大 interval 越大，数据越不准。
+    end_time 为 Unix 时间戳（秒），返回截止到 end_time 的最近一小时指标。
     diag_type 默认 ALL。未传 node_ids 时自动查询 Primary 节点。
     """
     try:
-        if not start_time or not end_time:
-            return _error("start_time 和 end_time 不能为空")
+        if not end_time:
+            return _error("end_time 不能为空")
         prep = _prepare(client, instance_id=instance_id)
         if not prep["ok"]:
             return prep["error"]
@@ -1450,7 +1448,6 @@ def describe_health_summary(
                         _node_ids = [n["node_id"]]
                         break
                 if not _node_ids:
-                    # 无 Primary 则取第一个节点
                     all_nodes = nodes.get("nodes_info", [])
                     if all_nodes:
                         _node_ids = [all_nodes[0]["node_id"]]
@@ -1461,7 +1458,7 @@ def describe_health_summary(
             "InstanceId": p["instance_id"],
             "InstanceType": p["instance_type"],
             "RegionId": p["region"],
-            "StartTime": start_time,
+            "StartTime": end_time - 300,
             "EndTime": end_time,
             "DiagType": diag_type,
         }
@@ -1474,8 +1471,14 @@ def describe_health_summary(
             stats_raw = result.get("resource_stats") or []
             metrics = []
             for s in stats_raw:
+                if s.get("name") == "慢查询数量":
+                    continue
+                err_msg = s.get("err_msg") or ""
+                if err_msg:
+                    continue
                 metrics.append({
                     "name": s.get("name", ""),
+                    "node_id": s.get("node_id", ""),
                     "avg": s.get("avg"),
                     "max": s.get("max"),
                     "min": s.get("min"),
@@ -1483,6 +1486,25 @@ def describe_health_summary(
                     "mom": s.get("mo_m"),
                     "yoy": s.get("yo_y"),
                 })
+
+            # 从 describe_slow_log_time_series_stats 获取准确的慢查询总数
+            try:
+                ts_result = client.dbw.describe_slow_log_time_series_stats({
+                    "instance_id": p["instance_id"],
+                    "DSType": p["instance_type"],
+                    "start_time": end_time - 3600,
+                    "end_time": end_time,
+                    "interval": 3600,
+                })
+                if isinstance(ts_result, dict):
+                    total_slow = sum(
+                        pt.get("count", 0)
+                        for pt in ts_result.get("slow_log_count_stats", [])
+                    )
+                    metrics.append({"name": "慢查询数量", "total": total_slow})
+            except Exception:
+                pass
+
             return _ok({
                 "instance_id": p["instance_id"],
                 "node_ids": _node_ids,

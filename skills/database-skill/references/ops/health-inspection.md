@@ -24,18 +24,17 @@
 import time
 now = int(time.time())
 
-# 时间范围不要超过 1 小时，范围越大打点 interval 越大，数据越不准
 describe_health_summary(client,
-    start_time=now - 3600,
     end_time=now,
     instance_id="xxx"
 )
 ```
 
-返回 9 项核心指标的 avg/max/min/环比(mom)/同比(yoy)：
-- CPU 使用率、内存使用率、连接数使用率
+返回最近一小时 9 项核心指标：
+- CPU 使用率、内存使用率、连接数使用率（avg/max/min/环比/同比）
 - QPS、TPS、InnoDB BufferPool 命中率（MySQL/VeDB）
-- 当前打开连接数、活跃会话数、慢查询数量
+- 当前打开连接数、活跃会话数
+- 慢查询数量（total）
 
 **Redis 替代**：`execute_sql(client, sql="INFO", instance_id="redis-xxx", database="0")` — 从输出提取 `used_memory_human`、`connected_clients`、`blocked_clients`、`instantaneous_ops_per_sec`。
 
@@ -49,7 +48,7 @@ describe_health_summary(client,
 | 内存使用率 | < 70% | 70-85% | > 85% |
 | 连接数使用率 | < 60% | 60-80% | > 80% |
 | BufferPool 命中率 | > 99% | 95-99% | < 95% |
-| 慢查询数量 | 0 | 环比上升 | 环比大幅上升 |
+| 慢查询数量 | 0 | > 0 | 持续增长 |
 | 环比/同比 | 波动 < 20% | 波动 20-50% | 波动 > 50% |
 
 ### 第 2 项：慢查询

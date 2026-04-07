@@ -21,10 +21,8 @@
 import time
 now = int(time.time())
 
-# 获取健康概览（含内存使用率、连接数使用率等，可间接了解整体负载）
-# 时间范围不超过 1 小时
+# 获取最近一小时健康概览（含内存使用率、连接数使用率等，可间接了解整体负载）
 describe_health_summary(client,
-    start_time=now - 3600,
     end_time=now,
     instance_id="pg-xxx",
 )

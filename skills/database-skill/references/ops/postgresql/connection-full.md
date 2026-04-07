@@ -23,10 +23,8 @@
 import time
 now = int(time.time())
 
-# 获取健康概览（含活跃会话数、当前打开连接数等指标）
-# 时间范围不超过 1 小时
+# 获取最近一小时健康概览（含活跃会话数、当前打开连接数等指标）
 describe_health_summary(client,
-    start_time=now - 3600,
     end_time=now,
     instance_id="pg-xxx",
 )

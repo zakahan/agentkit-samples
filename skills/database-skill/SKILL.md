@@ -51,6 +51,21 @@ update_env(VOLCENGINE_ACCESS_KEY="xxx", VOLCENGINE_SECRET_KEY="yyy")
 
 仅当 `check_env()` 返回 `credentials_ready: False` 时，才**询问用户**提供缺失值。
 
+### 🌏 支持的地域
+
+用户提到地域时，根据下表映射为 RegionId 传给 `create_client(region=...)`：
+
+| 地域 | RegionId |
+|------|----------|
+| 华东2（上海）| `cn-shanghai` |
+| 华北2（北京/廊坊）| `cn-beijing` |
+| 华南1（广州）| `cn-guangzhou` |
+| 中国香港 | `cn-hongkong` |
+| 亚太东南（柔佛）| `ap-southeast-1` |
+| 亚太东南（雅加达）| `ap-southeast-3` |
+
+用户未指定地域时不传 `region`，自动从环境变量 `VOLCENGINE_REGION` 读取。
+
 ---
 
 ## 🚦 场景路由 (Scenario Router)
@@ -87,11 +102,12 @@ print(json.dumps(result, indent=2, ensure_ascii=False))
 
 ## 工作流
 
-1. 从用户问题中提取 `instance_id`、`database` 等参数
+1. 从用户问题中提取 `instance_id`、`database`、`region`（地域）等参数
    - 用户给出的值像 instance_id（如 `mysql-xxx`、`pg-xxx`、`vedbm-xxx`）→ 直接用 `instance_id=` 传给后续函数，**无需先搜索**
    - 用户给出的是实例名称 → 用 `list_instances(instance_name=名称)` 按名称搜索
    - 不确定是 ID 还是名称 → 用 `list_instances(query=关键词)` 搜索
-2. `create_client()` 创建客户端（自动从环境变量加载凭证）
+   - 用户提到了地域（如"上海的实例"、"广州区域"）→ 传 `region` 给 `create_client()`
+2. `create_client(region=...)` 创建客户端（自动从环境变量加载凭证，支持中文地域名）
 3. 调用具体函数，传入 `client` + 业务参数
 4. **检查返回值的 `success` 字段**，利用 `context` 中已解析的参数透传给后续调用
 
@@ -137,7 +153,7 @@ info = get_table_info(client, table="users", instance_id="xxx", database="mydb")
 
 | 函数 | 说明 | 支持范围 |
 | :--- | :--- | :--- |
-| `list_instances(client, instance_id=, query=, ds_type=, ...)` | 查询实例列表（须传过滤项）。`ds_type` 枚举：MySQL / Postgres / Mongo / Redis / MSSQL / VeDBMySQL / External | 全部 |
+| `list_instances(client, instance_id=, query=, ds_type=, ...)` | 查询实例列表（须传过滤项）。`ds_type`：MySQL / Postgres / Mongo / Redis / MSSQL / VeDBMySQL / External。查其他地域需用对应 region 的 client | 全部 |
 | `list_databases(client, instance_id=)` | 列出数据库 | MySQL / VeDB / PG / SQLServer / Mongo / External |
 | `list_tables(client, instance_id=, database=, fetch_all=True)` | 列出表（`fetch_all=True` 获取全部） | MySQL / VeDB / PG / SQLServer / Mongo / External |
 | `get_table_info(client, table, instance_id=, database=)` | 获取表结构 | MySQL / VeDB / PG / SQLServer / External |
@@ -176,7 +192,7 @@ info = get_table_info(client, table="users", instance_id="xxx", database="mydb")
 | `describe_lock_wait` | 锁等待分析 | MySQL / VeDB / PG |
 | `describe_err_logs` | 错误日志 | MySQL / VeDB / PG |
 | `describe_table_space` | 表空间详情 | MySQL / VeDB / PG |
-| `describe_health_summary` | 健康概览（CPU/内存/连接/QPS/TPS/BufferPool/慢查询数/会话数，含环比同比）。⚠️ 时间范围不超过 1 小时，范围越大数据越不准 | MySQL / VeDB / PG |
+| `describe_health_summary` | 最近一小时健康概览（CPU/内存/连接/QPS/TPS/BufferPool/慢查询数/会话数，含环比同比），只需传 `end_time` | MySQL / VeDB / PG |
 | `list_connections` | 实时活跃会话列表 | MySQL / VeDB / PG / Mongo |
 | `list_history_connections` | 历史连接快照（需开启会话快照采集） | MySQL / VeDB / PG / Mongo |
 | `describe_instance_nodes` | 实例节点列表 | MySQL / VeDB / PG / SQLServer / Mongo |

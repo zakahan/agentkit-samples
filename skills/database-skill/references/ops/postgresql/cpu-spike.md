@@ -21,10 +21,8 @@ CPU 打满是指 PostgreSQL 实例的 CPU 使用率持续接近或达到 100%，
 import time
 now = int(time.time())
 
-# 获取健康概览（CPU/内存/连接数/QPS/TPS 等，含环比同比）
-# 时间范围不超过 1 小时
+# 获取最近一小时健康概览（CPU/内存/连接数/QPS/TPS 等，含环比同比）
 describe_health_summary(client,
-    start_time=now - 3600,
     end_time=now,
     instance_id="pg-xxx",
 )

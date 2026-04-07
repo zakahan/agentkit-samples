@@ -39,7 +39,6 @@ list_instances(client,
     query=None,           # str: 模糊搜索（不确定是 ID 还是名称时用这个）
     instance_name=None,   # str: 按实例名称搜索
     ds_type=None,         # str: MySQL | Postgres | Mongo | Redis | MSSQL | VeDBMySQL | External
-    region_id=None,       # str: 地域过滤
     instance_status=None, # str: 状态过滤
     page_number=1,        # int
     page_size=10,         # int

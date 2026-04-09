@@ -23,6 +23,7 @@ import asyncio
 import json
 import os
 import sys
+import re
 from typing import Dict, List, Tuple
 
 import httpx
@@ -38,7 +39,8 @@ API_BASE = (
     or os.getenv("MODEL_IMAGE_API_BASE")
     or "https://ark.cn-beijing.volces.com/api/v3"
 ).rstrip("/")
-API_BASE = API_BASE.replace("/api/coding/v3", "/api/v3")
+API_BASE = re.sub(r"/api/coding/(?:lite/|pro/)?v3$", "/api/v3", API_BASE)
+
 
 # Model names for each version
 MODELS = {

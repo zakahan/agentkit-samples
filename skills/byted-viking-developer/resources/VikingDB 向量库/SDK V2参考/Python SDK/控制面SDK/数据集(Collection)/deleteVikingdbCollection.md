@@ -8,7 +8,7 @@ Python SDK 通过 `VIKINGDBApi().delete_vikingdb_collection(request)` 调用，`
 # **请求参数**
 | **参数** | **类型** | **是否必选** | **参数说明** |
 | --- | --- | --- | --- |
-| project_name | str | 否 | 项目名称，对应 API 字段 `ProjectName`，默认 default。 |
+| project_name | str | 否 | 项目名称，对应 API 字段 `ProjectName`，默认值为 default。 |
 | collection_name | str | 2选1 | 待删除集合名称，对应 API 字段 `CollectionName`。 <br>  <br> * 以字母开头，仅可包含字母、数字、下划线，长度 1-128。 <br> * 服务端允许与 `resource_id` 二选一，但当前 Python SDK 强制要求填写 `collection_name`。 |
 | resource_id | str |  | 集合资源 ID，对应 API 字段 `ResourceId`。可与 `collection_name` 组合使用，帮助在控制面追踪。 |
 # 返回参数
@@ -40,6 +40,5 @@ request = vdb.DeleteVikingdbCollectionRequest(
 response = client.delete_vikingdb_collection(request)
 print(response.message or "delete request finished")
 ```
-
 
 

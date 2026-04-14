@@ -4,7 +4,7 @@ search_knowledge 用于对知识库进行检索和前后处理，当前会默认
 | **参数** | **子参数** | **类型** | **是否必选** | **默认值** | **参数说明** |
 | --- | --- | --- | --- | --- | --- |
 | CollectionName | -- | string | 否 | -- | **知识库名称** |
-| ProjectName | -- | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则在default项目下创建。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
+| ProjectName | -- | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则默认在 default 项目下检索。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
 | ResourceID | -- | string | 否 | -- | **知识库唯一 id** <br> 可选择直接传 ResourceID，或同时传 CollectionName 和 ProjectName 作为知识库的唯一标识 |
 | Query | -- | string | 是 | -- | **检索文本** <br>  <br> * 最大可输入长度为 8000，query 长度 > 8000 时，接口报错 <br> * 所选 embedding 模型输入最大长度 < query 长度 < 8000 时，query 按所选模型自动截断 <br> * query 长度 < 所选 embedding 模型输入最大长度时，正常检索返回目标切片 |
 | ImageQuery | -- | string | 否 | -- | **检索图片** <br> 支持图片 URL 或 Base64 编码，详细要求见[图片像素说明](https://www.volcengine.com/docs/82379/1409291?lang=zh#7a10f532)和[图片文件格式](https://www.volcengine.com/docs/82379/1409291?lang=zh#5c068efa) <br>  <br> * 图片 URL 传入：适用于图片文件已存在公网可访问 URL 的场景，单张图片小于 10 MB <br> * Base64 编码传入：适用于图片文件较小的场景，支持 **JPEG、PNG、WebP、BMP** 四种格式的 Base64 编码，单张图片小于 3 MB，请求体不能超过 4 MB |
@@ -16,7 +16,7 @@ search_knowledge 用于对知识库进行检索和前后处理，当前会默认
 |  | need_instruction | bool | 否 | False | **是否拼接 instruction 进行检索** |
 |  | return_token_usage | bool | 否 | False | **是否返回 search 流程中各阶段的 token 使用量** |
 |  | rewrite | bool | 否 | False | **是否对 query 进行改写** <br> 根据 messages 字段传入的历史对话信息进行改写，最多 3 轮 <br> **注：​**只有在messages字段长度大于2且不为空时，设置参数值为True，才能返回有效的rewrite_query； <br> ```json <br> "messages"：[ <br>      {"role": "user", "content": "prompt 1"}, <br>      {"role": "assistant", "content": "prompt2"}, <br>      {"role": "user", "content": "prompt 3"}, <br>  ] <br> ``` <br>  |
-|  | messages | json | 是 | -- | **多轮对话信息** <br> 仅**开启改写**时需要上传，可根据历史对话内容进行问题改写，注意上传对话轮数需 >= 1 <br> 发出消息的对话参与者角色，可选值包括： <br>  <br> * user：User Message 用户消息 <br> * assistant：Assistant Message 对话助手消息 <br>  <br> ```json <br> [ <br>      {"role": "user", "content": "知识库支持哪些文档格式？"}, <br>      {"role": "assistant", "content": "知识库支持结构化和非结构化文档，其中结构化文档支持 excel、csv、jsonl 等常见格式，非结构化文档支持 pdf、docx、ppt 等常见格式。"}, <br>      {"role": "user", "content": "那大小呢？"}, <br>  ] <br> ``` <br>  |
+|  | messages | json | 否 | -- | **多轮对话信息** <br> 仅**开启改写**时需要上传，可根据历史对话内容进行问题改写，注意上传对话轮数需 >= 1 <br> 发出消息的对话参与者角色，可选值包括： <br>  <br> * user：User Message 用户消息 <br> * assistant：Assistant Message 对话助手消息 <br>  <br> ```json <br> [ <br>      {"role": "user", "content": "知识库支持哪些文档格式？"}, <br>      {"role": "assistant", "content": "知识库支持结构化和非结构化文档，其中结构化文档支持 excel、csv、jsonl 等常见格式，非结构化文档支持 pdf、docx、ppt 等常见格式。"}, <br>      {"role": "user", "content": "那大小呢？"}, <br>  ] <br> ``` <br>  |
 | PostProcessing |  | map[string]interface{} |  |  | **检索后处理** |
 |  | rerank_switch | bool | 否 | False | **自动对结果做 rerank** <br> 打开后，会自动请求 rerank 模型排序 |
 |  | retrieve_count | int | 否 | 25 | **进入重排的切片数量，默认为 25** <br> 只有在 rerank_switch 为 True 时生效。retrieve_count 需要大于等于 limit，否则会抛出错误 |
@@ -115,8 +115,8 @@ search_knowledge 用于对知识库进行检索和前后处理，当前会默认
 | 1000003 | 400 | invalid request：%s | 非法参数 |
 | 1000005 | 400 | collection not exist | collection 不存在 |
 # 请求示例
-首次使用知识库 SDK ，可参考 [使用说明](unknown)
-本示例演示了知识库 Go SDK 中 SearchKnowledge 的基础使用方法，通过指定数据集名称和查询语句实现知识库检索，使用前需配置 AK/SK 鉴权参数。
+首次使用知识库 SDK ，可参考 [使用说明](https://www.volcengine.com/docs/84313/2277191?lang=zh)
+本示例演示了知识库 Go SDK 中 SearchKnowledge 的基础使用方法，通过指定数据集名称和查询语句实现知识库检索，使用前需配置 API Key 鉴权参数。
 ```Go
 package main
 
@@ -133,14 +133,13 @@ import (
 
 func main() {
     var (
-       accessKey = os.Getenv("VIKINGDB_AK")
-       secretKey = os.Getenv("VIKINGDB_SK")
+       apiKey    = os.Getenv("VIKINGDB_API_KEY")
        endpoint  = "https://api-knowledgebase.mlp.cn-beijing.volces.com"
        region    = "cn-beijing"
     )
 
     client, err := knowledge.New(
-       knowledge.AuthIAM(accessKey, secretKey),
+       knowledge.AuthAPIKey(apiKey),
        knowledge.WithEndpoint(endpoint),
        knowledge.WithRegion(region),
        knowledge.WithTimeout(time.Second*30),

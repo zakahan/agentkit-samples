@@ -1,6 +1,6 @@
 # 概述
-按特定条件批量导出Collection中的数据
-使用前请先授权 VikingDB 跨服务访问 TOS [去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=ml_platform)
+按特定条件批量导出 Collection 中的数据
+使用前请先授权 VikingDB 跨服务访问 TOS：[去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=ml_platform)
 
 # 方法定义
 ```Java
@@ -15,10 +15,10 @@ public CreateVikingdbTaskResponse createVikingdbTask(CreateVikingdbTaskRequest b
 | ResourceId |  | String |  | 数据集资源ID。请求必须指定ResourceId和CollectionName其中之一。 |
 | TaskType |  | String | 是 | data_export |
 | TaskConfig |  | TaskConfigForCreateVikingdbTaskInput | 是 | 任务具体配置 |
-|  | FileType | String | 是 | 文件类型, json 或者 parquet，必填 |
-|  | FilterConds | List<Object> | 否 | 过滤条件。使用参考https://www.volcengine.com/docs/84313/1791133 <br>  <br> * 如果不填入FilterConds，则无关ExportAll，一定导出全部数据。 <br> * 如果填入FilterConds： <br>    * 不写Exportall，或Exportall=false，则默认导出满足条件的数据。 <br>    * 写exportall=true，则强制导出全部数据，此时FilterConds不生效。 |
-|  | TosPath | string | 是 | TOS 路径，格式 ：{桶名}/{路径}，注意不是域名。必填 |
-|  | ExportAll | Boolean | 否 | 是否导出全部数据，此时filter不生效。默认为false |
+|  | FileType | String | 是 | 文件类型：json 或 parquet，必填 |
+|  | FilterConds | List[Object] | 否 | 过滤条件。使用参考：https://www.volcengine.com/docs/84313/1791133 <br>  <br> * 如果不填入FilterConds，则无关ExportAll，一定导出全部数据。 <br> * 如果填入FilterConds： <br>    * 不写 ExportAll，或 ExportAll=false，则默认导出满足条件的数据。 <br>    * 写 ExportAll=true，则强制导出全部数据，此时 FilterConds 不生效。 |
+|  | TosPath | String | 是 | TOS 路径，格式：{桶名}/{路径}，注意不是域名。必填 |
+|  | ExportAll | Boolean | 否 | 是否导出全部数据，此时 FilterConds 不生效，默认为 false |
 ## 返回参数
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
@@ -41,7 +41,7 @@ public class CreateVikingdbTaskDataExport {
     public static void main(String[] args) {
         String ak = System.getenv("AK"); // ak
         String sk = System.getenv("SK"); // sk
-        String endpoint = "vikingdb.cn-beijing.volcengineapi.com"; // 填写向量库控制面v2的域名  https://www.volcengine.com/docs/84313/1792715
+        String endpoint = "vikingdb.cn-beijing.volcengineapi.com"; // 填写向量库控制面 V2 的域名：https://www.volcengine.com/docs/84313/1792715
         String region = "cn-beijing"; // 服务区域
 
 
@@ -89,7 +89,6 @@ public class CreateVikingdbTaskDataExport {
 }
 ```
 
-
 ## 后续处理
 ### 1、从 TOS 下载文件
 ```Python
@@ -120,7 +119,7 @@ client = tos.TosClientV2(AK, SK, TOS_ENDPOINT, REGION)
 download(client, BUCKET_NAME, TOS_DIR, "./")
 ```
 
-### 2、解析 parquet 类型数据
+### 2、解析 Parquet 类型数据
 ```Python
 import pyarrow.parquet as pq
 def process_parquet(file_path):
@@ -141,4 +140,5 @@ def process_parquet(file_path):
 
 process_parquet("1.parquet")
 ```
+
 

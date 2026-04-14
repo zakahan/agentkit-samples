@@ -10,7 +10,7 @@ Python SDK 通过 `VIKINGDBApi().create_vikingdb_task(request)` 调用，`reques
 | resource_id |  | str |  | Collection 资源 ID，对应 API 字段 `ResourceId`。 |
 | task_type |  | str | 是 | 任务类型，对应 API 字段 `TaskType`，固定为 `filter_update`。 |
 | task_config |  | TaskConfigForCreateVikingdbTaskInput | 是 | 更新任务配置，对应 API 字段 `TaskConfig`。 |
-|  | filter_conds | list[object] | 是 | 过滤条件。使用参考 `https://www.volcengine.com/docs/84313/1419289`，对应 API 字段 `FilterConds`。 |
+|  | filter_conds | list[object] | 是 | 过滤条件。使用方式参考 `https://www.volcengine.com/docs/84313/1419289`，对应 API 字段 `FilterConds`。 |
 |  | update_fields | object | 是 | 需要更新的字段值，必须是标量字段，不支持 vector、sparse_vector、text 类型字段的更新。对应 API 字段 `UpdateFields`。 |
 # 返回参数
 | **参数** | **类型** | **描述** |
@@ -50,6 +50,7 @@ task_cfg = vdb.TaskConfigForCreateVikingdbTaskInput(
 
 request = vdb.CreateVikingdbTaskRequest(
     project_name="default",
+    collection_name="sdk_demo_collection",
     task_type="filter_update",
     task_config=task_cfg,
 )
@@ -57,6 +58,5 @@ response = client.create_vikingdb_task(request)
 print("task id:", response.task_id)
 print("message:", response.message)
 ```
-
 
 

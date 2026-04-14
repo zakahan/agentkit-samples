@@ -1,5 +1,5 @@
 # 概述
-add_point 用于新增知识库下文档的一个切片
+add_point 用于新增知识库中文档的一个切片。
 # **请求参数**
 | **参数** | **类型** | **必选** | **默认值** | **备注** |
 | --- | --- | --- | --- | --- |
@@ -29,25 +29,24 @@ add_point 用于新增知识库下文档的一个切片
 | chunk_id | Optional[int] | 切片在文档下的 id，文档下唯一 |
 | point_id | Optional[str] | 切片 id，知识库下唯一 |
 # 请求示例
-首次使用知识库 SDK ，可参考 [使用说明](unknown)
-本示例演示了知识库 Python SDK 中 AddPoint 函数的基础使用方法，使用前需配置 AK/SK 鉴权参数。
+首次使用知识库 SDK，可参考 [使用说明](https://www.volcengine.com/docs/84313/2277191?lang=zh)
+本示例演示了知识库 Python SDK 中 AddPoint 函数的基础使用方法，使用前需配置 API Key 鉴权参数。
 ```Python
 import os
 
 from vikingdb.knowledge import VikingKnowledge
-from vikingdb.auth import IAM
+from vikingdb.auth import APIKey
 from vikingdb.knowledge.models.point import AddPointRequest
 
 def main():
-    access_key = os.getenv("VIKINGDB_AK")
-    secret_key = os.getenv("VIKINGDB_SK")
+    api_key = os.getenv("VIKINGDB_API_KEY") or ""
     endpoint = "api-knowledgebase.mlp.cn-beijing.volces.com"
     region = "cn-beijing"
     
     client = VikingKnowledge(
         host=endpoint,
         region=region,
-        auth=IAM(ak=access_key, sk=secret_key),
+        auth=APIKey(api_key=api_key),
         scheme="https"
     )
     

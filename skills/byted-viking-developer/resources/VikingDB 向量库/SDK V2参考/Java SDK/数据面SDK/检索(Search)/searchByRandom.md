@@ -1,6 +1,5 @@
 # 概述
 随机检索是一种在未指定查询内容的情况下，从数据集中随机返回若干条记录的检索方式。随机检索同样支持过滤和对检索结果的后处理，可用于对比召回效果、数据过滤等场景。
-
 # 方法定义
 ```Java
     public DataApiResponse<SearchResult> searchByRandom(SearchByRandomRequest request)
@@ -10,32 +9,30 @@
 # **请求参数**
 | **参数** | **类型** | **是否必选** | **参数说明** |
 | --- | --- | --- | --- |
-| filter | Map<String, Object> | 否 | 过滤条件，详见**标量过滤** <br>  <br> * 默认为空，不做过滤。 <br> * 过滤条件包含 must、must_not、range、range_out四类查询算子，包含 and 和 or 两种对查询算子的组合。 |
-| outputFields | List<String> | 否 | 要返回的标量字段列表. <br>  <br> 1. 用户不传 output_fields 时, 返回所有标量字段 <br> 2. 用户传一个空列表不返回标量字段 <br> 3. output_fields格式错误或者过滤字段不是 collection 里的字段时, 接口返回错误 |
+| filter | Map[String, Object] | 否 | 过滤条件，详见**标量过滤** <br>  <br> * 默认为空，不做过滤。 <br> * 过滤条件包含 must、must_not、range、range_out 四类查询算子，包含 AND 和 OR 两种对查询算子的组合。 |
+| outputFields | List[String] | 否 | 要返回的标量字段列表。 <br>  <br> 1. 用户不传 outputFields 时，返回所有标量字段 <br> 2. 用户传一个空列表时，不返回标量字段 <br> 3. outputFields 格式错误或者过滤字段不是 collection 里的字段时，接口返回错误 |
 | limit | Integer | 否 | 检索结果数量，最大5000个。 |
-| offset | Integer | 否 | 偏移量。仅分页场景下使用，不建议设置过大值，否则有深分页影响。默认值为0。设置值至少为0，语义和mysql的offset相同。 |
+| offset | Integer | 否 | 偏移量。仅分页场景下使用，不建议设置过大值，否则有深分页影响。默认值为0。设置值至少为0，语义和 MySQL 的 offset 相同。 |
 | advance | SearchAdvance | 否 | 高级参数，不常用 |
-
 # 返回参数
 | **属性** | 类型 | **说明** |
 | --- | --- | --- |
-| data | List<SearchItem> | 见下 |
+| data | List[SearchItem] | 见下 |
 | filterMatchedCount | Integer | 筛选匹配数量 |
 | totalReturnCount | Integer | 返回数量 |
 | realTextQuery | String |  |
-| tokenUsage | Object | 使用token |
+| tokenUsage | Object | Token 使用量 |
 
-* List<SearchItem>
+* List[SearchItem]
 
 | **属性** | 类型 | **说明** |
 | --- | --- | --- |
-| id | Object  | 主键 id。 |
-| fields | Map<String, Object>  | 请求返回中的 fields 字段 |
+| id | Object | 主键 id。 |
+| fields | Map[String, Object] | 请求返回中的 fields 字段 |
 | score | Float | 相似度 |
-| annScore | Float | ann得分 |
+| annScore | Float | ANN 得分 |
 # 示例
 ## 请求参数
-
 ```Java
 package org.example.newsubproduct.data.search;
 
@@ -103,4 +100,4 @@ public class SearchByRandom {
 
 ```
 
-## 
+

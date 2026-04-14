@@ -1,5 +1,5 @@
 # 概述
-获取多个task的信息，最多一次性展示20条
+获取多个 Task 的信息，最多一次展示 20 条。
 # 方法定义
 ```Java
 public ListVikingdbTaskResponse listVikingdbTask(ListVikingdbTaskRequest body) throws ApiException
@@ -10,7 +10,7 @@ public ListVikingdbTaskResponse listVikingdbTask(ListVikingdbTaskRequest body) t
 | --- | --- | --- | --- |
 | projectName | String | 否 | 项目名称 |
 | collectionName | String | 2选1 | 数据集名称 |
-| resourceId | String |  | 数据集资源ID。请求必须指定ResourceId和CollectionName其中之一。 |
+| resourceId | String |  | 数据集资源 ID。请求必须指定 resourceId 和 collectionName 其中之一。 |
 | taskStatus | String | 是 | 任务状态，见下 |
 | taskType | String | 是 | 任务类型，见下 |
 | pageNumber | Integer | 否 | 翻页页码。起始为1。 |
@@ -18,29 +18,29 @@ public ListVikingdbTaskResponse listVikingdbTask(ListVikingdbTaskRequest body) t
 # 返回参数
 | 字段 | 类型 | 子字段说明 |
 | --- | --- | --- |
-| tasks <br>  | List<TaskForListVikingdbTaskOutput> | 任务ID |
+| tasks | List[TaskForListVikingdbTaskOutput] | 任务列表 |
 | pageSize | Integer |  |
 | pageNumber | Integer |  |
 | totalCount | Integer |  |
 
-* List<TaskForListVikingdbTaskOutput>
+* List[TaskForListVikingdbTaskOutput]
 
 | **属性** |  | **类型** | **说明** |
 | --- | --- | --- | --- |
 | taskId |  | string | 任务ID |
-| taskConfig |  | TaskConfigForListVikingdbTaskOutput |  |
-|  | collectionName  | String |  |
-|  | exportAll  | Boolean |  |
+| taskConfig |  | TaskConfigForListVikingdbTaskOutput | 任务配置，见下 |
+|  | collectionName | String | 数据集名称 |
+|  | exportAll | Boolean | 是否导出全量数据 |
 | taskType |  | string | 任务类型 |
 | taskStatus |  | string | 任务状态 |
 | updatePerson |  | string | 任务更新人 |
 | updateTime |  | string | 任务信息更新时间 |
 | createTime |  | string | 任务信息创建时间 |
-| taskProcessInfo |  | TaskProcessInfoForListVikingdbTaskOutput  | 任务处理信息，见下 |
+| taskProcessInfo |  | TaskProcessInfoForListVikingdbTaskOutput | 任务处理信息，见下 |
 
 * taskType 类型包括
 
-| data_import | 数据导入任务 |
+| taskType <br> data_import | 说明 <br> 数据导入任务 |
 | --- | --- |
 | data_export | 数据导出任务 |
 | filter_update | 数据过滤更新任务 |
@@ -58,11 +58,11 @@ public ListVikingdbTaskResponse listVikingdbTask(ListVikingdbTaskRequest body) t
 | --- | --- | --- |
 | taskProgress | string | 任务进度 例如50% |
 | errorMessage | string | 任务错误信息 |
-| sampleData | List<SampleDataForGetVikingdbTaskOutput>  | 采样5条数据用于展示 |
-| sampleTimestamp | Integer | 采样的时间戳，后写入的数据不会被处理 |
+| sampleData | List[SampleDataForGetVikingdbTaskOutput] | 采样5条数据用于展示 |
+| sampleTimestamp | Integer | 采样的时间戳，该时间戳之后写入的数据不会被处理 |
 | scanDataCount | Integer | 当前扫描数据量 |
-| totalDataCount | Integer | collection 数据总条数(预估） |
-| totalFilterCount | Integer | 已经过滤出的数据 |
+| totalDataCount | Integer | Collection 数据总条数（预估） |
+| totalFilterCount | Integer | 已过滤出的数据条数 |
 # 示例
 ```Java
 package org.example.newsubproduct.console.task;
@@ -116,4 +116,5 @@ public class ListVikingdbTask {
 }
 ```
 
-## 
+<span id="a69085ad"></span> 
+

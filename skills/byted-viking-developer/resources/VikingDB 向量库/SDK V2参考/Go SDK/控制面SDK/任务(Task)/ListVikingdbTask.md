@@ -1,7 +1,7 @@
 # 概述
-获取多个task的信息，最多一次性展示20条
+获取多个任务（Task）的信息，最多一次性返回 20 条。
 # 方法定义
-Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `ListVikingdbTask(input)` 方法发起任务创建请求， input 参数类型为 `vikingdb.ListVikingdbTaskInput` ，包含任务创建所需的完整配置信息
+Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `ListVikingdbTask(input)` 方法发起任务列表查询请求，input 参数类型为 `vikingdb.ListVikingdbTaskInput`，包含任务列表查询所需的参数。
 # 请求参数
 | 参数 | 类型 | 是否必填 | 描述 |
 | --- | --- | --- | --- |
@@ -15,35 +15,35 @@ Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `ListVikingdbT
 # 返回参数
 | 字段 | 类型 | 子字段说明 |
 | --- | --- | --- |
-| Tasks <br>  | []TaskForListVikingdbTaskOutput | 任务ID |
+| Tasks | []TaskForListVikingdbTaskOutput | 任务列表 |
 | PageSize | int |  |
 | PageNumber | int |  |
 | TotalCount | int |  |
 
-* List<TaskForListVikingdbTaskOutput>
+* List
 
 | **属性** |  | **类型** | **说明** |
 | --- | --- | --- | --- |
 | TaskId |  | string | 任务ID |
 | TaskConfig |  | TaskConfigForListVikingdbTaskOutput |  |
-|  | CollectionName  | string |  |
-|  | ExportAll  | bool |  |
+|  | CollectionName | string |  |
+|  | ExportAll | bool |  |
 | TaskType |  | string | 任务类型 |
 | TaskStatus |  | string | 任务状态 |
 | UpdatePerson |  | string | 任务更新人 |
 | UpdateTime |  | string | 任务信息更新时间 |
 | CreateTime |  | string | 任务信息创建时间 |
-| TaskProcessInfo |  | TaskProcessInfoForListVikingdbTaskOutput  | 任务处理信息，见下 |
+| TaskProcessInfo |  | TaskProcessInfoForListVikingdbTaskOutput | 任务处理信息，见下 |
 
-* taskType 类型包括
+* TaskType 类型包括
 
-| data_import | 数据导入任务 |
+| TaskType <br> data_import | 说明 <br> 数据导入任务 |
 | --- | --- |
 | data_export | 数据导出任务 |
 | filter_update | 数据过滤更新任务 |
 | filter_delete | 数据过滤删除任务 |
 
-* taskStatus 任务状态包括
+* TaskStatus 任务状态包括
 
 | init | queued | running | done | fail |
 | --- | --- | --- | --- | --- |
@@ -53,12 +53,12 @@ Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `ListVikingdbT
 
 | **字段** | **类型** | **说明** |
 | --- | --- | --- |
-| TaskProgress | string | 任务进度 例如50% |
+| TaskProgress | string | 任务进度，例如 50% |
 | ErrorMessage | string | 任务错误信息 |
 | SampleData | []SampleDataForGetVikingdbTaskOutput | 采样5条数据用于展示 |
-| SampleTimestamp | int | 采样的时间戳，后写入的数据不会被处理 |
+| SampleTimestamp | int | 采样时间戳，后写入的数据不会被处理 |
 | ScanDataCount | int | 当前扫描数据量 |
-| TotalDataCount | int | collection 数据总条数(预估） |
+| TotalDataCount | int | collection 数据总条数（预估） |
 | TotalFilterCount | int | 已经过滤出的数据 |
 # 示例
 ```Go
@@ -108,4 +108,5 @@ func main() {
 }
 ```
 
-## 
+<span id="45aba911"></span> 
+

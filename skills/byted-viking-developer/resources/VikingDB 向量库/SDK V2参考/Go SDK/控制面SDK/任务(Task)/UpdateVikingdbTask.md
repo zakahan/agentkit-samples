@@ -1,22 +1,24 @@
 # 概述
-更新指定的任务，当前任务更新只用于**删除**任务的人工确认 环节
+更新指定的任务，当前任务更新只用于 **删除任务** 的人工确认环节。
 # 方法定义
-Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `UpdateVikingdbTask(input)` 方法发起任务创建请求， input 参数类型为 `vikingdb.UpdateVikingdbTaskInput` ，包含任务创建所需的完整配置信息
+Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `UpdateVikingdbTask(input)` 方法发起任务更新请求，input 参数类型为 `vikingdb.UpdateVikingdbTaskInput`，包含任务更新所需的完整配置信息。
 # 请求参数
 | 字段名 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
 | TaskId | string | 是 | 任务ID，在创建任务时返回 |
-| TaskStatus <br>  | string <br>  | 只有 confirm 状态可以更新，只能更新为 confirmed，必填 |  |
+| TaskStatus | string | 只有 confirm 状态可以更新，只能更新为 confirmed，必填 |  |
 |  |  |  |  |
 |  |  |  |  |
 |  |  |  |  |
 |  |  |  |  |
+
+
+
 # 返回参数
 | 参数 | 类型 | 示例值 | 描述 |
 | --- | --- | --- | --- |
 | Message | string | success | 操作结果信息 |
 # 示例
-
 ```Go
 package main
 
@@ -61,4 +63,6 @@ func main() {
 }
 ```
 
-## 
+## 注意事项
+仅支持将任务状态从 `confirm` 更新为 `confirmed`。
+

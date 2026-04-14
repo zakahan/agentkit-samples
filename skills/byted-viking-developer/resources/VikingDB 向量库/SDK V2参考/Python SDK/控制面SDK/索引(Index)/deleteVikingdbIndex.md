@@ -5,7 +5,7 @@ Python SDK 通过 `VIKINGDBApi().delete_vikingdb_index(request)` 发起调用，
 # **请求参数**
 | 参数 | 类型 | 是否必选 | 描述 |
 | --- | --- | --- | --- |
-| project_name | str | 否 | 项目名称，对应 API 字段 `ProjectName`，默认 default。 |
+| project_name | str | 否 | 项目名称，对应 API 字段 `ProjectName`，默认值为 default。 |
 | collection_name | str | 二选一 | 索引所属的 Collection 名称，对应 API 字段 `CollectionName`。 |
 | resource_id | str |  | Collection 资源 ID，对应 API 字段 `ResourceId`。 |
 | index_name | str | 是 | 需要删除的索引名称，对应 API 字段 `IndexName`。 |

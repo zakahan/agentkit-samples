@@ -1,5 +1,5 @@
 # 概述
-更新指定的任务，当前任务更新只用于**删除**任务的人工确认 环节
+更新指定任务。当前任务更新仅用于**删除**任务的人工确认环节。
 # 方法定义
 Python SDK 通过 `VIKINGDBApi().update_vikingdb_task(request)` 调用，`request` 类型为 `volcenginesdkvikingdb.UpdateVikingdbTaskRequest`。
 # 请求参数
@@ -35,6 +35,5 @@ request = vdb.UpdateVikingdbTaskRequest(
 response = client.update_vikingdb_task(request)
 print(response.message or "task confirmed")
 ```
-
 
 

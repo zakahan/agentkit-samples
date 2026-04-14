@@ -1,8 +1,8 @@
 # 概述
-将 数据导入到 Collection 中，要求文件的列名必须和 Collection Fields 重合，否则会解析失败
-使用前请先授权 VikingDB 跨服务访问 TOS [去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=vikingdb)
+将数据导入到 Collection 中，要求文件列名必须与 Collection Fields 一致，否则会解析失败。
+使用前请先授权 VikingDB 跨服务访问 TOS：[去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=vikingdb)
 # 方法定义
-Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `CreateVikingdbTask(input)` 方法发起任务创建请求， input 参数类型为 `vikingdb.CreateVikingdbTaskInput` ，包含任务创建所需的完整配置信息
+Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `CreateVikingdbTask(input)` 方法发起任务创建请求，input 参数类型为 `vikingdb.CreateVikingdbTaskInput`，包含任务创建所需的完整配置信息。
 # 请求参数
 | 参数 | 子参数 | 类型 | 是否必填 | 描述 |
 | --- | --- | --- | --- | --- |
@@ -11,9 +11,9 @@ Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `CreateVikingd
 | ResourceId |  | string |  | 数据集资源ID。请求必须指定ResourceId和CollectionName其中之一。 |
 | TaskType |  | string | 是 | data_import |
 | TaskConfig |  | TaskConfigForCreateVikingdbTaskInput | 是 | 任务具体配置 |
-|  | FileType | string | 是 | 文件类型, json 或者 parquet，必填 |
-|  | TosPath | string | 是 | TOS 路径，格式 ：{桶名}/{路径}，注意不是域名。必填 |
-|  | IgnoreError | bool | 否 | 设置为 true 时遇到数据会继续解析文件，默认为 false |
+|  | FileType | string | 是 | 文件类型，json 或 parquet，必填 |
+|  | TosPath | string | 是 | TOS 路径，格式：{桶名}/{路径}，注意不是域名。必填 |
+|  | IgnoreError | bool | 否 | 设置为 true 时遇到错误数据会继续解析文件，默认为 false |
 # 返回参数
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
@@ -71,4 +71,4 @@ func main() {
 ```
 
 
-## 
+

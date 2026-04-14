@@ -1,5 +1,5 @@
 # 概述
-按特定条件批量删除Collection中的数据
+按特定条件批量删除 Collection 中的数据。
 # 方法定义
 ```Java
 public CreateVikingdbTaskResponse createVikingdbTask(CreateVikingdbTaskRequest body) throws ApiException
@@ -7,7 +7,6 @@ public CreateVikingdbTaskResponse createVikingdbTask(CreateVikingdbTaskRequest b
 
 # 请求参数
 若要将数据备份至TOS，请先授权 VikingDB 跨服务访问 TOS [去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=vikingdb)
-
 
 | 参数 | 子参数 | 类型 | 是否必填 | 描述 |
 | --- | --- | --- | --- | --- |
@@ -17,14 +16,14 @@ public CreateVikingdbTaskResponse createVikingdbTask(CreateVikingdbTaskRequest b
 | **TaskType** |  | String | 是 | filter_delete |
 | TaskConfig |  | TaskConfigForCreateVikingdbTaskInput | 是 | 任务具体配置 |
 |  | FileType | String | 是 | 文件类型, json 或者 parquet，必填 |
-|  | NeedConfirm | Boolean | 否 | 是否可跳过人工确认环节，默认为true |
-|  | FilterConds | List<Object> | 是 | 过滤条件。使用参考https://www.volcengine.com/docs/84313/1791133 |
+|  | NeedConfirm | Boolean | 否 | 是否需要人工确认环节，默认为 true |
+|  | FilterConds | List[Object] | 是 | 过滤条件。使用参考：https://www.volcengine.com/docs/84313/1791133 |
 |  | TosPath | String | 是 | TOS 路径，格式 ：{桶名}/{路径}，注意不是域名。必填 |
 # 返回参数
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
-| taskId | String | 任务ID |
-| message | String | 操作结果信息 |
+| TaskId | String | 任务ID |
+| Message | String | 操作结果信息 |
 # 示例
 ## 请求参数
 ```Java
@@ -99,6 +98,6 @@ public class CreateVikingdbTaskFilterDelete {
 | --- | --- | --- | --- |
 | TaskId | String |  | 任务ID |
 | Message | String | success | 操作结果信息 |
-
 ## 后续处理
-如果需要人工确认，可执行**任务更新**操作
+如果需要人工确认，可执行 **任务更新** 操作。
+

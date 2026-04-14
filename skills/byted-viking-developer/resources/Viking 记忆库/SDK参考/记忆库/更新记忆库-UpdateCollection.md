@@ -9,7 +9,8 @@
 # 请求参数
 更新记忆库时，必须带上全部配置，否则会被覆盖。
 
-* CollectionType, CollectionModalType, EventType, ProfileType, EnableAssistantIsolation不可编辑
+* CollectionName 与 ResourceId 至少传一个，用于定位要更新的记忆库
+* CollectionType、CollectionModalType、EventType、ProfileType、EnableAssistantIsolation 不可编辑
 
 | **参数名** | **类型** | **是否必须** | **描述** |
 | --- | --- | --- | --- |
@@ -38,88 +39,49 @@
 # 示例代码
 ## **Python请求**
 ```Python
-import requests
-import json
-from volcengine.base.Request import Request
-from volcengine.Credentials import Credentials
-from volcengine.auth.SignerV4 import SignerV4
+import os
+import volcenginesdkcore
+import volcenginesdkvikingdb
+from volcenginesdkcore.rest import ApiException
 
-AK = "your AK" 
-SK = "your SK" 
-Domain = "api-knowledgebase.mlp.cn-beijing.volces.com"
+configuration = volcenginesdkcore.Configuration()
+configuration.ak = os.environ.get("VIKINGDB_AK")
+configuration.sk = os.environ.get("VIKINGDB_SK")
+configuration.region = "cn-beijing"
+volcenginesdkcore.Configuration.set_default(configuration)
 
-def prepare_request(method, path, ak, sk, data=None):
-  r = Request()
-  r.set_shema("http")
-  r.set_method(method)
-  r.set_host(Domain)
-  r.set_path(path)
+api_instance = volcenginesdkvikingdb.VIKINGDBApi()
 
-  if data is not None:
-    r.set_body(json.dumps(data))
-  credentials = Credentials(ak, sk, 'air', 'cn-north-1')
-  SignerV4.sign(r, credentials)
-  return r
+memory_collection_update_request = volcenginesdkvikingdb.MemoryCollectionUpdateRequest(
+    collection_name="your_collection_name",
+    project_name="default",
+    builtin_event_types=["sys_event_v1"],
+    builtin_profile_types=["sys_profile_v1"],
+    custom_event_type_schemas=[
+        volcenginesdkvikingdb.CustomEventTypeSchemaForMemoryCollectionUpdateInput(
+            event_type="english_study",
+            properties=[
+                volcenginesdkvikingdb.PropertyForMemoryCollectionUpdateInput(
+                    property_name="question",
+                    property_value_type="string",
+                    description="助教提出的问题"),
+                volcenginesdkvikingdb.PropertyForMemoryCollectionUpdateInput(
+                    property_name="answer",
+                    property_value_type="string",
+                    description="学生的回答"),
+                volcenginesdkvikingdb.PropertyForMemoryCollectionUpdateInput(
+                    property_name="rating_score",
+                    property_value_type="int64",
+                    description="学生的评分分数"),
+            ]
+        )
+    ]
+)
 
-def internal_request(method, api, payload, params=None):
-  req = prepare_request(
-                        method = method,
-                        path = api,
-                        ak = AK,
-                        sk = SK,
-                        data = payload)
-
-
-  r = requests.request(method=req.method,
-          url="{}://{}{}".format(req.schema, req.host, req.path),
-          headers=req.headers,
-          data=req.body,
-          params=params,
-      )
-  return r
-
-path = "/api/memory/collection/update"
-payload = {
-  "CollectionName": "my_first_memory_collection",
-  "Description": "用于记录和分析学生英语学习过程的记忆库",
-  "CustomEventTypeSchemas": [
-    {
-      "EventType": "english_study",
-      "Description": "记录一次英语学习会话中助教与学生的问答及评分",
-      "Properties": [
-        {
-          "PropertyName": "knowledge_point_name",
-          "PropertyValueType": "string",
-          "Description": "当前对话涉及的知识点名称",
-        },
-        {
-          "PropertyName": "question",
-          "PropertyValueType": "string",
-          "Description": "助教提出的问题",
-        },
-        {
-          "PropertyName": "answer",
-          "PropertyValueType": "string",
-          "Description": "学生的回答",
-        },
-        {
-          "PropertyName": "rating_score",
-          "PropertyValueType": "int64",
-          "Description": "对学生回答的数值评分",
-        },
-        {
-          "PropertyName": "fluency_score",
-          "PropertyValueType": "int64",
-          "Description": "口语流利度评分 (1-5)",
-        }
-      ],
-      "Version": "2"
-    }
-    # 如果还有其他自定义事件类型，且不想改变它们，需要在这里一并列出它们的当前定义
-  ]
-  # CustomEntityTypeSchemas, BuiltinEventTypes, BuiltinEntityTypes 如果不需要改变，则不传递或传递其当前值
-}
-rsp = internal_request("POST", path, payload)
-print(rsp.json())
+try:
+    api_instance.memory_collection_update(memory_collection_update_request)
+except ApiException as e:
+    print("Exception when calling api: %s\n" % e)
 ```
+
 

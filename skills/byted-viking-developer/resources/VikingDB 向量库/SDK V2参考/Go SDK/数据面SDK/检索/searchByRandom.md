@@ -9,7 +9,7 @@
 | Limit | int | 否 | 限制返回条数，最大 5000。 |
 | Offset | int | 否 | 分页偏移量，默认 0。 |
 | Partition | string | 否 | 仅检索指定分区，默认搜索全部分区。 |
-| Advance | SearchAdvance | 否 | 高级参数集合（post_process_ops、ids_in 等），详见[检索公共参数](/c8p1dfoq/dhd9lm8y) <br> 。 |
+| Advance | SearchAdvance | 否 | 高级参数集合（post_process_ops、ids_in 等），详见[检索公共参数](/docs/84313/1927082) <br> 。 |
 # 返回参数
 | 名称 | 类型 | 描述 |
 | --- | --- | --- |
@@ -26,7 +26,7 @@
 | Data | []SearchItemResult | 召回到的结果列表，结构见下。 |
 | FilterMatchedCount | int | 满足过滤条件的文档总数。 |
 | TotalReturnCount | int | 本次返回的结果数量。 |
-| RealTextQuery | string | 模型可能修正后的真实查询串。 |
+| RealTextQuery | string | 模型可能修正后的真实查询串（部分接口返回）。 |
 | TokenUsage | map[string]interface{} | token 计量信息。 |
 
 * SearchItemResult
@@ -34,12 +34,11 @@
 | **属性** | 类型 | **说明** |
 | --- | --- | --- |
 | ID | interface{} | 主键 id。 |
-| Fields | map[string]interface{} | 请求返回中的 fields 字段 |
+| Fields | map[string]interface{} | 请求返回结果中的 fields 字段。 |
 | Score | float64 | 相似度 |
-| AnnScore | float64 | ann得分 |
-
-## 请求参数
-```python
+| AnnScore | float64 | ann 得分 |
+## 请求示例
+```go
 package main
 
 import (
@@ -102,4 +101,5 @@ func main() {
     fmt.Println(string(jsonData))
 }
 ```
+
 

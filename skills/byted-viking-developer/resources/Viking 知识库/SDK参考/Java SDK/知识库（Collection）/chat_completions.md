@@ -66,7 +66,7 @@ chat_completions 用于向大模型发起一次对话请求，与新升级的 se
 | 1000003 | 400 | invalid request：%s | 非法参数 |
 # 请求示例
 首次使用知识库 SDK，可参考 [使用说明](https://www.volcengine.com/docs/84313/2277191?lang=zh)
-请配置鉴权参数（VOLC_AK/VOLC_SK 或 VIKING_API_KEY），并可选配置 VIKING_CHAT_API_KEY（用于大模型服务鉴权）。
+请配置 API Key 鉴权参数（VIKING_API_KEY），并可选配置 VIKING_CHAT_API_KEY（用于大模型服务鉴权）。
 ```java
 package com.volcengine.vikingdb.runtime.knowledge.examples.chat_completion;
 
@@ -74,7 +74,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.volcengine.vikingdb.runtime.core.ApiClient;
 import com.volcengine.vikingdb.runtime.core.RequestAddition;
 import com.volcengine.vikingdb.runtime.core.auth.Auth;
-import com.volcengine.vikingdb.runtime.core.auth.AuthWithAkSk;
 import com.volcengine.vikingdb.runtime.core.auth.AuthWithApiKey;
 import com.volcengine.vikingdb.runtime.enums.Scheme;
 import com.volcengine.vikingdb.runtime.knowledge.model.request.ChatCompletionRequest;
@@ -91,11 +90,12 @@ public class Main {
     private static final String REGION = "cn-beijing";
 
     public static void main(String[] args) throws Exception {
-        Auth auth = preferAuth();
-        if (auth == null) {
-            System.out.println("missing_auth: set VOLC_AK/VOLC_SK or VIKING_API_KEY");
+        String vikingApiKey = getEnv("VIKING_API_KEY");
+        if (vikingApiKey.isEmpty()) {
+            System.out.println("missing_auth: set VIKING_API_KEY");
             return;
         }
+        Auth auth = new AuthWithApiKey(vikingApiKey);
         KnowledgeService service = newKnowledgeService(auth);
 
         String apiKey = getEnv("VIKING_CHAT_API_KEY");
@@ -124,19 +124,6 @@ public class Main {
         return new KnowledgeService(SCHEME, HOST, REGION, auth);
     }
 
-    private static Auth preferAuth() {
-        String ak = getEnv("VOLC_AK");
-        String sk = getEnv("VOLC_SK");
-        if (!ak.isEmpty() && !sk.isEmpty()) {
-            return new AuthWithAkSk(ak, sk);
-        }
-        String apiKey = getEnv("VIKING_API_KEY");
-        if (!apiKey.isEmpty()) {
-            return new AuthWithApiKey(apiKey);
-        }
-        return null;
-    }
-
     private static String getEnv(String name) {
         String v = System.getenv(name);
         if (v == null) {
@@ -163,7 +150,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.volcengine.vikingdb.runtime.core.ApiClient;
 import com.volcengine.vikingdb.runtime.core.RequestAddition;
 import com.volcengine.vikingdb.runtime.core.auth.Auth;
-import com.volcengine.vikingdb.runtime.core.auth.AuthWithAkSk;
 import com.volcengine.vikingdb.runtime.core.auth.AuthWithApiKey;
 import com.volcengine.vikingdb.runtime.enums.Scheme;
 import com.volcengine.vikingdb.runtime.knowledge.model.request.ChatCompletionRequest;
@@ -182,11 +168,12 @@ public class Main {
     private static final String REGION = "cn-beijing";
 
     public static void main(String[] args) throws Exception {
-        Auth auth = preferAuth();
-        if (auth == null) {
-            System.out.println("missing_auth: set VOLC_AK/VOLC_SK or VIKING_API_KEY");
+        String vikingApiKey = getEnv("VIKING_API_KEY");
+        if (vikingApiKey.isEmpty()) {
+            System.out.println("missing_auth: set VIKING_API_KEY");
             return;
         }
+        Auth auth = new AuthWithApiKey(vikingApiKey);
         KnowledgeService service = newKnowledgeService(auth);
 
         String apiKey = getEnv("VIKING_CHAT_API_KEY");
@@ -225,19 +212,6 @@ public class Main {
 
     private static KnowledgeService newKnowledgeService(Auth auth) {
         return new KnowledgeService(SCHEME, HOST, REGION, auth);
-    }
-
-    private static Auth preferAuth() {
-        String ak = getEnv("VOLC_AK");
-        String sk = getEnv("VOLC_SK");
-        if (!ak.isEmpty() && !sk.isEmpty()) {
-            return new AuthWithAkSk(ak, sk);
-        }
-        String apiKey = getEnv("VIKING_API_KEY");
-        if (!apiKey.isEmpty()) {
-            return new AuthWithApiKey(apiKey);
-        }
-        return null;
     }
 
     private static String getEnv(String name) {

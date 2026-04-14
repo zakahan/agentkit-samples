@@ -4,7 +4,7 @@ get_doc 用于查看知识库下的文档信息。
 | **参数** | **类型** | **是否必选** | **默认值** | **参数说明** |
 | --- | --- | --- | --- | --- |
 | CollectionName | string | 否 | -- | **知识库名称** |
-| ProjectName | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则在 default 项目下创建。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
+| ProjectName | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则在 default 项目下查询。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
 | ResourceID | string | 否 | -- | **知识库唯一 id** <br> 可选择直接传 ResourceID，或同时传 CollectionName 和 ProjectName 作为知识库的唯一标识 |
 | DocID | string | 是 | -- | **要查询的文档 id** |
 | ReturnTokenUsage | bool | 否 | false | **是否返回文档向量化和文档生成摘要所消耗的 tokens** |
@@ -13,7 +13,7 @@ get_doc 用于查看知识库下的文档信息。
 | --- | --- | --- |
 | CollectionName | *string | 知识库名称 |
 | DocName | *string | 文档名称 |
-| DocHash | *string | 文档 hash |
+| DocHash | *string | 文档哈希 |
 | DocID | *string | 文档 id |
 | AddType | *string | 导入方式 |
 | DocType | *string | 文档类型 |
@@ -22,11 +22,11 @@ get_doc 用于查看知识库下的文档信息。
 | AddedBy | *string | 添加人 |
 | UpdateTime | *int64 | 文档更新时间 |
 | URL | *string | 原始文档链接 |
-| TOSPath | *string | tos 路径 |
+| TOSPath | *string | TOS 路径 |
 | PointNum | *int | 切片数量 |
 | Status | *DocStatus | DocStatus |
 | Title | *string | 文档标题 |
-| Source | *string | 知识来源（url，tos 等） |
+| Source | *string | 知识来源（URL，TOS 等） |
 | TotalTokens | interface{} | token 统计 |
 | DocSummaryTokens | *int | 摘要 token 统计 |
 | DocPremiumStatus | *DocPremiumStatus | DocPremiumStatus |
@@ -54,7 +54,7 @@ get_doc 用于查看知识库下的文档信息。
 | **failed_code** | **错误描述** | **处理建议** |
 | --- | --- | --- |
 | 10001 | 文档下载超时 | 请上传重试。如果问题仍然存在，请联系我们 |
-| 10003 | url 校验失败，请确认 url 链接 | 请确认 url 链接正确后重试。如果问题仍然存在，请联系我们 |
+| 10003 | URL 校验失败，请确认 URL 链接 | 请确认 URL 链接正确后重试。如果问题仍然存在，请联系我们 |
 | 10005 | 飞书文档获取异常，请确认有效且授权 | 请确认飞书文档权限问题，通过飞书开放平台 OpenAPI [飞书开放平台](https://open.larkoffice.com/document/server-docs/docs/docs-overview)确认权限 |
 | 30001 | 超过知识库文件限制大小 | 超过知识库配额限制。[配额说明参考](https://www.volcengine.com/docs/84313/1339026) |
 | 35001 | 超过知识库切片数量限制 | 超过知识库配额限制。[配额说明参考](https://www.volcengine.com/docs/84313/1339026) |
@@ -68,17 +68,17 @@ get_doc 用于查看知识库下的文档信息。
 | 36008 | embedding 的列组合长度超出限制 | 缩短待 embedding 原始文本长度 |
 | 其他错误码 | 未知错误，请联系我们 | 未知错误，请联系我们 |
 ## **状态码说明**
-| **状态码** | **http状态码** | **返回信息** | **状态码说明** |
+| **状态码** | **HTTP 状态码** | **返回信息** | **状态码说明** |
 | --- | --- | --- | --- |
 | 0 | 200 | success | 成功 |
 | 1000001 | 401 | unauthorized | 鉴权失败 |
 | 1000002 | 403 | no permission | 权限不足 |
 | 1000003 | 400 | invalid request：%s | 非法参数 |
-| 1000005 | 400 | collection not exist | collection不存在 |
-| 1001001 | 400 | doc not exist | doc不存在 |
+| 1000005 | 400 | collection not exist | collection 不存在 |
+| 1001001 | 400 | doc not exist | doc 不存在 |
 # 请求示例
-首次使用知识库 SDK ，可参考 [使用说明](unknown)
-本示例演示了知识库 Go SDK 中 GetDoc 的基础使用方法，通过指定知识库名称和文档 ID 实现单篇文档查询，使用前需配置 AK/SK 鉴权参数。
+首次使用知识库 SDK ，可参考 [使用说明](https://www.volcengine.com/docs/84313/2277191?lang=zh)
+本示例演示了知识库 Go SDK 中 GetDoc 的基础使用方法，通过指定知识库名称和文档 ID 实现单篇文档查询，使用前需配置 API Key 鉴权参数。
 ```Go
 package main
 
@@ -95,14 +95,13 @@ import (
 
 func main() {
     var (
-       accessKey = os.Getenv("VIKINGDB_AK")
-       secretKey = os.Getenv("VIKINGDB_SK")
+       apiKey    = os.Getenv("VIKINGDB_API_KEY")
        endpoint  = "https://api-knowledgebase.mlp.cn-beijing.volces.com"
        region    = "cn-beijing"
     )
 
     client, err := knowledge.New(
-       knowledge.AuthIAM(accessKey, secretKey),
+       knowledge.AuthAPIKey(apiKey),
        knowledge.WithEndpoint(endpoint),
        knowledge.WithRegion(region),
        knowledge.WithTimeout(time.Second*30),

@@ -7,30 +7,27 @@ Collection 数据写入/删除后，可以实时查询数据。
             throws ApiClientException, VectorApiException
 ```
 
-
 # **请求参数**
 | 参数名 | 类型 | 必选 | 备注 |
 | --- | --- | --- | --- |
 | resourceId | String | 2选1 | 资源id |
-| collectionName | String <br>  |  | collection名称 |
-| ids | List<Object> | 是 | * 点查数据的主键列表。最多100条 |
+| collectionName | String |  | collection名称 |
+| ids | List[Object] | 是 | * 点查数据的主键列表。最多100条 |
 |  |  |  |  |
 # 返回参数
 | 名称 | 类型 | 说明 |
 | --- | --- | --- |
-| fetch | List<FetchInCollectionItem> | 查询到的数据列表，FetchResult结构见下。 |
-| idsNotExist <br>  | List<Object> <br>  | 不存在的主键列表 |
+| fetch | List[FetchInCollectionItem] | 查询到的数据列表，FetchResult结构见下。 |
+| idsNotExist | List[Object] | 不存在的主键列表 |
 
-* List<FetchInCollectionItem>
+* List[FetchInCollectionItem]
 
 | 名称 | 类型 |
 | --- | --- |
 | id | Object |
-| fields <br>  | Map<String, Object> <br>  |
-
+| fields | Map[String, Object] |
 # 示例
 ## 请求参数
-
 ```Java
 package org.example.newsubproduct.data.data;
 
@@ -89,4 +86,5 @@ public class FetchDataInCollection {
 
 ```
 
-## 
+
+

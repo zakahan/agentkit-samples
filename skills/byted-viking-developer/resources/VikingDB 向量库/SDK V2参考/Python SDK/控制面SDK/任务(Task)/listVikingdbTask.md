@@ -1,5 +1,5 @@
 # 概述
-获取多个task的信息，最多一次性展示20条
+获取多个 Task 的信息，最多一次性返回 20 条。
 # 方法定义
 Python SDK 通过 `VIKINGDBApi().list_vikingdb_task(request)` 调用，`request` 类型为 `volcenginesdkvikingdb.ListVikingdbTaskRequest`。
 # 请求参数
@@ -84,6 +84,5 @@ print("total:", response.total_count)
 for task in response.tasks or []:
     print(task.task_id, task.task_status)
 ```
-
 
 

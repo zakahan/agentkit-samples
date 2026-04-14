@@ -1,5 +1,5 @@
 # 概述
-更新指定的任务，当前任务更新只用于**删除**任务的人工确认 环节
+更新指定的任务，当前任务更新仅用于**删除**任务的人工确认环节。
 # 方法定义
 ```Java
 public UpdateVikingdbTaskResponse updateVikingdbTask(UpdateVikingdbTaskRequest body) throws ApiException 
@@ -9,17 +9,19 @@ public UpdateVikingdbTaskResponse updateVikingdbTask(UpdateVikingdbTaskRequest b
 | 字段名 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
 | taskId | String | 是 | 任务ID，在创建任务时返回 |
-| taskStatus <br>  | String <br>  | 只有 confirm 状态可以更新，只能更新为 confirmed，必填 |  |
+| taskStatus | String | 只有 confirm 状态可以更新，只能更新为 confirmed，必填 |  |
 |  |  |  |  |
 |  |  |  |  |
 |  |  |  |  |
 |  |  |  |  |
+
+
+
 # 返回参数
 | 参数 | 类型 | 示例值 | 描述 |
 | --- | --- | --- | --- |
 | message | String | success | 操作结果信息 |
 # 示例
-
 ```Java
 package org.example.newsubproduct.console.task;
 
@@ -71,4 +73,5 @@ public class UpdateVikingdbTask {
 }
 ```
 
-## 
+<span id="15cad37c"></span> 
+

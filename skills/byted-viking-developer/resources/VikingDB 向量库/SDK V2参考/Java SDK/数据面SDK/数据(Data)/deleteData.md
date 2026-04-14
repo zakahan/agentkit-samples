@@ -1,27 +1,23 @@
 # 概述
-deleteData 用于在指定的 Collection 删除数据，根据主键删除单条或多条数据，单次最多允许删除100条数据。
-
+deleteData 用于在指定的 Collection 中删除数据，根据主键删除单条或多条数据，单次最多允许删除 100 条数据。
 # 方法定义
 ```Java
     public DataApiResponse<DeleteDataResult> deleteData(DeleteDataRequest request)
             throws ApiClientException, VectorApiException
 ```
 
-
 # **请求参数**
 | 参数名 | 类型 | 必选 | 备注 |
 | --- | --- | --- | --- |
-| resourceId | String | 2选1 | 资源id |
-| collectionName | String <br>  |  | collection名称 |
-| ids | List<Object> | 2选1 | 删除数据的主键列表（主键为int64或string）。最多100条。 <br> 注意： <br>  <br> * 若为请求参数非法（4xx类型），则会全部失败。 |
+| resourceId | String | 2选1 | 资源 ID |
+| collectionName | String |  | collection名称 |
+| ids | List[Object] | 2选1 | 删除数据的主键列表（主键为 int64 或 string）。最多 100 条。 <br> 注意： <br>  <br> * 若为请求参数非法（4xx类型），则会全部失败。 |
 |  |  |  |  |
-| delAll <br>  | Boolean  |  | 为true时，删除所有数据；默认为false。 <br> 此接口删除所有数据，并不能立刻同步到索引，因此，在一段时间内（5分钟左右），索引内仍可检索到数据 |
+| delAll | Boolean |  | 为 true 时，删除所有数据；默认为 false。 <br> 此接口删除所有数据，并不能立刻同步到索引，因此在一段时间内（5 分钟左右），索引内仍可检索到数据。 |
 # 返回参数
 Java 调用执行上面的任务，执行成功无返回信息。
-
 # 示例
 ## 请求参数
-
 ```Java
 package org.example.newsubproduct.data.data;
 
@@ -83,4 +79,4 @@ public class DeleteData {
 ```
 
 
-## 
+

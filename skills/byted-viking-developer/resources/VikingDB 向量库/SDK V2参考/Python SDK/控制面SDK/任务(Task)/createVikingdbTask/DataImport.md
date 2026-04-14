@@ -1,6 +1,6 @@
 # 概述
 通过 `CreateVikingdbTask` 接口以 `task_type=data_import` 方式将 TOS 中的数据文件导入到指定 Collection，字段需与 Collection Schema 对齐。
-使用前请先授权 VikingDB 跨服务访问 TOS [去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=vikingdb)
+使用前请先授权 VikingDB 跨服务访问 TOS [去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=vikingdb)。
 # 方法定义
 Python SDK 通过 `VIKINGDBApi().create_vikingdb_task(request)` 调用，`request` 类型为 `volcenginesdkvikingdb.CreateVikingdbTaskRequest`。
 # 请求参数
@@ -11,7 +11,7 @@ Python SDK 通过 `VIKINGDBApi().create_vikingdb_task(request)` 调用，`reques
 | resource_id |  | str |  | Collection 资源 ID，对应 API 字段 `ResourceId`。 |
 | task_type |  | str | 是 | 任务类型，对应 API 字段 `TaskType`，导入任务固定为 `data_import`。 |
 | task_config |  | TaskConfigForCreateVikingdbTaskInput | 是 | 导入任务配置，对应 API 字段 `TaskConfig`。 |
-|  | tos_path | str | 是 | 待导入文件所在的 TOS 路径，对应 API 字段 `TosPath`。格式 ：{桶名}/{路径}，注意不是域名。 |
+|  | tos_path | str | 是 | 待导入文件所在的 TOS 路径，对应 API 字段 `TosPath`。格式：{桶名}/{路径}，注意不是域名。 |
 |  | file_type | str | 是 | TOS 文件格式，对应 API 字段 `FileType`，支持 `parquet`、`json`。 |
 |  | ignore_error | bool | 否 | 是否忽略单条导入错误，对应 API 字段 `IgnoreError`。 |
 # 返回参数

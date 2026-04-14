@@ -1,5 +1,5 @@
 # 概述
-DeleteCollection 用于删除已创建的数据集 Collection。
+DeleteVikingdbCollection 用于删除已创建的数据集 Collection。
 * 执行 Collection 删除将会永久删除指定 Collection 下的所有数据，请谨慎操作。
 * 在删除 Collection 之前，必须先删除 Collection 关联的所有 Index，才能成功删除 Collection。
 
@@ -12,8 +12,8 @@ DeleteCollection 用于删除已创建的数据集 Collection。
 | **参数** | **类型** | **是否必选** | **参数说明** |
 | --- | --- | --- | --- |
 | projectName | String | 否 | 项目名称 |
-| collectionName | string | 2选1 | 指定要删除的 Collection 名称。 <br>  <br> * 只能使用英文字母、数字、下划线_，并以英文字母开头，不能为空。 <br> * 长度要求：[1, 128]。 <br> * Collection 名称不能重复。 |
-| resourceId | String |  | 数据集资源ID。请求必须指定ResourceId和CollectionName其中之一。 |
+| collectionName | String | 2选1 | 指定要删除的 Collection 名称。 <br>  <br> * 只能使用英文字母、数字、下划线_，并以英文字母开头，不能为空。 <br> * 长度要求：[1, 128]。 <br> * Collection 名称不能重复。 |
+| resourceId | String |  | 数据集资源ID。请求必须指定 resourceId 和 collectionName 其中之一。 |
 # 返回参数
 | 参数 | 类型 | 示例值 | 描述 |
 | --- | --- | --- | --- |
@@ -73,4 +73,5 @@ public class DeleteVikingdbCollection {
 }
 ```
 
-## 
+<span id="c31b3da4"></span> 
+

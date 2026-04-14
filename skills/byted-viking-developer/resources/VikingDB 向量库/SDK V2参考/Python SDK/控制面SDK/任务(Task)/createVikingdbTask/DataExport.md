@@ -1,6 +1,6 @@
 # 概述
 通过 `CreateVikingdbTask` 接口以 `task_type=data_export` 的方式，将指定 Collection 中的数据批量导出到 TOS。
-使用前请先授权 VikingDB 跨服务访问 TOS [去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=ml_platform)
+使用前请先授权 VikingDB 跨服务访问 TOS：[去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=ml_platform)
 
 # 方法定义
 Python SDK 通过 `VIKINGDBApi().create_vikingdb_task(request)` 发起调用，`request` 类型为 `volcenginesdkvikingdb.CreateVikingdbTaskRequest`。
@@ -12,10 +12,10 @@ Python SDK 通过 `VIKINGDBApi().create_vikingdb_task(request)` 发起调用，`
 | resource_id |  | str |  | Collection 资源 ID，对应 API 字段 `ResourceId`。与 `collection_name` 至少提供一个，推荐二者同时传入。 |
 | task_type |  | str | 是 | 任务类型，对应 API 字段 `TaskType`。导出任务需设置为 `data_export`，其余可选值还包括 `data_import`、`filter_update`、`filter_delete`。 |
 | task_config |  | TaskConfigForCreateVikingdbTaskInput | 是 | 导出任务的详细配置，对应 API 字段 `TaskConfig`。 |
-|  | tos_path | str | 是 | TOS 路径，格式 ：{桶名}/{路径}，注意不是域名。对应 API 字段 `TosPath`。 |
-|  | file_type | str | 否 | 文件类型，支持 `json` 或 `parquet`。对应 API 字段 `FileType`。默认 `parquet` |
+|  | tos_path | str | 是 | TOS 路径，格式：{桶名}/{路径}，注意不是域名。对应 API 字段 `TosPath`。 |
+|  | file_type | str | 否 | 文件类型，支持 `json` 或 `parquet`。对应 API 字段 `FileType`，默认值为 `parquet`。 |
 |  | export_all | bool | 否 | 是否导出全部数据，对应 API 字段 `ExportAll`。未填写或为 `False` 时默认导出满足 `filter_conds` 的数据；写 `True` 时强制导出全部数据，此时 `filter_conds` 不生效；若不填入 `filter_conds`，无论 `ExportAll` 是否设置，都会导出全部数据。 |
-|  | filter_conds | list[object] | 是 | 过滤条件。使用参考 `https://www.volcengine.com/docs/84313/1419289`，对应 API 字段 `FilterConds`。 |
+|  | filter_conds | list[object] | 否 | 过滤条件（可选）。不填写时默认导出全部数据。使用参考：https://www.volcengine.com/docs/84313/1791133 ，对应 API 字段 `FilterConds`。 |
 ## 返回参数
 | **参数** | **类型** | **描述** |
 | --- | --- | --- |
@@ -84,7 +84,7 @@ def download(client, bucket_name, object_key, local_path):
     return ''
 ```
 
-### 2、解析 parquet 类型数据
+### 2、解析 Parquet 类型数据
 ```python
 import pyarrow.parquet as pq
 

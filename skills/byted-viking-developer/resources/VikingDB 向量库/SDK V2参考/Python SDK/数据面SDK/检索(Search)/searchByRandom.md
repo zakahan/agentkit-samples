@@ -10,7 +10,8 @@
 | limit | Optional[int] | 否 | 限制返回条数，最大 5000。 |
 | offset | Optional[int] | 否 | 分页偏移量，默认 0。 |
 | partition | Optional[str] | 否 | 仅检索指定分区，默认搜索全部分区。 |
-| advance | Optional[SearchAdvance] | 否 | 高级参数集合（post_process_ops、ids_in 等），详见[检索公共参数](/c8p1dfoq/dhd9lm8y) <br> 。 |
+|  |  |  |  |
+| advance | Optional[SearchAdvance] | 否 | 高级参数集合（post_process_ops、ids_in 等），详见[检索公共参数](/docs/84313/1927082)。 |
 # 返回参数
 | 名称 | 类型 | 描述 |
 | --- | --- | --- |
@@ -71,6 +72,5 @@ print(f"request_id={response.request_id}")
 # 打印完整响应 JSON
 print(response.model_dump_json(indent=2, by_alias=True) if hasattr(response, "model_dump_json") else json.dumps(response.model_dump(by_alias=True, mode="json"), ensure_ascii=False, indent=2, sort_keys=True))
 ```
-
 
 

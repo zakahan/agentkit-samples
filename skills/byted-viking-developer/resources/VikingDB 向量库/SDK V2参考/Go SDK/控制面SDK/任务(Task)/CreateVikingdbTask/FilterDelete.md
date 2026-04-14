@@ -1,30 +1,26 @@
 # 概述
-按特定条件批量删除Collection中的数据
+按特定条件批量删除 Collection 中的数据。
 # 方法定义
-```Java
-public CreateVikingdbTaskResponse createVikingdbTask(CreateVikingdbTaskRequest body) throws ApiException
-```
-
+Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `CreateVikingdbTask(input)` 方法发起任务创建请求，input 参数类型为 `vikingdb.CreateVikingdbTaskInput`，包含任务创建所需的完整配置信息。
 # 请求参数
-若要将数据备份至TOS，请先授权 VikingDB 跨服务访问 TOS [去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=vikingdb)
-
+若要将数据备份至 TOS，请先授权 VikingDB 跨服务访问 TOS：[去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=vikingdb)
 
 | 参数 | 子参数 | 类型 | 是否必填 | 描述 |
 | --- | --- | --- | --- | --- |
-| ProjectName |  | String | 否 | 项目名称 |
-| CollectionName |  | String | 2选1 | 数据集名称 |
-| ResourceId |  | String |  | 数据集资源ID。请求必须指定ResourceId和CollectionName其中之一。 |
-| **TaskType** |  | String | 是 | filter_delete |
+| ProjectName |  | string | 否 | 项目名称 |
+| CollectionName |  | string | 2选1 | 数据集名称 |
+| ResourceId |  | string |  | 数据集资源 ID。请求必须指定 ResourceId 和 CollectionName 其中之一。 |
+| **TaskType** |  | string | 是 | filter_delete |
 | TaskConfig |  | TaskConfigForCreateVikingdbTaskInput | 是 | 任务具体配置 |
-|  | FileType | String | 是 | 文件类型, json 或者 parquet，必填 |
-|  | NeedConfirm | Boolean | 否 | 是否可跳过人工确认环节，默认为true |
-|  | FilterConds | List<Object> | 是 | 过滤条件。使用参考https://www.volcengine.com/docs/84313/1791133 |
-|  | TosPath | String | 是 | TOS 路径，格式 ：{桶名}/{路径}，注意不是域名。必填 |
+|  | FileType | string | 是 | 备份文件类型，json 或 parquet。必填。 |
+|  | NeedConfirm | bool | 否 | 是否需要人工确认环节，默认为 true。 |
+|  | FilterConds | []interface{} | 是 | 过滤条件。使用参考：https://www.volcengine.com/docs/84313/1791133 |
+|  | TosPath | string | 是 | TOS 路径，格式：{桶名}/{路径}，注意不是域名。必填。 |
 # 返回参数
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
-| taskId | String | 任务ID |
-| message | String | 操作结果信息 |
+| TaskId | string | 任务ID |
+| Message | string | 操作结果信息 |
 # 示例
 ## 请求参数
 ```Go
@@ -57,9 +53,9 @@ func main() {
     }
     svc := vikingdb.New(sess)
 
-    // 创建更新任务
+    // 创建过滤删除任务
     input := &vikingdb.CreateVikingdbTaskInput{
-       TaskType: volcengine.String(vikingdb.EnumOfTaskTypeForCreateVikingdbTaskInputFilterUpdate),
+       TaskType: volcengine.String(vikingdb.EnumOfTaskTypeForCreateVikingdbTaskInputFilterDelete),
        TaskConfig: &vikingdb.TaskConfigForCreateVikingdbTaskInput{
           FilterConds: []interface{}{
              map[string]interface{}{
@@ -68,9 +64,9 @@ func main() {
                 "conds": []string{"old value1", "old value2"},
              },
           },
-          UpdateFields: map[string]interface{}{
-             "name": "new value",
-          },
+          NeedConfirm: volcengine.Bool(true),
+          TosPath:      volcengine.String("your-bucket/path/to/backup.json"),
+          FileType:     volcengine.String("json"),
        },
        CollectionName: volcengine.String("Your Collection Name"),
        ProjectName:    volcengine.String("default"),
@@ -88,8 +84,8 @@ func main() {
 ## 返回参数
 | 参数 | 类型 | 示例值 | 描述 |
 | --- | --- | --- | --- |
-| TaskId | String |  | 任务ID |
-| Message | String | success | 操作结果信息 |
-
+| TaskId | string |  | 任务ID |
+| Message | string | success | 操作结果信息 |
 ## 后续处理
-如果需要人工确认，可执行**任务更新**操作
+如果 NeedConfirm 为 true 且需要人工确认，可执行 **任务更新** 操作进行确认。
+

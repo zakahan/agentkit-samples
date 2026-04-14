@@ -2,7 +2,6 @@
 聚合统计能指定字段进行分组聚合，并可添加过滤操作，最终得到相应的聚合统计结果，辅助了解数据分布等情况。
 索引需要包含至少一个枚举类型（string、int64或bool类型）的标量索引字段。
 
-
 # 方法定义
 ```Java
     public DataApiResponse<AggregateResult> aggregate(AggregateRequest request)
@@ -15,20 +14,19 @@
 | resourceId | String | 2选1 | 资源id |
 | collectionName | String |  | collection名称 |
 | indexName | String | 是 | 索引名称 |
-| filter | Map<String, Object> | 否 | 过滤条件，格式见下文。默认为空，不做过滤 |
-| op | string <br>  | 是 | 目前仅支持count。使用count算子时，索引中必须至少存在一个string、int64或bool类型的标量索引字段。 <br>  |
+| filter | Map[String, Object] | 否 | 过滤条件，格式见下文。默认为空，不做过滤 |
+| op | string | 是 | 目前仅支持count。使用count算子时，索引中必须至少存在一个string、int64或bool类型的标量索引字段。 |
 | field | string | 否 | 对指定字段名进行聚合。字段类型支持string，int64，bool且必须为标量索引字段。 |
-| cond <br>  | Map<String, Object> <br>  | 否 | 类似SQL里group by的having 子句。仅当field字段存在时，才生效。对于count算子，支持gt，表示仅返回大于阈值的结果项。 |
+| cond | Map[String, Object] | 否 | 类似SQL里group by的having 子句。仅当field字段存在时，才生效。对于count算子，支持gt，表示仅返回大于阈值的结果项。 |
 ## 返回参数
-Java调用执行上面的任务，返回 List\<Data> 。Data 实例包含的属性如下表所示。
+Java 调用执行上面的任务，返回 AggregateResult。AggregateResult 实例包含的属性如下表所示。
 | **属性** |  | **说明** |
 | --- | --- | --- |
-| agg | Map<String, Object> | 算子类型 |
-| op | String |  |
-| field | String | String |
+| agg | Map[String, Object] | 聚合结果（key 为字段取值，value 为计数；未指定 field 时仅返回总计） |
+| op | String | 算子名称（当前仅支持 count） |
+| field | String | 聚合字段名 |
 # 示例
 ## 请求参数
-
 ```Java
 package org.example.newsubproduct.data;
 
@@ -86,4 +84,5 @@ public class Aggregate {
 
 ```
 
-## 
+<span id="129e2176"></span> 
+

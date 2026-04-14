@@ -7,12 +7,12 @@
 | keywords | Optional[List[str]] | 二选一 | 分词结果，列表长度 1-10，元素不能为空字符串。 |
 | query | Optional[str] | 二选一 | 原始搜索串，SDK 会在服务端进行分词。`query` 与 `keywords` 至少提供其一。 |
 | case_sensitive | Optional[bool] | 否 | 是否区分大小写，默认 False。 |
-| filter | Optional[Dict[str, Any]] | 否 | 标量过滤条件，详见**标量过滤**。 <br>  <br> * 不填表示全量关键词检索。 <br> * 支持 must、must_not、range、range_out 等算子，可用 and / or 组合。 |
+| filter | Optional[Dict[str, Any]] | 否 | 标量过滤条件，详见**标量过滤**。 <br>  <br> * 不填表示不使用过滤条件。 <br> * 支持 must、must_not、range、range_out 等算子，可用 and / or 组合。 |
 | output_fields | Optional[List[str]] | 否 | 要返回的标量字段列表。 <br>  <br> 1. 未设置时返回集合内所有标量字段。 <br> 2. 传入空列表表示不返回任何标量字段。 <br> 3. 字段名必须存在于 collection schema，否则请求报错。 |
 | limit | Optional[int] | 否 | 限制返回条数，最大 5000。 |
 | offset | Optional[int] | 否 | 分页偏移量，默认 0，过大时会出现深分页性能开销。 |
 | partition | Optional[str] | 否 | 仅检索指定分区，默认搜索全部分区。 |
-| advance | Optional[SearchAdvance] | 否 | 高级参数集合（post_process_ops、ids_in 等），详见[检索公共参数](/c8p1dfoq/dhd9lm8y) <br> 。 |
+| advance | Optional[SearchAdvance] | 否 | 高级参数集合（post_process_ops、ids_in 等），详见[检索公共参数](/docs/84313/1927082) <br> 。 |
 # 返回参数
 | 名称 | 类型 | 描述 |
 | --- | --- | --- |
@@ -74,6 +74,5 @@ if response.result:
     for item in response.result.data:
         print(item.id, item.fields.get("title"))
 ```
-
 
 

@@ -27,6 +27,7 @@ python3 -m pip install -U vikingdb-python-sdk
 git clone https://github.com/volcengine/vikingdb-python-sdk.git
 cd vikingdb-python-sdk
 uv sync
+uv pip install -e .
 ```
 
 SDK 依赖 `volcengine`、`requests`、`pydantic` 等组件。若处于离线网络，请提前准备对应的离线包。
@@ -42,10 +43,10 @@ uv add volcengine-python-sdk
 python3 -m pip install volcengine-python-sdk
 ```
 
-安装完成后可通过 `python3 -m pip volcengine-python-sdk` 验证版本。
+安装完成后可通过 `python3 -m pip show volcengine-python-sdk` 验证版本。
 # 初始化 SDK
 初始化步骤包含三部分：配置网络出口（域名/Region）、准备鉴权信息、构造客户端并发起一次请求以验证连通性。
-示例代码使用环境变量 `VIKINGDB_AK` / `VIKINGDB_SK` / `VIKINGDB_HOST` / `VIKINGDB_REGION` 等，请在运行前设置好对应值。
+示例代码使用环境变量 `VIKINGDB_AK` / `VIKINGDB_SK` / `VIKINGDB_HOST` / `VIKINGDB_REGION` / `VIKINGDB_COLLECTION` / `VIKINGDB_INDEX` 等，请在运行前设置好对应值。
 
 
 1. **数据面 (Data / Search / Embedding)**
@@ -73,7 +74,7 @@ collection_name=os.environ["VIKINGDB_COLLECTION"]
 index_name=os.environ["VIKINGDB_INDEX"]
 
 upsert_resp = client.collection(collection_name=collection_name).upsert(UpsertDataRequest(data=[{"text": "something"}]))
-response = client.index(collection_name=collection_name,index_name=index_name).search_by_random(SearchByRandomRequest(limit=5))
+response = client.index(collection_name=collection_name, index_name=index_name).search_by_random(SearchByRandomRequest(limit=5))
 hits = len(response.result.data) if response.result else 0
 if response.result:
     for item in response.result.data:
@@ -92,7 +93,7 @@ if response.result:
 | 亚太东南（柔佛） | ap-southeast-1 | [vikingdb.ap-southeast-1.volcengineapi.com](http://vikingdb.ap-southeast-1.volcengineapi.com/) | com.volces.privatelink.ap-southeast-1.api.vikingdb |
 控制面 OpenAPI 可通过 `volcengine-python-sdk` 的通用 `ApiClient` 调用，也可使用 `requests` 手动构造签名。调用方式与数据面一致：设置 X-Date、Authorization，再向上述域名的 HTTPS 接口发送 JSON 请求。
 
-```Plain Text
+```python
 import volcenginesdkvikingdb as vdb
 from volcenginesdkvikingdb.api.vikingdb_api import VIKINGDBApi
 
@@ -104,4 +105,5 @@ client = VIKINGDBApi(
     scheme="https",
 )
 ```
+
 

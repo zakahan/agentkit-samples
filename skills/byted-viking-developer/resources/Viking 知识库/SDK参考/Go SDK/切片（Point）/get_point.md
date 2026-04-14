@@ -1,10 +1,10 @@
 # 概述
-get_point 用于查看知识库下的指定切片的信息
+get_point 用于查看知识库下的指定切片的信息。
 # **请求参数**
 | **参数** | **类型** | **是否必选** | **默认值** | **参数说明** |
 | --- | --- | --- | --- | --- |
 | CollectionName | string | 否 | -- | **知识库名称** |
-| ProjectName | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则在default项目下创建。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
+| ProjectName | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则在 default 项目下查询。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
 | ResourceID | string | 否 | -- | **知识库唯一 id** <br> 可选择直接传 ResourceID，或同时传 CollectionName 和 ProjectName 作为知识库的唯一标识 |
 | PointID | string | 是 | -- | **切片唯一 id** |
 | GetAttachmentLink | bool | 否 | False | **是否获取切片中图片的临时下载链接** <br> 10 分钟有效期 |
@@ -87,12 +87,12 @@ get_point 用于查看知识库下的指定切片的信息
 | 1000001 | 401 | unauthorized | 鉴权失败 |
 | 1000002 | 403 | no permission | 权限不足 |
 | 1000003 | 400 | invalid request：%s | 非法参数 |
-| 1000005 | 400 | collection not exist | collection不存在 |
-| 1001001 | 400 | doc not exist | doc不存在 |
-| 1002001 | 400 | point not exist | point_id不存在 |
+| 1000005 | 400 | collection not exist | collection 不存在 |
+| 1001001 | 400 | doc not exist | doc 不存在 |
+| 1002001 | 400 | point not exist | point_id 不存在 |
 # 请求示例
-首次使用知识库 SDK ，可参考 [使用说明](unknown)
-本示例演示了知识库 Go SDK 中 GetPoint 函数的基础使用方法，通过指定知识库名称和知识点 ID 查询切片信息，使用前需配置 AK/SK 鉴权参数。
+首次使用知识库 SDK，可参考 [使用说明](https://www.volcengine.com/docs/84313/2277191?lang=zh)
+本示例演示了知识库 Go SDK 中 GetPoint 函数的基础使用方法，通过指定知识库名称和切片 ID 查询切片信息，使用前需配置 API Key 鉴权参数。
 ```Go
 package main
 
@@ -109,14 +109,13 @@ import (
 
 func main() {
     var (
-       accessKey = os.Getenv("VIKINGDB_AK")
-       secretKey = os.Getenv("VIKINGDB_SK")
+       apiKey    = os.Getenv("VIKINGDB_API_KEY")
        endpoint  = "https://api-knowledgebase.mlp.cn-beijing.volces.com"
        region    = "cn-beijing"
     )
 
     client, err := knowledge.New(
-       knowledge.AuthIAM(accessKey, secretKey),
+       knowledge.AuthAPIKey(apiKey),
        knowledge.WithEndpoint(endpoint),
        knowledge.WithRegion(region),
        knowledge.WithTimeout(time.Second*30),

@@ -1,4 +1,4 @@
-向量数据库 Viking DB 支持通过 Java SDK 操作数据库。在使用 Java SDK 之前，需要先完成安装 SDK 和 初始化 SDK 步骤。
+向量数据库 VikingDB 支持通过 Java SDK 操作数据库。在使用 Java SDK 之前，需要先完成安装 SDK 和初始化 SDK 步骤。
 # 前提条件
 
 1. 已通过 [注册账号及开通服务](https://www.volcengine.com/docs/84313/1254444) 操作完成注册账号及开通服务。
@@ -6,8 +6,8 @@
    ![Image](https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_5ef0f716976d0e2060797391b516a839.png)
 
 # 安装 SDK
-为优化权限系统，向量库 SDK分为**控制面**和**数据面**，其中控制面为管理数据集、索引、离线任务；数据面为数据、检索和向量化。控制面同时支持从页面操作，请您根据需要配置依赖。
-## 1.  控制面依赖配置
+为优化权限系统，向量库 SDK 分为 **控制面** 和 **数据面**：控制面用于管理数据集、索引、离线任务；数据面用于数据写入、检索和向量化。控制面同时支持从页面操作，请您根据需要配置依赖。
+## 1. 控制面依赖配置
 ```XML
 <dependency>
     <groupId>com.volcengine</groupId>
@@ -18,11 +18,11 @@
 </dependency>
 ```
 
-maven仓库：
+Maven 仓库：
 [https://central.sonatype.com/artifact/com.volcengine/volcengine-java-sdk-vikingdb/versions](https://central.sonatype.com/artifact/com.volcengine/volcengine-java-sdk-vikingdb/versions)
-源代码地址：
+源码地址：
 [https://github.com/volcengine/volcengine-java-sdk/tree/master/volcengine-java-sdk-vikingdb](https://github.com/volcengine/volcengine-java-sdk/tree/master/volcengine-java-sdk-vikingdb)
-## 2.  数据面依赖配置
+## 2. 数据面依赖配置
 ```XML
 <dependency>
     <groupId>com.volcengine</groupId>
@@ -33,15 +33,13 @@ maven仓库：
 </dependency>
 ```
 
-maven仓库：
+Maven 仓库：
 [https://central.sonatype.com/artifact/com.volcengine/vikingdb-java-sdk/versions](https://central.sonatype.com/artifact/com.volcengine/vikingdb-java-sdk/versions)
-源代码地址：
+源码地址：
 [https://github.com/volcengine/vikingdb-java-sdk](https://github.com/volcengine/vikingdb-java-sdk)
-
 # 初始化 SDK
-如需私网连接，参考[私网连接方式](/c8p1dfoq/wfkp3iey)进行配置并获取域名。目前私网连接请求域名仅支持http。
-代码中 Your ak 及 Your sk 需要分别替换为您的 AK 及 SK，Your host、Your region、Your scheme 替换为您使用的域名、地区、请求协议（http / https）。
-
+如需私网连接，参考[私网连接方式](/docs/84313/1254445)进行配置并获取域名。目前私网连接仅支持 HTTP 协议。
+代码中 `your-access-key` 及 `your-secret-key` 需要分别替换为您的 AK 及 SK，`host`、`region`、`scheme` 替换为您使用的域名、地区、请求协议（HTTP / HTTPS）。使用私网连接时，请将 `scheme` 设置为 HTTP。
 
 
 1. **数据面(Data / Search / Embedding)**
@@ -83,7 +81,6 @@ public class VikingDBQuickStart {
     }
 }
 ```
-
 
 
 2. **控制面(Collection / Index / Task)**

@@ -23,6 +23,6 @@
 - update_doc_meta 用于更新知识库上文档信息，文档 meta 信息更新会自动触发索引中的数据更新。: [update_doc_meta.md](Viking%20%E7%9F%A5%E8%AF%86%E5%BA%93/SDK%E5%8F%82%E8%80%83/Python%20SDK/%E6%96%87%E6%A1%A3%EF%BC%88Doc%EF%BC%89/update_doc_meta.md)
 
 ## 知识库（Collection）
-- 本节将说明如何基于多轮历史对话，使用大语言模型进行回答生成: [chat_completions（新）.md](Viking%20%E7%9F%A5%E8%AF%86%E5%BA%93/SDK%E5%8F%82%E8%80%83/Python%20SDK/%E7%9F%A5%E8%AF%86%E5%BA%93%EF%BC%88Collection%EF%BC%89/chat_completions%EF%BC%88%E6%96%B0%EF%BC%89.md)
+- 本节将说明如何基于多轮历史对话，使用大语言模型进行回答生成: [chat_completions.md](Viking%20%E7%9F%A5%E8%AF%86%E5%BA%93/SDK%E5%8F%82%E8%80%83/Python%20SDK/%E7%9F%A5%E8%AF%86%E5%BA%93%EF%BC%88Collection%EF%BC%89/chat_completions.md)
 - search_knowledge 用于对知识库进行检索和前后处理，当前会默认对原始文本加工后的知识内容进行检索。: [search_knowledge.md](Viking%20%E7%9F%A5%E8%AF%86%E5%BA%93/SDK%E5%8F%82%E8%80%83/Python%20SDK/%E7%9F%A5%E8%AF%86%E5%BA%93%EF%BC%88Collection%EF%BC%89/search_knowledge.md)
 - service_chat 支持基于一个已创建的知识服务进行检索/问答。: [service_chat.md](Viking%20%E7%9F%A5%E8%AF%86%E5%BA%93/SDK%E5%8F%82%E8%80%83/Python%20SDK/%E7%9F%A5%E8%AF%86%E5%BA%93%EF%BC%88Collection%EF%BC%89/service_chat.md)

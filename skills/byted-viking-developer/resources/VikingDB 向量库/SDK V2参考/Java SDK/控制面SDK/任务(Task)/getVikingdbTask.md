@@ -1,5 +1,5 @@
 # 概述
-查询指定 task 的详情信息和执行进度
+查询指定 task 的详情信息和执行进度。
 # 方法定义
 ```Java
 public GetVikingdbTaskResponse getVikingdbTask(GetVikingdbTaskRequest body) throws ApiException
@@ -8,43 +8,43 @@ public GetVikingdbTaskResponse getVikingdbTask(GetVikingdbTaskRequest body) thro
 # 请求参数
 | 字段名 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
-| taskId | string | 是 | 任务ID，在创建任务时返回 |
+| taskId | string | 是 | 任务 ID，在创建任务时返回 |
 # 返回参数
 | **属性** | **类型** | **说明** |
 | --- | --- | --- |
-| taskId | string | 任务ID |
+| taskId | string | 任务 ID |
 | taskType | string | 任务类型 |
 | taskStatus | string | 任务状态 |
 | updatePerson | string | 任务更新人 |
 | updateTime | string | 任务信息更新时间 |
 | createTime | string | 任务信息创建时间 |
-| taskProcessInfo | TaskProcessInfoForGetVikingdbTaskOutput | 任务处理信息，例如进度等 |
+| taskProcessInfo | TaskProcessInfoForGetVikingdbTaskOutput | 任务处理信息，见下 |
 
-* task_type 类型包括
+* taskType 类型包括
 
-| data_import | 数据导入任务 |
+| taskType <br> data_import | 说明 <br> 数据导入任务 |
 | --- | --- |
 | data_export | 数据导出任务 |
 | filter_update | 数据过滤更新任务 |
 | filter_delete | 数据过滤删除任务 |
 
-* task_status 任务状态包括
+* taskStatus 任务状态包括
 
 | init | queued | confirm | confirmed | running | done | fail |
 | --- | --- | --- | --- | --- | --- | --- |
 | 初始化中 | 排队中 | 需要人工确认 | 已确认 | 执行中 | 完成 | 失败 |
 
-* TaskProcessInfoForGetVikingdbTaskOutput 
+* TaskProcessInfoForGetVikingdbTaskOutput
 
 | **字段** | **类型** | **说明** |
 | --- | --- | --- |
-| taskProgress | string | 任务进度 例如50% |
+| taskProgress | string | 任务进度，例如 50% |
 | errorMessage | string | 任务错误信息 |
-| sampleData | List<SampleDataForGetVikingdbTaskOutput>  | 采样5条数据用于展示 |
-| sampleTimestamp | Integer | 采样的时间戳，后写入的数据不会被处理 |
+| sampleData | List[SampleDataForGetVikingdbTaskOutput] | 采样 5 条数据用于展示 |
+| sampleTimestamp | Integer | 采样的时间戳，该时间戳之后写入的数据不会被处理 |
 | scanDataCount | Integer | 当前扫描数据量 |
-| totalDataCount | Integer | collection 数据总条数(预估） |
-| totalFilterCount | Integer | 已经过滤出的数据 |
+| totalDataCount | Integer | Collection 数据总条数（预估） |
+| totalFilterCount | Integer | 已过滤出的数据条数 |
 # 示例
 ## 请求参数
 ```Java
@@ -60,7 +60,7 @@ public class GetVikingdbTask {
     public static void main(String[] args) {
         String ak = System.getenv("AK"); // ak
         String sk = System.getenv("SK"); // sk
-        String endpoint = "vikingdb.cn-beijing.volcengineapi.com"; // 填写向量库控制面v2的域名  https://www.volcengine.com/docs/84313/1792715
+        String endpoint = "vikingdb.cn-beijing.volcengineapi.com"; // 填写向量库控制面 V2 的域名  https://www.volcengine.com/docs/84313/1792715
         String region = "cn-beijing"; // 服务区域
 
         ApiClient apiClient = new ApiClient()
@@ -97,5 +97,5 @@ public class GetVikingdbTask {
 }
 ```
 
-## 
+
 

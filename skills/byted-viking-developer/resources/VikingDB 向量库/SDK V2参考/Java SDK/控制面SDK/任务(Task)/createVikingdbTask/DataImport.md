@@ -1,6 +1,6 @@
 # 概述
-将 数据导入到 Collection 中，要求文件的列名必须和 Collection fields 重合，否则会解析失败
-使用前请先授权 VikingDB 跨服务访问 TOS [去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=vikingdb)
+将数据导入到 Collection 中，要求文件的列名必须与 Collection fields 重合，否则会解析失败。
+使用前请先授权 VikingDB 跨服务访问 TOS：[去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=vikingdb)
 # 方法定义
 ```Java
 public CreateVikingdbTaskResponse createVikingdbTask(CreateVikingdbTaskRequest body) throws ApiException
@@ -11,12 +11,12 @@ public CreateVikingdbTaskResponse createVikingdbTask(CreateVikingdbTaskRequest b
 | --- | --- | --- | --- | --- |
 | projectName |  | String | 否 | 项目名称 |
 | collectionName |  | String | 2选1 | 数据集名称 |
-| resourceId |  | String |  | 数据集资源ID。请求必须指定ResourceId和CollectionName其中之一。 |
+| resourceId |  | String |  | 数据集资源 ID。请求必须指定 resourceId 和 collectionName 其中之一。 |
 | **taskType** |  | String | 是 | data_import |
 | taskConfig |  | TaskConfigForCreateVikingdbTaskInput | 是 | 任务具体配置 |
-|  | FileType | String | 是 | 文件类型, json 或者 parquet，必填 |
-|  | TosPath | String | 是 | TOS 路径，格式 ：{桶名}/{路径}，注意不是域名。必填 |
-|  | IgnoreError | Boolean | 否 | 设置为 true 时遇到数据会继续解析文件，默认为 false |
+|  | fileType | String | 是 | 文件类型，json 或 parquet。必填 |
+|  | tosPath | String | 是 | TOS 路径，格式：{桶名}/{路径}，注意不是域名。必填 |
+|  | ignoreError | Boolean | 否 | 设置为 true 时，遇到错误会继续解析文件，默认为 false |
 # 返回参数
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
@@ -80,9 +80,5 @@ public class CreateVikingdbTaskDataImport {
     }
 }
 ```
-
-
-## 
-
 
 

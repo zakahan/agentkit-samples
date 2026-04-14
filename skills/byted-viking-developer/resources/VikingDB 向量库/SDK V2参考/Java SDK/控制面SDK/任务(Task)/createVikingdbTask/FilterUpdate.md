@@ -1,5 +1,5 @@
 # 概述
-按特定条件批量更新数据，不支持vector、sparse_vector、text 类型字段的更新
+按特定条件批量更新数据，不支持 vector、sparse_vector、text 类型字段的更新。
 # 方法定义
 ```Java
 public CreateVikingdbTaskResponse createVikingdbTask(CreateVikingdbTaskRequest body) throws ApiException
@@ -10,11 +10,11 @@ public CreateVikingdbTaskResponse createVikingdbTask(CreateVikingdbTaskRequest b
 | --- | --- | --- | --- | --- |
 | projectName |  | String | 否 | 项目名称 |
 | collectionName |  | String | 2选1 | 数据集名称 |
-| resourceId |  | String |  | 数据集资源ID。请求必须指定ResourceId和CollectionName其中之一。 |
+| resourceId |  | String |  | 数据集资源 ID。请求必须指定 resourceId 和 collectionName 其中之一。 |
 | **taskType** |  | String | 是 | filter_update |
 | taskConfig |  | TaskConfigForCreateVikingdbTaskInput | 是 | 任务具体配置 |
-|  | filterConds | List<Object> | 是 | 过滤条件。使用参考https://www.volcengine.com/docs/84313/1791133 <br>  |
-|  | updateFields | Object | 是 | 需要更新的字段值，必须是标量字段，不支持vector、sparse_vector、text 类型字段的更新 |
+|  | filterConds | List[Object] | 是 | 过滤条件。使用参考：https://www.volcengine.com/docs/84313/1791133 |
+|  | updateFields | Object | 是 | 需要更新的字段值，必须是标量字段，不支持 vector、sparse_vector、text 类型字段的更新 |
 # 返回参数
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
@@ -89,4 +89,5 @@ public class CreateVikingdbTaskFilterUpdate {
 }
 ```
 
-## 
+<span id="89ad8334"></span> 
+

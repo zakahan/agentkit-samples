@@ -1,12 +1,11 @@
 # 概述
-updateData 用于为已存在数据的部分字段进行更新。支持 text、标量字段、vector 字段的更新。
-
+updateData 用于更新已存在数据的部分字段，支持 text、标量字段、vector 字段的更新。
 # **请求参数**
 | 名称 | 类型 | 描述 | 必选 |
 | --- | --- | --- | --- |
 | collection_name | str | Collection 的名称，与 resource_id 二选一。 | 二选一 |
 | resource_id | str | Collection 的资源 ID。 |  |
-| data | List[Dict[str, Any]] | 要更新的数据列表，单次最多100条，需包含主键字段及待修改字段。 | 是 |
+| data | List[Dict[str, Any]] | 要更新的数据列表，单次最多 100 条，需包含主键字段及待修改字段。 | 是 |
 | ttl | int | 更新后新的生存时间，单位为秒。 | 否 |
 | ignore_unknown_fields | bool | 为 True 时忽略未在 schema 中声明的字段，默认校验所有字段。 | 否 |
 # 返回参数
@@ -47,7 +46,7 @@ collection_client = client.collection(collection_name=os.environ["VIKINGDB_COLLE
 
 ID = "2532745373549703702"
 request = UpdateDataRequest(
-    data=[{"__AUTO_ID__": ID, "score": 47.0, "text": "updated"}], # get ID from console or searchByRandom API
+    data=[{"__AUTO_ID__": ID, "score": 47.0, "text": "updated"}], # 从控制台或 searchByRandom API 获取 ID
     ignore_unknown_fields=True,
 )
 response = collection_client.update(request)
@@ -55,6 +54,5 @@ print(f"request_id={response.request_id}")
 if response.result:
     print(response.result.token_usage)
 ```
-
 
 

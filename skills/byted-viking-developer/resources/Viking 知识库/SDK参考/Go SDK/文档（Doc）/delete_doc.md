@@ -4,7 +4,7 @@ delete_doc 用于删除知识库下的文档
 | **参数** | **类型** | **是否必选** | **默认值** | **参数说明** |
 | --- | --- | --- | --- | --- |
 | CollectionName | string | 否 | -- | **知识库名称** |
-| ProjectName | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则在default项目下创建。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
+| ProjectName | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则默认在 default 项目下操作。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
 | ResourceID | string | 否 | -- | **知识库唯一 id** <br> 可选择直接传 ResourceID，或同时传 CollectionName 和 ProjectName 作为知识库的唯一标识 |
 | DocID | string | 是 | -- | **要删除的文档 id** |
 # **响应消息**
@@ -24,8 +24,8 @@ delete_doc 用于删除知识库下的文档
 | 1000005 | 400 | collection not exist | collection不存在 |
 | 1001001 | 400 | doc not exist | doc不存在 |
 # 请求示例
-首次使用知识库 SDK ，可参考 [使用说明](unknown)
-本示例演示了知识库 Go SDK 中 DeleteDoc 函数的基础使用方法，通过指定知识库名称和文档 ID 实现文档删除，使用前需配置 AK/SK 鉴权参数。
+首次使用知识库 SDK，可参考 [使用说明](https://www.volcengine.com/docs/84313/2277191?lang=zh)
+本示例演示了知识库 Go SDK 中 DeleteDoc 函数的基础使用方法，通过指定知识库名称和文档 ID 实现文档删除，使用前需配置 API Key 鉴权参数。
 ```Go
 package main
 
@@ -41,14 +41,13 @@ import (
 
 func main() {
     var (
-       accessKey = os.Getenv("VIKINGDB_AK")
-       secretKey = os.Getenv("VIKINGDB_SK")
+       apiKey    = os.Getenv("VIKINGDB_API_KEY")
        endpoint  = "https://api-knowledgebase.mlp.cn-beijing.volces.com"
        region    = "cn-beijing"
     )
 
     client, err := knowledge.New(
-       knowledge.AuthIAM(accessKey, secretKey),
+       knowledge.AuthAPIKey(apiKey),
        knowledge.WithEndpoint(endpoint),
        knowledge.WithRegion(region),
        knowledge.WithTimeout(time.Second*30),

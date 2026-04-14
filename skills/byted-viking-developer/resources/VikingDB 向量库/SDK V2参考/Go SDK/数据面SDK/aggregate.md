@@ -4,9 +4,9 @@
 # 请求体参数
 | 参数名 | 类型 | 必选 | 说明 |
 | --- | --- | --- | --- |
-| ResourceID | string | 二选一 | 资源 ID。与 `collection_name` 二选一，用于定位集合。 |
-| CollectionName | string |  | 集合名称。若通过名称访问索引，可配合 `project_name` 使用。 |
-| ProjectName | string | 否 | 项目名称。与 `collection_name` 组合使用时可进一步限定作用域。 |
+| ResourceID | string | 二选一 | 资源 ID。与 `CollectionName` 二选一，用于定位集合。 |
+| CollectionName | string | 二选一 | 集合名称。若通过名称访问索引，可配合 `ProjectName` 使用。 |
+| ProjectName | string | 否 | 项目名称。与 `CollectionName` 组合使用时可进一步限定作用域。 |
 | IndexName | string | 是 | 索引名称。 |
 | Filter | map[string]interface{} | 否 | 向量检索通用过滤条件，语法与搜索接口一致，未指定时不过滤。 |
 | Partition | string | 否 | 指定要聚合的分区名称。 |
@@ -21,11 +21,11 @@
 | Code | string | 错误码，成功时为空。 |
 | Message | string | 错误信息。 |
 | Api | string | 实际调用的 API 名称。 |
-| Result | AggResult | 聚合结果，失败或无结果时可能为 `None`。 |
+| Result | AggResult | 聚合结果，失败或无结果时可能为 `nil`。 |
 AggResult 结构
 | 字段 | 类型 | 说明 |
 | --- | --- | --- |
-| Agg | map[string]interface{} | 聚合结果字典。按字段值返回计数，若不指定 `field`，则包含 `_total`。 |
+| Agg | map[string]interface{} | 聚合结果字典。按字段值返回计数，若不指定 `Field`，则包含 `_total`。 |
 | Op | string | 聚合算子名称。 |
 | Field | string | 参与聚合的字段名。 |
 # 示例
@@ -67,7 +67,7 @@ func main() {
        field = "type"
     )
 
-    // SELECT category, COUNT(*) FROM index WHERE score >= 0.3 AND score <= 0.46 GROUP BY category HAVING COUNT(*) > 4
+    // SELECT type, COUNT(*) FROM index WHERE score >= 0.3 AND score <= 0.46 GROUP BY type HAVING COUNT(*) > 4
     resp, err := client.Index(model.IndexLocator{
        CollectionLocator: model.CollectionLocator{
           CollectionName: "Your Collection Name",

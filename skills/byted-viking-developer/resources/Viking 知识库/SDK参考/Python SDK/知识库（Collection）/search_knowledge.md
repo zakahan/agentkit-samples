@@ -4,10 +4,10 @@ search_knowledge 用于对知识库进行检索和前后处理，当前会默认
 | **参数** | **子参数** | **类型** | **是否必选** | **默认值** | **参数说明** |
 | --- | --- | --- | --- | --- | --- |
 | collection_name | -- | string | 否 | -- | **知识库名称** |
-| project_name | -- | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则在default项目下创建。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
+| project_name | -- | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则在 default 项目下检索。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
 | resource_id | -- | string | 否 | -- | **知识库唯一 id** <br> 可选择直接传 resource_id，或同时传 collection_name 和 project_name 作为知识库的唯一标识 |
-| query | -- | Any | 是 | -- | **检索文本** <br>  <br> * 最大可输入长度为 8000，query 长度 > 8000 时，接口报错 <br> * 所选 embedding 模型输入最大长度 < query 长度 < 8000 时，query 按所选模型自动截断 <br> * query 长度 < 所选 embedding 模型输入最大长度时，正常检索返回目标切片 |
-| image_query | -- | Optional[Any] | 否 | -- | **检索图片** <br> 支持图片 URL 或 Base64 编码，详细要求见[图片像素说明](https://www.volcengine.com/docs/82379/1409291?lang=zh#7a10f532)和[图片文件格式](https://www.volcengine.com/docs/82379/1409291?lang=zh#5c068efa) <br>  <br> * 图片 URL 传入：适用于图片文件已存在公网可访问 URL 的场景，单张图片小于 10 MB <br> * Base64 编码传入：适用于图片文件较小的场景，支持 **JPEG、PNG、WebP、BMP** 四种格式的 Base64 编码，单张图片小于 3 MB，请求体不能超过 4 MB |
+| query | -- | string | 是 | -- | **检索文本** <br>  <br> * 最大可输入长度为 8000，query 长度 > 8000 时，接口报错 <br> * 所选 embedding 模型输入最大长度 < query 长度 < 8000 时，query 按所选模型自动截断 <br> * query 长度 < 所选 embedding 模型输入最大长度时，正常检索返回目标切片 |
+| image_query | -- | Optional[string] | 否 | -- | **检索图片** <br> 支持图片 URL 或 Base64 编码，详细要求见[图片像素说明](https://www.volcengine.com/docs/82379/1409291?lang=zh#7a10f532)和[图片文件格式](https://www.volcengine.com/docs/82379/1409291?lang=zh#5c068efa) <br>  <br> * 图片 URL 传入：适用于图片文件已存在公网可访问 URL 的场景，单张图片小于 10 MB <br> * Base64 编码传入：适用于图片文件较小的场景，支持 **JPEG、PNG、WebP、BMP** 四种格式的 Base64 编码，单张图片小于 3 MB，请求体不能超过 4 MB |
 | limit | -- | int | 否 | 10 | **检索结果数量** <br>  <br> * 数量要求：[1, 1000] |
 | query_param |  | Optional[Dict[str, Any]] | 否 |  | **检索的过滤和返回设置** |
 |  | doc_filter | map | 否 | -- | **检索过滤条件** <br>  <br> * 支持对 doc 的 meta 信息过滤 <br> * 详细使用方式和支持字段见[filter表达式](https://www.volcengine.com/docs/84313/1419289#filter-%E8%A1%A8%E8%BE%BE%E5%BC%8F)，可支持对 doc_id 做筛选 <br> * 此处用过过滤的字段，需要在 collection/create 时添加到 index_config 的 fields 上 <br>  <br> 例如： <br> 单层 filter： <br> ```json <br> doc_filter = { <br>      "op": "must", // 查询算子 must/must_not/range/range_out <br>      "field": "doc_id", <br>      "conds": ["tos_doc_id_123", "tos_doc_id_456"] <br>  } <br>  query_param = { <br>      "doc_filter": doc_filter <br>  } <br> ``` <br>  <br> 多层 filter： <br> ```json <br> doc_filter = { <br>    "op": "and",   // 逻辑算子 and/or <br>    "conds": [     // 条件列表，支持嵌套逻辑算子和查询算子 <br>      { <br>        "op": "must", <br>        "field": "type", <br>        "conds": [1] <br>      }, <br>      { <br>          ...         // 支持>=1的任意数量的条件进行组合 <br>      } <br>    ] <br>  } <br>  <br>  query_param = { <br>      "doc_filter": doc_filter <br>  } <br> ``` <br>  |
@@ -16,7 +16,7 @@ search_knowledge 用于对知识库进行检索和前后处理，当前会默认
 |  | need_instruction | bool | 否 | False | **是否拼接 instruction 进行检索** |
 |  | return_token_usage | bool | 否 | False | **是否返回 search 流程中各阶段的 token 使用量** |
 |  | rewrite | bool | 否 | False | **是否对 query 进行改写** <br> 根据 messages 字段传入的历史对话信息进行改写，最多 3 轮 <br> **注：​**只有在messages字段长度大于2且不为空时，设置参数值为True，才能返回有效的rewrite_query； <br> ```json <br> "messages"：[ <br>      {"role": "user", "content": "prompt 1"}, <br>      {"role": "assistant", "content": "prompt2"}, <br>      {"role": "user", "content": "prompt 3"}, <br>  ] <br> ``` <br>  |
-|  | messages | json | 是 | -- | **多轮对话信息** <br> 仅**开启改写**时需要上传，可根据历史对话内容进行问题改写，注意上传对话轮数需 >= 1 <br> 发出消息的对话参与者角色，可选值包括： <br>  <br> * user：User Message 用户消息 <br> * assistant：Assistant Message 对话助手消息 <br>  <br> ```json <br> [ <br>      {"role": "user", "content": "知识库支持哪些文档格式？"}, <br>      {"role": "assistant", "content": "知识库支持结构化和非结构化文档，其中结构化文档支持 excel、csv、jsonl 等常见格式，非结构化文档支持 pdf、docx、ppt 等常见格式。"}, <br>      {"role": "user", "content": "那大小呢？"}, <br>  ] <br> ``` <br>  |
+|  | messages | json | 否 | -- | **多轮对话信息** <br> 仅**开启改写**时需要上传，可根据历史对话内容进行问题改写，注意上传对话轮数需 >= 3 <br> 发出消息的对话参与者角色，可选值包括： <br>  <br> * user：User Message 用户消息 <br> * assistant：Assistant Message 对话助手消息 <br>  <br> ```json <br> [ <br>      {"role": "user", "content": "知识库支持哪些文档格式？"}, <br>      {"role": "assistant", "content": "知识库支持结构化和非结构化文档，其中结构化文档支持 excel、csv、jsonl 等常见格式，非结构化文档支持 pdf、docx、ppt 等常见格式。"}, <br>      {"role": "user", "content": "那大小呢？"}, <br>  ] <br> ``` <br>  |
 | post_processing |  | Optional[Dict[str, Any]] |  |  | **检索后处理** |
 |  | rerank_switch | bool | 否 | False | **自动对结果做 rerank** <br> 打开后，会自动请求 rerank 模型排序 |
 |  | retrieve_count | int | 否 | 25 | **进入重排的切片数量，默认为 25** <br> 只有在 rerank_switch 为 True 时生效。retrieve_count 需要大于等于 limit，否则会抛出错误 |
@@ -116,25 +116,24 @@ search_knowledge 用于对知识库进行检索和前后处理，当前会默认
 | 1000003 | 400 | invalid request：%s | 非法参数 |
 | 1000005 | 400 | collection not exist | collection 不存在 |
 # 请求示例
-首次使用知识库 SDK ，可参考 [使用说明](unknown)
-本示例演示了知识库 Python SDK 中 SearchKnowledge 的基础使用方法，通过指定数据集名称和查询语句实现知识库检索，使用前需配置 AK/SK 鉴权参数。
+首次使用知识库 SDK ，可参考 [使用说明](https://www.volcengine.com/docs/84313/2277191?lang=zh)
+本示例演示了知识库 Python SDK 中 SearchKnowledge 的基础使用方法，通过指定数据集名称和查询语句实现知识库检索，使用前需配置 API Key 鉴权参数。
 ```Python
 import os
 
 from vikingdb.knowledge import VikingKnowledge
-from vikingdb.auth import IAM
+from vikingdb.auth import APIKey
 from vikingdb.knowledge.models.search import SearchKnowledgeRequest
 
 def main():
-    access_key = os.getenv("VIKINGDB_AK")
-    secret_key = os.getenv("VIKINGDB_SK")
+    api_key = os.getenv("VIKINGDB_API_KEY") or ""
     endpoint = "api-knowledgebase.mlp.cn-beijing.volces.com"
     region = "cn-beijing"
     
     client = VikingKnowledge(
         host=endpoint,
         region=region,
-        auth=IAM(ak=access_key, sk=secret_key),
+        auth=APIKey(api_key=api_key),
         scheme="https"
     )
     

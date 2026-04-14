@@ -1,6 +1,6 @@
 # 概述
 `search_by_vector` 用于向量检索。根据查询的向量，搜索与其距离最近的 limit 个向量。
-* Collection 数据写入/删除后，Index 数据更新时间预计 20s，不能立即在 Index 检索到。
+* Collection 数据写入/删除后，Index 数据更新时间预计 20s，不能立即在 Index 中检索到。
 * 当请求参数 filter 配置时，表示混合检索；当请求参数 filter 没有配置时，表示纯向量检索。
 
 # 前提条件
@@ -9,7 +9,7 @@
 * 通过 upsert_data 接口写入数据时，已写入 vector 类型的字段名称和字段值。
 * 通过 create_index 创建索引时，已创建 vector_index 向量索引。
 
-适用于创建向量库时选择"已有向量数据" ：当导入的数据是向量时，可以通过此接口输入向量进行检索。
+适用于创建向量库时选择“已有向量数据”：当导入的数据是向量时，可以通过此接口输入向量进行检索。
 
 # **请求参数**
 请求参数是 `SearchByVectorRequest`，其字段如下表所示。
@@ -22,7 +22,7 @@
 | limit | Optional[int] | 否 | 限制返回条数，最大 5000。 |
 | offset | Optional[int] | 否 | 分页偏移量，默认 0，过大时会出现深分页性能开销。 |
 | partition | Optional[str] | 否 | 仅检索指定分区，默认搜索全部分区数据。 |
-| advance | Optional[SearchAdvance] | 否 | 高级参数集合（post_process_ops、ids_in 等），详见[检索公共参数](/c8p1dfoq/dhd9lm8y) <br> 。 |
+| advance | Optional[SearchAdvance] | 否 | 高级参数集合（post_process_ops、ids_in 等），详见[检索公共参数](/docs/84313/1927082) <br> 。 |
 # 返回参数
 | 名称 | 类型 | 描述 |
 | --- | --- | --- |
@@ -83,6 +83,5 @@ if response.result:
     for item in response.result.data:
         print(item.id, item.score, item.fields.get("title"))
 ```
-
 
 

@@ -1,9 +1,9 @@
 # 概述
-按特定条件批量导出Collection中的数据
+按特定条件批量导出 Collection 中的数据。
 使用前请先授权 VikingDB 跨服务访问 TOS [去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=ml_platform)
 
 # 方法定义
-Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `CreateVikingdbTask(input)` 方法发起任务创建请求， input 参数类型为 `vikingdb.CreateVikingdbTaskInput` ，包含任务创建所需的完整配置信息
+Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `CreateVikingdbTask(input)` 方法发起任务创建请求，input 参数类型为 `vikingdb.CreateVikingdbTaskInput`，包含任务创建所需的完整配置信息。
 # 请求参数
 | 参数 | 子参数 | 类型 | 是否必填 | 描述 |
 | --- | --- | --- | --- | --- |
@@ -12,10 +12,10 @@ Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `CreateVikingd
 | ResourceId |  | string |  | 数据集资源ID。请求必须指定ResourceId和CollectionName其中之一。 |
 | TaskType |  | string | 是 | data_export |
 | TaskConfig |  | TaskConfigForCreateVikingdbTaskInput | 是 | 任务具体配置 |
-|  | FileType | string | 是 | 文件类型, json 或者 parquet，必填 |
-|  | FilterConds | []interface{} | 否 | 过滤条件。使用参考https://www.volcengine.com/docs/84313/1791133 <br>  <br> * 如果不填入FilterConds，则无关ExportAll，一定导出全部数据。 <br> * 如果填入FilterConds： <br>    * 不写Exportall，或Exportall=false，则默认导出满足条件的数据。 <br>    * 写exportall=true，则强制导出全部数据，此时FilterConds不生效。 |
-|  | TosPath | string | 是 | TOS 路径，格式 ：{桶名}/{路径}，注意不是域名。必填 |
-|  | ExportAll | bool | 否 | 是否导出全部数据，此时filter不生效。默认为false |
+|  | FileType | string | 是 | 文件类型，json 或 parquet，必填 |
+|  | FilterConds | []interface{} | 否 | 过滤条件。使用参考：https://www.volcengine.com/docs/84313/1791133 <br>  <br> * 如果不填入 FilterConds，则与 ExportAll 无关，默认导出全部数据。 <br> * 如果填入 FilterConds： <br>    * 不写 ExportAll，或 ExportAll=false，则默认导出满足条件的数据。 <br>    * 写 ExportAll=true，则强制导出全部数据，此时 FilterConds 不生效。 |
+|  | TosPath | string | 是 | TOS 路径，格式：{桶名}/{路径}，注意不是域名。必填 |
+|  | ExportAll | bool | 否 | 是否导出全部数据，此时 FilterConds 不生效。默认为 false |
 ## 返回参数
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `CreateVikingd
 | Message | string | 操作结果信息 |
 # 示例
 ## 请求参数
-```Java
+```Go
 package main
 
 import (
@@ -73,7 +73,6 @@ func main() {
     fmt.Println(*resp.TaskId)
 }
 ```
-
 
 ## 后续处理
 ### 1、从 TOS 下载文件

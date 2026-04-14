@@ -1,5 +1,5 @@
 # 概述
-updateCollection 用于为指定数据集 Collection 增加字段。
+updateVikingdbCollection 用于为指定数据集 Collection 新增字段，并可修改数据集描述。
 Collection 支持新增字段 fields，已定义字段 fields 不支持修改，仅支持修改数据集描述。
 
 # 方法定义
@@ -8,30 +8,29 @@ public UpdateVikingdbCollectionResponse updateVikingdbCollection(UpdateVikingdbC
 ```
 
 # **请求参数**
-请求参数是 UpdateCollectionParam，UpdateCollectionParam 类包括的参数如下表所示。
+请求参数是 UpdateVikingdbCollectionRequest，UpdateVikingdbCollectionRequest 类包括的参数如下表所示。
 | 参数 | 类型 | 是否必选 | 描述 |
 | --- | --- | --- | --- |
 | projectName | String | 否 | 项目的名称。对应火山引擎“项目”（project）的概念。不填则默认当做default处理。 |
-| collectionName | String | 二选一 | 数据集的名称。 <br> 限制：英文字母、数字、或下划线。且必须以英文字母开头。长度不超过64Byte。 |
-| resourceId | String |  | 数据集的Id。 |
+| collectionName | String | 二选一 | 数据集的名称。 <br> 限制：英文字母、数字、或下划线。且必须以英文字母开头，长度 1-128 字节。 |
+| resourceId | String |  | 数据集的 Id。与 collectionName 二选一（可同时填写），推荐同时填写确保准确。 |
 | description | String | 否 | 数据集的描述。 <br> 限制：英文字母、数字、或下划线。且必须以英文字母开头。长度不超过64Byte。 |
-| fields | List<FieldForUpdateVikingdbCollectionInput> | 是 | 数据集中的字段。 <br> 限制：数据集内最多128个字段。 |
+| fields | List[FieldForUpdateVikingdbCollectionInput] | 是 | 数据集中的字段。 <br> 限制：数据集内最多128个字段。 |
 
 * Field 参数结构
 
 | 参数 | 类型 | 是否必选 | 描述 |
 | --- | --- | --- | --- |
 | fieldName | String | 是 | 字段名。 <br> 限制：英文字母、数字、或下划线。且必须以英文字母开头。长度不超过64Byte。 |
-| fieldType | FieldTypeEnum（枚举类型） | 是 | 字段类型。 <br> 枚举值包括： <br> vector,sparse_vector,string,int64,float32,bool,list<string>,list<int64>,text,image,video |
+| fieldType | FieldTypeEnum（枚举类型） | 是 | 字段类型。 <br> 枚举值包括： <br> vector, sparse_vector, string, int64, float32, bool, list[string], list[int64], text, image, video |
 | defaultValue | Object | 否 | 字段内容默认值。 <br> 注意：vector/sparse_vector/text/image/video类型字段不支持默认值。 |
-
 # 返回参数
 | 参数 | 类型 | 示例值 | 描述 |
 | --- | --- | --- | --- |
 | message | String | success | 操作结果信息 |
 ## 示例
 ## 请求参数
-```Python
+```Java
 package org.example.newsubproduct.console.collection;
 
 import com.volcengine.ApiClient;
@@ -90,4 +89,4 @@ public class UpdateVikingdbCollection {
 }
 ```
 
-## 
+

@@ -27,7 +27,7 @@ update_point 用于更新知识库下的切片内容
 | 1000005 | collection not exist | collection不存在 | 400 |
 # 请求示例
 首次使用知识库 SDK ，可参考 [使用说明](https://www.volcengine.com/docs/84313/2277191?lang=zh)
-本示例演示了知识库 Java SDK 中 UpdatePoint 的基础使用方法，通过指定切片 ID 修改切片内容，使用前需配置鉴权参数（VOLC_AK/VOLC_SK 或 VIKING_API_KEY）。
+本示例演示了知识库 Java SDK 中 UpdatePoint 的基础使用方法，通过指定切片 ID 修改切片内容，使用前需配置 API Key 鉴权参数（VIKING_API_KEY）。
 ```java
 package com.volcengine.vikingdb.runtime.knowledge.examples.point_update;
 
@@ -35,7 +35,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.volcengine.vikingdb.runtime.core.ApiClient;
 import com.volcengine.vikingdb.runtime.core.RequestAddition;
 import com.volcengine.vikingdb.runtime.core.auth.Auth;
-import com.volcengine.vikingdb.runtime.core.auth.AuthWithAkSk;
 import com.volcengine.vikingdb.runtime.core.auth.AuthWithApiKey;
 import com.volcengine.vikingdb.runtime.enums.Scheme;
 import com.volcengine.vikingdb.runtime.knowledge.model.CollectionMeta;
@@ -63,11 +62,12 @@ public class Main {
     private static final String COLLECTION_RESOURCE_ID = "";
 
     public static void main(String[] args) throws Exception {
-        Auth auth = preferAuth();
-        if (auth == null) {
-            System.out.println("missing_auth: set VOLC_AK/VOLC_SK or VIKING_API_KEY");
+        String apiKey = getEnv("VIKING_API_KEY");
+        if (apiKey.isEmpty()) {
+            System.out.println("missing_auth: set VIKING_API_KEY");
             return;
         }
+        Auth auth = new AuthWithApiKey(apiKey);
         KnowledgeService service = newKnowledgeService(auth);
         KnowledgeCollectionClient kc = service.collection(defaultCollectionMeta());
 
@@ -114,19 +114,6 @@ public class Main {
 
     private static KnowledgeService newKnowledgeService(Auth auth) {
         return new KnowledgeService(SCHEME, HOST, REGION, auth);
-    }
-
-    private static Auth preferAuth() {
-        String ak = getEnv("VOLC_AK");
-        String sk = getEnv("VOLC_SK");
-        if (!ak.isEmpty() && !sk.isEmpty()) {
-            return new AuthWithAkSk(ak, sk);
-        }
-        String apiKey = getEnv("VIKING_API_KEY");
-        if (!apiKey.isEmpty()) {
-            return new AuthWithApiKey(apiKey);
-        }
-        return null;
     }
 
     private static CollectionMeta defaultCollectionMeta() {

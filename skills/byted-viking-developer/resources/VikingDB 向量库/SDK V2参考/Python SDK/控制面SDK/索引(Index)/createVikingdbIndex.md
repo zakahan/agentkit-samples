@@ -10,8 +10,8 @@ Python SDK 通过 `VIKINGDBApi().create_vikingdb_index(request)` 发起调用，
 | --- | --- | --- | --- |
 | project_name | str | 否 | 项目名称，对应 API 字段 `ProjectName`，默认为 default。 |
 | collection_name | str | 二选一 | 数据集名称，对应 API 字段 `CollectionName`，与 `resource_id` 至少填写一个。 |
-| resource_id | str |  | Collection 的资源 ID，对应 API 字段 `ResourceId`。 |
-| index_name | str | 是 | 要创建的索引名，对应 API 字段 `IndexName`。 <br>  <br> * 以字母开头，可包含字母、数字、下划线，长度 1-128 字节。 <br> * 同一 Collection 内必须唯一。 <br> * 同账号下，index 数量不超过200个 |
+| resource_id | str | 二选一 | Collection 的资源 ID，对应 API 字段 `ResourceId`。 |
+| index_name | str | 是 | 要创建的索引名，对应 API 字段 `IndexName`。 <br>  <br> * 以字母开头，可包含字母、数字、下划线，长度 1-128 字节。 <br> * 同一 Collection 内必须唯一。 <br> * 同账号下，index 数量不超过 200 个。 |
 | description | str | 否 | 索引描述，对应 API 字段 `Description`，最长 65535 字节。 |
 | cpu_quota | int | 否 | 创建/检索索引使用的 CPU 配额，对应 API 字段 `CpuQuota`，需 >= 1。 |
 | scalar_index | list[str] | 否 | 要建立标量索引的字段名列表，对应 API 字段 `ScalarIndex`，仅支持集合中已存在的字段。 |
@@ -23,16 +23,16 @@ Python SDK 通过 `VIKINGDBApi().create_vikingdb_index(request)` 发起调用，
 
 | 参数 | 类型 | 是否必选 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
-| index_type | str | 否 | - | 索引类型，对应 API 字段 `IndexType`。常见取值：`hnsw`、`hnsw_hybrid`、`flat`、`diskann`。 |
-| distance | str | 否 | - | 向量距离类型，对应 API 字段 `Distance`，支持 `ip`、`cosine`、`l2`。 |
-| hnsw_m | int | 否 | - | HNSW 图的最大邻居数，对应 API 字段 `HnswM`。 |
-| hnsw_cef | int | 否 | - | HNSW CEF（构建图时的搜索广度），对应 API 字段 `HnswCef`。 |
-| hnsw_sef | int | 否 | - | HNSW SEF（在线检索的搜索广度），对应 API 字段 `HnswSef`。 |
-| diskann_m | int | 否 | - | DiskANN 图每个节点的出度，对应 API 字段 `DiskannM`，仅 DiskANN 索引生效。 |
-| diskann_cef | int | 否 | - | DiskANN 构建/查询时的扩展因子，对应 API 字段 `DiskannCef`。 |
-| cache_ratio | float | 否 | - | 磁盘索引的热点缓存比例，对应 API 字段 `CacheRatio`。 |
-| pq_code_ratio | float | 否 | - | PQ 压缩比例，对应 API 字段 `PqCodeRatio`。 |
-| quant | str | 否 | - | 量化类型，对应 API 字段 `Quant`，支持 `int8`、`fix16`、`float`、`pq`。 |
+| index_type | str | 否 | *  | 索引类型，对应 API 字段 `IndexType`。常见取值：`hnsw`、`hnsw_hybrid`、`flat`、`diskann`。 |
+| distance | str | 否 | *  | 向量距离类型，对应 API 字段 `Distance`，支持 `ip`、`cosine`、`l2`。 |
+| hnsw_m | int | 否 | *  | HNSW 图的最大邻居数，对应 API 字段 `HnswM`。 |
+| hnsw_cef | int | 否 | *  | HNSW CEF（构建图时的搜索广度），对应 API 字段 `HnswCef`。 |
+| hnsw_sef | int | 否 | *  | HNSW SEF（在线检索的搜索广度），对应 API 字段 `HnswSef`。 |
+| diskann_m | int | 否 | *  | DiskANN 图每个节点的出度，对应 API 字段 `DiskannM`，仅 DiskANN 索引生效。 |
+| diskann_cef | int | 否 | *  | DiskANN 构建/查询时的扩展因子，对应 API 字段 `DiskannCef`。 |
+| cache_ratio | float | 否 | *  | 磁盘索引的热点缓存比例，对应 API 字段 `CacheRatio`。 |
+| pq_code_ratio | float | 否 | *  | PQ 压缩比例，对应 API 字段 `PqCodeRatio`。 |
+| quant | str | 否 | *  | 量化类型，对应 API 字段 `Quant`，支持 `int8`、`fix16`、`float`、`pq`。 |
 # 返回参数
 返回值类型为 `CreateVikingdbIndexResponse`。
 | 参数 | 类型 | 示例值 | 描述 |

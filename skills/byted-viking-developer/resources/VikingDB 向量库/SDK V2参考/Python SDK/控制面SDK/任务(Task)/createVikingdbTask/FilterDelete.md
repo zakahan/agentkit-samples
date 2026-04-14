@@ -3,7 +3,7 @@
 # 方法定义
 Python SDK 通过 `VIKINGDBApi().create_vikingdb_task(request)` 调用，`request` 类型为 `volcenginesdkvikingdb.CreateVikingdbTaskRequest`。
 # 请求参数
-若要将数据备份至TOS，请先授权 VikingDB 跨服务访问 TOS [去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=vikingdb)
+若要将数据备份至 TOS，请先授权 VikingDB 跨服务访问 TOS [去授权](https://console.volcengine.com/iam/service/attach_role/?ServiceName=vikingdb)
 
 | **参数** | **子参数** | **类型** | **是否必填** | **描述** |
 | --- | --- | --- | --- | --- |
@@ -12,15 +12,15 @@ Python SDK 通过 `VIKINGDBApi().create_vikingdb_task(request)` 调用，`reques
 | resource_id |  | str |  | Collection 资源 ID，对应 API 字段 `ResourceId`。 |
 | task_type |  | str | 是 | 任务类型，对应 API 字段 `TaskType`，本接口固定为 `filter_delete`。 |
 | task_config |  | TaskConfigForCreateVikingdbTaskInput | 是 | 删除任务配置，对应 API 字段 `TaskConfig`。 |
-|  | tos_path | str | 否 | TOS 路径，格式 ：{桶名}/{路径}，注意不是域名。必填，对应 API 字段 `TosPath`。 |
-|  | file_type | str | 否 | 文件类型, json 或者 parquet，必填，对应 API 字段 `FileType`。 |
-|  | filter_conds | Map | 是 | 过滤条件。使用参考 `https://www.volcengine.com/docs/84313/1419289`，对应 API 字段 `FilterConds`。 |
-|  | need_confirm | bool | 否 | 是否可跳过人工确认环节，默认为 `true`，对应 API 字段 `NeedConfirm`。 |
+|  | tos_path | str | 否 | TOS 路径，格式：{桶名}/{路径}，注意不是域名。如需备份至 TOS 则必填，对应 API 字段 `TosPath`。 |
+|  | file_type | str | 否 | 文件类型，`json` 或 `parquet`。如需备份至 TOS 则必填，对应 API 字段 `FileType`。 |
+|  | filter_conds | Map | 是 | 过滤条件。参考：https://www.volcengine.com/docs/84313/1419289，对应 API 字段 `FilterConds`。 |
+|  | need_confirm | bool | 否 | 是否需要人工确认环节，默认为 `true`，对应 API 字段 `NeedConfirm`。 |
 # 返回参数
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
-| task_id | str | 任务ID |
-| message | string | 操作结果信息 |
+| task_id | str | 任务 ID |
+| message | str | 操作结果信息 |
 # 示例
 ## 请求示例
 ```python

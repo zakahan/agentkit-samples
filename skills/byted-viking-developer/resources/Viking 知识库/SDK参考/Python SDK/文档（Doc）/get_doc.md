@@ -4,7 +4,7 @@ get_doc 用于查看知识库下的文档信息。
 | **参数** | **类型** | **是否必选** | **默认值** | **参数说明** |
 | --- | --- | --- | --- | --- |
 | collection_name | string | 否 | -- | **知识库名称** |
-| project_name | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则在 default 项目下创建。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
+| project_name | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则在 default 项目下查询。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
 | resource_id | string | 否 | -- | **知识库唯一 id** <br> 可选择直接传 resource_id，或同时传 collection_name 和 project_name 作为知识库的唯一标识 |
 | doc_id | string | 是 | -- | **要查询的文档 id** |
 | return_token_usage | bool | 否 | false | **是否返回文档向量化和文档生成摘要所消耗的 tokens** |
@@ -75,33 +75,32 @@ get_doc 用于查看知识库下的文档信息。
 | 36008 | embedding 的列组合长度超出限制 | 缩短待 embedding 原始文本长度 |
 | 其他错误码 | 未知错误，请联系我们 | 未知错误，请联系我们 |
 ## **状态码说明**
-| **状态码** | **http状态码** | **返回信息** | **状态码说明** |
+| **状态码** | **HTTP 状态码** | **返回信息** | **状态码说明** |
 | --- | --- | --- | --- |
 | 0 | 200 | success | 成功 |
 | 1000001 | 401 | unauthorized | 鉴权失败 |
 | 1000002 | 403 | no permission | 权限不足 |
 | 1000003 | 400 | invalid request：%s | 非法参数 |
-| 1000005 | 400 | collection not exist | collection不存在 |
-| 1001001 | 400 | doc not exist | doc不存在 |
+| 1000005 | 400 | collection not exist | collection 不存在 |
+| 1001001 | 400 | doc not exist | doc 不存在 |
 # 请求示例
-首次使用知识库 SDK ，可参考 [使用说明](unknown)
-本示例演示了知识库 Python SDK 中 GetDoc 的基础使用方法，通过指定知识库名称和文档 ID 实现单篇文档查询，使用前需配置 AK/SK 鉴权参数。
+首次使用知识库 SDK，可参考 [使用说明](https://www.volcengine.com/docs/84313/2277191?lang=zh)
+本示例演示了知识库 Python SDK 中 GetDoc 的基础使用方法，通过指定知识库名称和文档 ID 实现单篇文档查询，使用前需配置 API Key 鉴权参数。
 ```Python
 import os
 
 from vikingdb.knowledge import VikingKnowledge
-from vikingdb.auth import IAM
+from vikingdb.auth import APIKey
 
 def main():
-    access_key = os.getenv("VIKINGDB_AK")
-    secret_key = os.getenv("VIKINGDB_SK")
+    api_key = os.getenv("VIKINGDB_API_KEY") or ""
     endpoint = "api-knowledgebase.mlp.cn-beijing.volces.com"
     region = "cn-beijing"
     
     client = VikingKnowledge(
         host=endpoint,
         region=region,
-        auth=IAM(ak=access_key, sk=secret_key),
+        auth=APIKey(api_key=api_key),
         scheme="https"
     )
     

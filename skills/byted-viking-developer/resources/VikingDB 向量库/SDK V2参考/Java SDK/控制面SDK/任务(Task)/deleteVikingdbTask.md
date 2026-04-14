@@ -1,5 +1,5 @@
 # 概述
-删除指定的任务，删除后任务将终止
+删除指定的任务，删除后任务将终止。
 # 方法定义
 ```Java
 public DeleteVikingdbTaskResponse deleteVikingdbTask(DeleteVikingdbTaskRequest body) throws ApiException
@@ -27,7 +27,7 @@ public class DeleteVikingdbTask {
     public static void main(String[] args) {
         String ak = System.getenv("AK"); // ak
         String sk = System.getenv("SK"); // sk
-        String endpoint = "vikingdb.cn-beijing.volcengineapi.com"; // 填写向量库控制面v2的域名  https://www.volcengine.com/docs/84313/1792715
+        String endpoint = "vikingdb.cn-beijing.volcengineapi.com"; // 填写向量库控制面 V2 的域名  https://www.volcengine.com/docs/84313/1792715
         String region = "cn-beijing"; // 服务区域
 
         ApiClient apiClient = new ApiClient()
@@ -64,5 +64,4 @@ public class DeleteVikingdbTask {
 }
 ```
 
-## 
 

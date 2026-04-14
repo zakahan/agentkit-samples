@@ -1,7 +1,7 @@
 # 概述
-查询指定 task 的详情信息和执行进度
+查询指定 Task 的详情信息和执行进度。
 # 方法定义
-Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `GetVikingdbTask(input)` 方法发起任务创建请求， input 参数类型为 `vikingdb.GetVikingdbTaskInput` ，包含任务创建所需的完整配置信息
+Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `GetVikingdbTask(input)` 方法发起任务查询请求，input 参数类型为 `vikingdb.GetVikingdbTaskInput`，包含任务查询所需的参数信息。
 # 请求参数
 | 字段名 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
@@ -31,16 +31,16 @@ Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `GetVikingdbTa
 | --- | --- | --- | --- | --- | --- | --- |
 | 初始化中 | 排队中 | 需要人工确认 | 已确认 | 执行中 | 完成 | 失败 |
 
-* TaskProcessInfoForGetVikingdbTaskOutput 
+* TaskProcessInfoForGetVikingdbTaskOutput
 
 | **字段** | **类型** | **说明** |
 | --- | --- | --- |
 | TaskProgress | string | 任务进度 例如50% |
 | ErrorMessage | string | 任务错误信息 |
-| SampleData | []SampleDataForGetVikingdbTaskOutput> | 采样5条数据用于展示 |
+| SampleData | []SampleDataForGetVikingdbTaskOutput | 采样5条数据用于展示 |
 | SampleTimestamp | int | 采样的时间戳，后写入的数据不会被处理 |
 | ScanDataCount | int | 当前扫描数据量 |
-| TotalDataCount | int | collection 数据总条数(预估） |
+| TotalDataCount | int | collection 数据总条数（预估） |
 | TotalFilterCount | int | 已经过滤出的数据 |
 # 示例
 ## 请求参数
@@ -88,4 +88,5 @@ func main() {
 }
 ```
 
-## 
+
+

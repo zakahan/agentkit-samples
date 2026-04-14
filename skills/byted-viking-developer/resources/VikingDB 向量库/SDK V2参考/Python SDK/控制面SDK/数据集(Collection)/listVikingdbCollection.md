@@ -5,7 +5,7 @@ Python SDK 通过 `VIKINGDBApi().list_vikingdb_collection(request)` 调用，`re
 # **请求参数**
 | **参数** | **类型** | **是否必选** | **说明** |
 | --- | --- | --- | --- |
-| project_name | str | 否 | 项目名称，对应 API 字段 `ProjectName`，默认 default。 |
+| project_name | str | 否 | 项目名称，对应 API 字段 `ProjectName`，默认为 default。 |
 | page_size | int | 否 | 分页大小，对应 API 字段 `PageSize`，取值 1-100，默认 10。 |
 | page_number | int | 否 | 分页页码，对应 API 字段 `PageNumber`，从 1 开始。 |
 | filter | FilterForListVikingdbCollectionInput | 否 | 过滤条件，对应 API 字段 `Filter`。 |
@@ -32,7 +32,7 @@ Python SDK 通过 `VIKINGDBApi().list_vikingdb_collection(request)` 调用，`re
 | project_name | str | 所属项目，对应 API 字段 `ProjectName`。 |
 | resource_id | str | 集合 ID，对应 API 字段 `ResourceId`。 |
 | description | str | 集合描述，对应 API 字段 `Description`。 |
-| create_time | str | 创建时间 (RFC3339)，对应 API 字段 `CreateTime`。 |
+| create_time | str | 创建时间（RFC3339），对应 API 字段 `CreateTime`。 |
 | update_time | str | 更新时间，对应 API 字段 `UpdateTime`。 |
 | update_person | str | 最近操作人，对应 API 字段 `UpdatePerson`。 |
 | enable_keywords_search | bool | 是否开启关键词检索，对应 API 字段 `EnableKeywordsSearch`。 |
@@ -57,7 +57,7 @@ Python SDK 通过 `VIKINGDBApi().list_vikingdb_collection(request)` 调用，`re
 
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
-| data_count | int | 集合中文档条数，对应 API 字段 `DataCount`。 |
+| data_count | int | 集合内文档条数，对应 API 字段 `DataCount`。 |
 | data_storage | int | 存储量（Byte），对应 API 字段 `DataStorage`。 |
 
 * TagForListVikingdbCollectionOutput

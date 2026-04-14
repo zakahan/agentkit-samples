@@ -5,8 +5,8 @@ Python SDK 通过 `VIKINGDBApi().list_vikingdb_index(request)` 发起调用，`r
 # **请求参数**
 | 参数 | 类型 | 是否必选 | 描述 |
 | --- | --- | --- | --- |
-| project_name | str | 否 | 项目名称，对应 API 字段 `ProjectName`，默认 default。 |
-| page_number | int | 否 | 页码，对应 API 字段 `PageNumber`，从 1 开始，允许 0 表示第一页。 |
+| project_name | str | 否 | 项目名称，对应 API 字段 `ProjectName`，默认 `default`。 |
+| page_number | int | 否 | 页码，对应 API 字段 `PageNumber`，从 1 开始（也允许传 0 表示第一页）。 |
 | page_size | int | 否 | 单页条数，对应 API 字段 `PageSize`，范围 1-100。 |
 | filter | FilterForListVikingdbIndexInput | 否 | 过滤条件，对应 API 字段 `Filter`，结构如下。 |
 
@@ -23,7 +23,7 @@ Python SDK 通过 `VIKINGDBApi().list_vikingdb_index(request)` 发起调用，`r
 | --- | --- | --- |
 | indexes | list[IndexForListVikingdbIndexOutput] | 索引详情列表，对应 API 字段 `Indexes`。 |
 | page_number | int | 当前页码，对应 API 字段 `PageNumber`。 |
-| page_size | int | 列表大小，对应 API 字段 `PageSize`。 |
+| page_size | int | 单页条数，对应 API 字段 `PageSize`。 |
 | total_count | int | 满足条件的索引总数，对应 API 字段 `TotalCount`。 |
 
 * IndexForListVikingdbIndexOutput
@@ -57,16 +57,16 @@ Python SDK 通过 `VIKINGDBApi().list_vikingdb_index(request)` 发起调用，`r
 
 | 字段 | 类型 | 描述 |
 | --- | --- | --- |
-| index_type | str | 索引类型 `IndexType`（如 hnsw、diskann、flat、hnsw_hybrid）。 |
-| distance | str | 距离度量 `Distance`（ip/cosine/l2）。 |
-| quant | str | 量化方式 `Quant`（int8/fix16/float/pq）。 |
+| index_type | str | 索引类型，对应 API 字段 `IndexType`（如 hnsw、diskann、flat、hnsw_hybrid）。 |
+| distance | str | 距离度量，对应 API 字段 `Distance`（ip/cosine/l2）。 |
+| quant | str | 量化方式，对应 API 字段 `Quant`（int8/fix16/float/pq）。 |
 | hnsw_m | int | HNSW 图邻居数，对应 API 字段 `HnswM`。 |
 | hnsw_cef | int | HNSW 构图广度 `HnswCef`。 |
 | hnsw_sef | int | HNSW 在线检索广度 `HnswSef`。 |
-| diskann_m | int | DiskANN 图出度 `DiskannM`。 |
-| diskann_cef | int | DiskANN 扩展因子 `DiskannCef`。 |
-| cache_ratio | float | 热点缓存比例 `CacheRatio`。 |
-| pq_code_ratio | float | PQ 压缩比例 `PqCodeRatio`。 |
+| diskann_m | int | DiskANN 图出度，对应 API 字段 `DiskannM`。 |
+| diskann_cef | int | DiskANN 扩展因子，对应 API 字段 `DiskannCef`。 |
+| cache_ratio | float | 热点缓存比例，对应 API 字段 `CacheRatio`。 |
+| pq_code_ratio | float | PQ 压缩比例，对应 API 字段 `PqCodeRatio`。 |
 # 示例
 ## Python 示例
 ```python

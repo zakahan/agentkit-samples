@@ -7,7 +7,7 @@ Python SDK 通过 `VIKINGDBApi().get_vikingdb_collection(request)` 调用，`req
 | --- | --- | --- | --- |
 | project_name | str | 否 | 项目名称，对应 API 字段 `ProjectName`，默认值为 default。 |
 | collection_name | str | 2选1 | 集合名称，对应 API 字段 `CollectionName`。需以字母开头，只能包含字母/数字/下划线，长度 1-128。 |
-| resource_id | str |  | 集合资源 ID，对应 API 字段 `ResourceId`。可与 `collection_name` 二选一或同时传递以保证精确定位。 |
+| resource_id | str | 2选1 <br> 2选1 | 集合资源 ID，对应 API 字段 `ResourceId`。可与 `collection_name` 二选一或同时传递以保证精确定位。 |
 # 返回参数
 成功响应返回 `GetVikingdbCollectionResponse`，包含如下字段：
 | 参数 | 类型 | 描述 |
@@ -32,7 +32,7 @@ Python SDK 通过 `VIKINGDBApi().get_vikingdb_collection(request)` 调用，`req
 | --- | --- | --- |
 | field_name | str | 字段名称，对应 API 字段 `FieldName`。 |
 | field_type | str | 字段类型，对应 API 字段 `FieldType`。 |
-| dim | int | 当字段类型为 vector 时表示稠密向量维度，对应 API 字段 `Dim`。 |
+| dim | int | 当字段类型为 `vector` 时表示稠密向量维度，对应 API 字段 `Dim`。 |
 | is_primary_key | bool | 是否为主键，对应 API 字段 `IsPrimaryKey`。仅 string / int64 字段可设置为主键。 |
 | default_value | object | 字段默认值，对应 API 字段 `DefaultValue`。 |
 
@@ -56,7 +56,7 @@ Python SDK 通过 `VIKINGDBApi().get_vikingdb_collection(request)` 调用，`req
 | --- | --- | --- | --- |
 | model_name | str | 是 | 模型名称，对应 API 字段 `ModelName`。可选值见下方 embedding 模型列表。 |
 | model_version | str | 否 | 模型版本，对应 API 字段 `ModelVersion`。Doubao 系模型必填，bge 系默认 `default`。 |
-| dim | int | 否 | 稠密向量维度。各模型支持的维度见embedding模型列表。 |
+| dim | int | 否 | 稠密向量维度。各模型支持的维度见 embedding 模型列表。 |
 | text_field | str | 否 | 文本向量化字段名，对应 API 字段 `TextField`。 |
 | image_field | str | 否 | 图片向量化字段名，对应 API 字段 `ImageField`。 |
 | video_field | str | 否 | 视频向量化字段名，对应 API 字段 `VideoField`。 |

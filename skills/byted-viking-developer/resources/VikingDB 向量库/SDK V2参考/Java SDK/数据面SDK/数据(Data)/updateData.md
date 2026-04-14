@@ -1,28 +1,24 @@
 # 概述
-updateData 用于为已存在数据的部分字段进行更新。支持 text、标量字段、vector 字段的更新。
-
+updateData 用于更新已存在数据的部分字段，支持 text、标量字段、vector 字段的更新。
 # 方法定义
 ```Java
     public DataApiResponse<UpdateDataResult> updateData(UpdateDataRequest request)
             throws ApiClientException, VectorApiException
 ```
 
-
 # **请求参数**
 | 名称 | 类型 | 描述 | 必选 |
 | --- | --- | --- | --- |
 | collectionName | String | 数据集的名称。 | 二选一 |
-| resourceId | String | 数据集的Id。 |  |
-| data | List<Map<String, Object>> | 要更新的数据列表。列表中的每个 Map 代表一条数据，必须包含主键字段。 | 是 |
-| ttl | integer | 数据的生存时间（Time-To-Live），单位为秒。超过该时间后数据将被自动删除。 | 否 |
-
+| resourceId | String | 数据集的 ID。 |  |
+| data | List[Map[String, Object]] | 要更新的数据列表。列表中的每个 Map 代表一条数据，必须包含主键字段。 | 是 |
+| ttl | Integer | 数据的生存时间（Time-To-Live），单位为秒。超过该时间后数据将被自动删除。 | 否 |
 # 返回参数
 | 名称 | 类型 | 描述 |
 | --- | --- | --- |
 | tokenUsage | Object | 本次请求的 token 使用情况。 |
 # 示例
 ## 请求参数
-
 ```Java
 package org.example.newsubproduct.data.data;
 
@@ -44,7 +40,7 @@ public class UpdateData {
         try {
             vectorService = new VectorService(
                     Scheme.HTTPS,
-                    "api-vikingdb.vikingdb.cn-beijing.volces.com", // 填写向量库数据面v2的域名  https://www.volcengine.com/docs/84313/1792715
+                    "api-vikingdb.vikingdb.cn-beijing.volces.com", // 填写向量库数据面 V2 的域名 https://www.volcengine.com/docs/84313/1792715
                     "cn-beijing",
                     new AuthWithAkSk(System.getenv("AK"), System.getenv("SK")),
                     ClientConfig.builder().build()
@@ -85,4 +81,3 @@ public class UpdateData {
 ```
 
 
-## 

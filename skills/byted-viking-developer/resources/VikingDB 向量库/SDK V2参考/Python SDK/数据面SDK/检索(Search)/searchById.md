@@ -20,7 +20,7 @@
 | limit | Optional[int] | 否 | 限制返回条数，最大 5000。 |
 | offset | Optional[int] | 否 | 分页偏移量，默认 0，过大时会出现深分页性能开销。 |
 | partition | Optional[str] | 否 | 仅检索指定分区，默认搜索全部分区。 |
-| advance | Optional[SearchAdvance] | 否 | 高级参数集合（post_process_ops、ids_in 等），详见[检索公共参数](/c8p1dfoq/dhd9lm8y) <br> 。 |
+| advance | Optional[SearchAdvance] | 否 | 高级参数集合（post_process_ops、ids_in 等），详见[检索公共参数](/docs/84313/1927082) <br> 。 |
 # 返回参数
 | 名称 | 类型 | 描述 |
 | --- | --- | --- |
@@ -82,6 +82,5 @@ if response.result:
     for item in response.result.data:
         print(item.id, item.score, item.fields.get("title"))
 ```
-
 
 

@@ -1,20 +1,20 @@
 # 概述
-get_point 用于查看知识库下的指定切片的信息
+get_point 用于查看知识库下指定切片的信息。
 # **请求参数**
 | **参数** | **类型** | **是否必选** | **默认值** | **参数说明** |
 | --- | --- | --- | --- | --- |
 | collection_name | string | 否 | -- | **知识库名称** |
-| project_name | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则在default项目下创建。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
+| project_name | string | 否 | default | **知识库所属项目，获取方式参见文档**[API 接入与技术支持](/c8p1dfoq/y97x844a) <br> 若不指定该字段，则默认在 default 项目下查询。 <br> 若需要操作指定项目下的知识库，需正确配置该字段。 |
 | resource_id | string | 否 | -- | **知识库唯一 id** <br> 可选择直接传 resource_id，或同时传 collection_name 和 project_name 作为知识库的唯一标识 |
 | point_id | string | 是 | -- | **切片唯一 id** |
-| get_attachment_link | bool | 否 | False | **是否获取切片中图片的临时下载链接** <br> 10 分钟有效期 |
+| get_attachment_link | bool | 否 | False | **是否获取切片中图片的临时下载链接** <br> 有效期 10 分钟 |
 # **响应消息**
 | **字段** | **类型** | **参数说明** |
 | --- | --- | --- |
 | code | Optional[int] | 状态码 |
 | message | Optional[str] | 返回信息 |
 | request_id | Optional[str] | 标识每个请求的唯一标识符 |
-| data | Optional[PointInfo] | PointInfo |
+| data | Optional[PointInfo] | 切片信息（PointInfo） |
 ### **PointInfo**
 | **字段** | **类型** | **参数说明** |
 | --- | --- | --- |
@@ -29,7 +29,7 @@ get_point 用于查看知识库下的指定切片的信息
 | description | Optional[str] | 文档描述（当前仅支持图片文档） |
 | content | Optional[str] | 切片内容 |
 | chunk_id | Optional[int] | 切片位次 id，代表在原始文档中的位次顺序 |
-| original_question | Optional[str] | faq 数据检索召回答案对应的原始问题 |
+| original_question | Optional[str] | FAQ 数据检索召回答案对应的原始问题 |
 | doc_info | Optional[PointDocInfo] | PointDocInfo |
 | rerank_score | Optional[float] | 重排得分 |
 | score | Optional[float] | 检索得分 |
@@ -87,28 +87,27 @@ get_point 用于查看知识库下的指定切片的信息
 | 1000001 | 401 | unauthorized | 鉴权失败 |
 | 1000002 | 403 | no permission | 权限不足 |
 | 1000003 | 400 | invalid request：%s | 非法参数 |
-| 1000005 | 400 | collection not exist | collection不存在 |
-| 1001001 | 400 | doc not exist | doc不存在 |
-| 1002001 | 400 | point not exist | point_id不存在 |
+| 1000005 | 400 | collection not exist | collection 不存在 |
+| 1001001 | 400 | doc not exist | doc 不存在 |
+| 1002001 | 400 | point not exist | point_id 不存在 |
 # 请求示例
-首次使用知识库 SDK ，可参考 [使用说明](unknown)
-本示例演示了知识库 Python SDK 中 GetPoint 函数的基础使用方法，通过指定知识库名称和知识点 ID 查询切片信息，使用前需配置 AK/SK 鉴权参数。
+首次使用知识库 SDK ，可参考 [使用说明](https://www.volcengine.com/docs/84313/2277191?lang=zh)
+本示例演示了知识库 Python SDK 中 GetPoint 函数的基础使用方法，通过指定知识库名称和切片 ID（point_id）查询切片信息，使用前需配置 API Key 鉴权参数。
 ```Python
 import os
 
 from vikingdb.knowledge import VikingKnowledge
-from vikingdb.auth import IAM
+from vikingdb.auth import APIKey
 
 def main():
-    access_key = os.getenv("VIKINGDB_AK")
-    secret_key = os.getenv("VIKINGDB_SK")
+    api_key = os.getenv("VIKINGDB_API_KEY") or ""
     endpoint = "api-knowledgebase.mlp.cn-beijing.volces.com"
     region = "cn-beijing"
     
     client = VikingKnowledge(
         host=endpoint,
         region=region,
-        auth=IAM(ak=access_key, sk=secret_key),
+        auth=APIKey(api_key=api_key),
         scheme="https"
     )
     

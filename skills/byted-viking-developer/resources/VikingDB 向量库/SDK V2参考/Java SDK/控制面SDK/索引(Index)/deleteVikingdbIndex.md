@@ -1,8 +1,8 @@
 # 概述
- DeleteIndex 用于删除指定数据集 Collection 的指定索引 Index。
+DeleteVikingdbIndex 用于删除指定数据集 Collection 的指定索引 Index。
 # 方法定义
 ```Java
-public DeleteVikingdbIndexResponse deleteVikingdbIndex(DeleteVikingdbIndexRequest body) throws ApiException 
+public DeleteVikingdbIndexResponse deleteVikingdbIndex(DeleteVikingdbIndexRequest body) throws ApiException;
 ```
 
 # **请求参数**
@@ -10,7 +10,7 @@ public DeleteVikingdbIndexResponse deleteVikingdbIndex(DeleteVikingdbIndexReques
 | --- | --- | --- | --- |
 | projectName | String | 否 | 项目名称 |
 | collectionName | String | 2选1 | 数据集名称 |
-| resourceId | String |  | 数据集资源ID。请求必须指定ResourceId和CollectionName其中之一。 |
+| resourceId | String |  | 数据集资源 ID。请求必须指定 resourceId 或 collectionName 之一。 |
 | indexName | String | 是 | 索引名称 |
 # 返回参数
 | 参数 | 类型 | 示例值 | 描述 |
@@ -68,4 +68,5 @@ public class DeleteVikingdbIndex {
     }
 }
 ```
+
 

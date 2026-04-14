@@ -1,7 +1,7 @@
 # 概述
-删除指定的任务，删除后任务将终止
+删除指定任务，删除后任务将终止。
 # 方法定义
-Python SDK 通过 `VIKINGDBApi().delete_vikingdb_task(request)` 调用，`request` 类型为 `volcenginesdkvikingdb.DeleteVikingdbTaskRequest`。
+Python SDK 通过 `VIKINGDBApi().delete_vikingdb_task(request)` 调用该接口，`request` 类型为 `volcenginesdkvikingdb.DeleteVikingdbTaskRequest`。
 # 请求参数
 | **参数** | **类型** | **是否必选** | **说明** |
 | --- | --- | --- | --- |
@@ -31,7 +31,5 @@ request = vdb.DeleteVikingdbTaskRequest(task_id="t-20240201xxxx")
 response = client.delete_vikingdb_task(request)
 print(response.message or "delete task finished")
 ```
-
-
 
 

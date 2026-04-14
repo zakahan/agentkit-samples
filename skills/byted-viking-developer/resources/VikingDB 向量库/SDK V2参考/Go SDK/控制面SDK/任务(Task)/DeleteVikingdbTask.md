@@ -1,7 +1,7 @@
 # 概述
-删除指定的任务，删除后任务将终止
+删除指定的任务，删除后任务将终止。
 # 方法定义
-Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `DeleteVikingdbTask(input)` 方法发起任务创建请求， input 参数类型为 `vikingdb.DeleteVikingdbTaskInput` ，包含任务创建所需的完整配置信息
+Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `DeleteVikingdbTask(input)` 方法发起任务删除请求，input 参数类型为 `vikingdb.DeleteVikingdbTaskInput`，包含任务删除所需的参数信息。
 # 请求参数
 | 字段名 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
@@ -9,9 +9,9 @@ Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `DeleteVikingd
 # 返回参数
 | 参数 | 类型 | 示例值 | 描述 |
 | --- | --- | --- | --- |
-| Message | String | success | 操作结果信息 |
+| Message | string | success | 操作结果信息 |
 # 示例
-```Java
+```go
 package main
 
 import (
@@ -54,4 +54,5 @@ func main() {
 }
 ```
 
-## 
+
+

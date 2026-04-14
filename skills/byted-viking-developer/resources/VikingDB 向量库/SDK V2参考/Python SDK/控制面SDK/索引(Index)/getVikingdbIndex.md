@@ -1,5 +1,5 @@
 # 概述
-GetVikingdbIndex 接口用于查询单个索引的详细配置，包含分片、scalar 索引及向量索引参数。
+GetVikingdbIndex 接口用于查询单个索引的详细配置，包含分片、标量索引及向量索引参数。
 # 方法定义
 Python SDK 通过 `VIKINGDBApi().get_vikingdb_index(request)` 发起调用，`request` 类型为 `volcenginesdkvikingdb.GetVikingdbIndexRequest`。
 # **请求参数**
@@ -39,16 +39,16 @@ Python SDK 通过 `VIKINGDBApi().get_vikingdb_index(request)` 发起调用，`re
 
 | 字段 | 类型 | 描述 |
 | --- | --- | --- |
-| index_type | str | 索引类型 `IndexType`。 |
-| distance | str | 距离度量 `Distance`。 |
-| quant | str | 量化方式 `Quant`。 |
-| hnsw_m | int | HNSW 邻居数 `HnswM`。 |
-| hnsw_cef | int | HNSW 构图广度 `HnswCef`。 |
-| hnsw_sef | int | HNSW 检索广度 `HnswSef`。 |
-| diskann_m | int | DiskANN 图出度 `DiskannM`。 |
-| diskann_cef | int | DiskANN 扩展因子 `DiskannCef`。 |
-| cache_ratio | float | 缓存比例 `CacheRatio`。 |
-| pq_code_ratio | float | PQ 压缩比例 `PqCodeRatio`。 |
+| index_type | str | 索引类型，对应 API 字段 `IndexType`。 |
+| distance | str | 距离度量，对应 API 字段 `Distance`。 |
+| quant | str | 量化方式，对应 API 字段 `Quant`。 |
+| hnsw_m | int | HNSW 邻居数，对应 API 字段 `HnswM`。 |
+| hnsw_cef | int | HNSW 构图广度，对应 API 字段 `HnswCef`。 |
+| hnsw_sef | int | HNSW 检索广度，对应 API 字段 `HnswSef`。 |
+| diskann_m | int | DiskANN 图出度，对应 API 字段 `DiskannM`。 |
+| diskann_cef | int | DiskANN 扩展因子，对应 API 字段 `DiskannCef`。 |
+| cache_ratio | float | 缓存比例，对应 API 字段 `CacheRatio`。 |
+| pq_code_ratio | float | PQ 压缩比例，对应 API 字段 `PqCodeRatio`。 |
 # 示例
 ## Python 示例
 ```python

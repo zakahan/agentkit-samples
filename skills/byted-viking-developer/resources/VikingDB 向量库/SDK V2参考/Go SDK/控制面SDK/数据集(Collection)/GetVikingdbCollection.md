@@ -1,7 +1,7 @@
 # 概述
 GetVikingdbCollection 接口用于查询指定 Collection 的元信息、字段配置以及向量化设置。
 # 方法定义
-Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `GetVikingdbCollection(input)` 方法发起集合创建请求，input 参数类型为 `vikingdb.GetVikingdbCollectionInput` ，包含集合名称、描述、项目名称和字段定义等配置
+Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `GetVikingdbCollection(input)` 方法发起集合查询请求，input 参数类型为 `vikingdb.GetVikingdbCollectionInput`，包含项目名称以及 CollectionName/ResourceId 等查询条件。
 # **请求参数**
 | **参数** | **类型** | **是否必选** | **参数说明** |
 | --- | --- | --- | --- |
@@ -43,11 +43,11 @@ Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `GetVikingdbCo
 | DataCount | int | 集合内数据条数，对应 API 字段 `DataCount`。 |
 | DataStorage | int | 集合占用存储量（Byte），对应 API 字段 `DataStorage`。 |
 
-* VectorizeForGetVikingdbCollectionOutput 参 S数结构
+* VectorizeForGetVikingdbCollectionOutput 参数结构
 
 | 参数 | 类型 | 是否必选 | 描述 |
 | --- | --- | --- | --- |
-| DenseVectors | VectorizeForGetVikingdbCollectionOutput | 是 | 稠密向量化配置，对应 API 字段 `Dense`，用于指定 embedding 模型、维度与输入字段。 |
+| DenseVectors | DenseForGetVikingdbCollectionOutput | 是 | 稠密向量化配置，对应 API 字段 `Dense`，用于指定 embedding 模型、维度与输入字段。 |
 | SparseVectors | SparseForGetVikingdbCollectionOutput | 否 | 稀疏向量化配置，对应 API 字段 `Sparse`。 |
 
 * DenseForGetVikingdbCollectionOutput 和 SparseForGetVikingdbCollectionOutput 参数结构
@@ -56,13 +56,13 @@ Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `GetVikingdbCo
 | --- | --- | --- | --- |
 | ModelName | string | 是 | 模型名称，对应 API 字段 `ModelName`。可选值见下方 embedding 模型列表。 |
 | ModelVersion | string | 否 | 模型版本，对应 API 字段 `ModelVersion`。Doubao 系模型必填，bge 系默认 `default`。 |
-| Dim | string | 否 | 稠密向量维度。各模型支持的维度见embedding模型列表。 |
+| Dim | int | 否 | 稠密向量维度。各模型支持的维度见 embedding 模型列表。 |
 | TextField | string | 否 | 文本向量化字段名，对应 API 字段 `TextField`。 |
 | ImageField | string | 否 | 图片向量化字段名，对应 API 字段 `ImageField`。 |
 | VideoField | string | 否 | 视频向量化字段名，对应 API 字段 `VideoField`。 |
 # 示例
 ## 请求示例
-```python
+```go
 package main
 
 import (
@@ -102,4 +102,5 @@ func main() {
     fmt.Println(output)
 }
 ```
+
 

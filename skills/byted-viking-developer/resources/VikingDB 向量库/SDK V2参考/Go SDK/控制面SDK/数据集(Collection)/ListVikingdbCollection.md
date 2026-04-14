@@ -1,7 +1,7 @@
 # 概述
 ListVikingdbCollection 接口用于查询当前项目下的 Collection 列表，支持分页与名称关键字过滤。
 # 方法定义
-Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `ListVikingdbCollection(input)` 方法发起集合创建请求，input 参数类型为 `vikingdb.ListVikingdbCollectionInput` ，包含集合名称、描述、项目名称和字段定义等配置
+Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `ListVikingdbCollection(input)` 方法发起集合列表查询请求，input 参数类型为 `vikingdb.ListVikingdbCollectionInput`，包含项目名称、分页参数与过滤条件等配置。
 # **请求参数**
 | **参数** | **类型** | **是否必选** | **说明** |
 | --- | --- | --- | --- |
@@ -75,7 +75,7 @@ Go SDK 通过 `vikingdb.New(sess)` 创建的客户端实例调用 `ListVikingdbC
 | SparseVectors | SparseForListVikingdbCollectionOutput | 稀疏向量化配置，对应 API 字段 `Sparse`。 |
 # 示例
 ## 请求示例
-```python
+```go
 package main
 
 import (
@@ -120,4 +120,5 @@ func main() {
     fmt.Println(output)
 }
 ```
+
 

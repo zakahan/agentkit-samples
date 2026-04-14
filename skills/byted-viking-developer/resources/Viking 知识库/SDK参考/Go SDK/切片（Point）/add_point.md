@@ -1,5 +1,5 @@
 # 概述
-add_point 用于新增一个知识库下文档的一个切片
+add_point 用于新增知识库下文档的一个切片。
 # **请求参数**
 | **参数** | **类型** | **必选** | **默认值** | **备注** |
 | --- | --- | --- | --- | --- |
@@ -10,7 +10,7 @@ add_point 用于新增一个知识库下文档的一个切片
 | ChunkType | string | 是 | -- | **要添加的切片类型** <br>  <br> * 和知识库支持的类型不匹配时会报错 <br> * 结构化知识库：“structured”， <br> * 非结构化知识库： <br> * “text”： 纯文本切片 <br> * “faq”： faq 类型切片 |
 | Content | *string | 否 | -- | **新增切片文本内容** <br> 当 ChunkType 为 text、faq 时必传 <br> 1、text：Content 对应切片原文内容 <br> 2、faq：Content 对应**答案字段**内容 |
 | ChunkTitle | *string | 否 | -- | **切片标题** <br> 只有非结构化文档支持修改切片的标题。 |
-| Question | *string | 否 | -- | **新增 faq 切片中的问题字段** <br> 当 ChunkType 为 faq 时必传 <br>  <br> * 字段长度范围为 [1，{Embedding模型支持的最大长度}] |
+| Question | *string | 否 | -- | **新增 faq 切片中的问题字段** <br> 当 ChunkType 为 faq 时必传 <br>  <br> * 字段长度范围为 [1, {Embedding模型支持的最大长度}] |
 | Fields | []map[string]interface{} | 否 | -- | **表示传入的结构化数据** <br> 当 ChunkType 为 structured 时必传。 <br> [ <br> { "field_name": "xxx" // 字段名称 <br> "field_value": xxxx // 字段值 <br> }, <br> ] <br>  <br> * field_name 必须已在所属知识库的表字段里配置，否则会报错 <br> * 和文档导入时的向量字段长度校验保持一致，拼接后的做 embedding 的文本长度不超过 65535 |
 # **响应消息**
 | **字段** | **类型** | **参数说明** |
@@ -29,8 +29,8 @@ add_point 用于新增一个知识库下文档的一个切片
 | ChunkID | *int64 | 切片在文档下的 id，文档下唯一 |
 | PointID | *string | 切片 id，知识库下唯一 |
 # 请求示例
-首次使用知识库 SDK ，可参考 [使用说明](unknown)
-本示例演示了知识库 Go SDK 中 AddPoint 函数的基础使用方法，使用前需配置 AK/SK 鉴权参数。
+首次使用知识库 SDK ，可参考 [使用说明](https://www.volcengine.com/docs/84313/2277191?lang=zh)
+本示例演示了知识库 Go SDK 中 AddPoint 函数的基础使用方法，使用前需配置 API Key 鉴权参数。
 ```Go
 package main
 
@@ -47,14 +47,13 @@ import (
 
 func main() {
     var (
-       accessKey = os.Getenv("VIKINGDB_AK")
-       secretKey = os.Getenv("VIKINGDB_SK")
+       apiKey    = os.Getenv("VIKINGDB_API_KEY")
        endpoint  = "https://api-knowledgebase.mlp.cn-beijing.volces.com"
        region    = "cn-beijing"
     )
 
     client, err := knowledge.New(
-       knowledge.AuthIAM(accessKey, secretKey),
+       knowledge.AuthAPIKey(apiKey),
        knowledge.WithEndpoint(endpoint),
        knowledge.WithRegion(region),
        knowledge.WithTimeout(time.Second*30),

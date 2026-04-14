@@ -12,40 +12,44 @@
 | CollectionName | String | 否 | 要删除的记忆库的唯一名称。 |
 | ProjectName | String | 否 | 项目名称。默认为 default。 |
 | ResourceId | String | 否 | 资源 ID。唯一标识符。 |
+说明：CollectionName 与 ResourceId 至少填写一个（两者不可同时为空）。
 # 响应消息
-操作成功时，HTTP状态码为200。
+操作成功时，HTTP 状态码为 200。
 | **字段** | **类型** | **描述** |
 | --- | --- | --- |
 | ResponseMetadata | Object | 响应元数据信息。 |
 | * Region | String | 服务区域，例如"cn-beijing"。 |
 | * RequestId | String | 请求唯一标识符。 |
-| * Service | String | 服务名称，如"knowledge_base_server"。 |
+| * Service | String | 服务名称，如"vikingdb"。 |
 | * Version | String | API版本号。 |
-| Result | Object | 成功与否，例如"success"。 |
+| Result | Object | 删除结果信息。 |
+| * Message | String | 操作结果信息，例如"success"。 |
 # 示例代码
 ## **Python请求**
 ```Python
+import os
 import volcenginesdkcore
 import volcenginesdkvikingdb
 from volcenginesdkcore.rest import ApiException
-from volcenginesdkvikingdb import MemoryCollectionDeleteRequest, MemoryCollectionDeleteResponse
-host="vikingdb.cn-beijing.volcengineapi.com"
-# 全局设置
+
+
 configuration = volcenginesdkcore.Configuration()
-configuration.ak =  "your_ak"
-configuration.sk = "your_sk"
-configuration.debug = True
-configuration.host = host
+configuration.ak = os.environ.get("VIKINGDB_AK")
+configuration.sk = os.environ.get("VIKINGDB_SK")
 configuration.region = "cn-beijing"
-configuration.scheme="https"
-configuration.client_side_validation = True
 volcenginesdkcore.Configuration.set_default(configuration)
+
 api_instance = volcenginesdkvikingdb.VIKINGDBApi()
+
+memory_collection_delete_request = volcenginesdkvikingdb.MemoryCollectionDeleteRequest(
+    collection_name="your_collection_name",
+    project_name="default"
+)
+
 try:
-    body:MemoryCollectionDeleteRequest = MemoryCollectionDeleteRequest(collection_name="my_first_memory_collection")
-    res:MemoryCollectionDeleteResponse = api_instance.memory_collection_delete(body)
-    print(res.to_dict())
+    api_instance.memory_collection_delete(memory_collection_delete_request)
 except ApiException as e:
-    pass
+    print("Exception when calling api: %s\n" % e)
 ```
+
 

@@ -1,21 +1,16 @@
 ---
 name: byted-viking-aisearch-database
 description: 简化版数据库工具，适用于火山引擎 RDS 实例以及自建数据库的元数据查询、SQL 执行、nl2sql 等场景。当用户需要查询火山引擎 RDS 实例以及自建数据库表结构、查看数据、执行 SQL 或将自然语言转换为 SQL 时使用此 skill。
-metadata: '
-  {
-  openclaw: {
-    identity: {[
-        {
-          type: "apikey",
-          provider: "rds_readonly_provider",
-          env: ["DATABASE_VIKING_APIG_URL", "DATABASE_VIKING_APIG_KEY"], 
-          required: true
-        }
-    ]}
-  }
-}
-'
-
+metadata:
+  version: "1.0.0"
+  openclaw:
+    identity:
+      - type: apikey
+        provider: rds_readonly_provider
+        env:
+          - DATABASE_VIKING_APIG_URL
+          - DATABASE_VIKING_APIG_KEY
+        required: true
 ---
 
 # Database Tunnel 核心指令

@@ -1,13 +1,7 @@
 import argparse
 import json
 import os
-import sys
-from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple
-
-root = Path(__file__).resolve().parents[2]
-if str(root) not in sys.path:
-    sys.path.insert(0, str(root))
+from typing import Any, Dict, Iterable, List, Optional
 
 from scripts.config import build_serverless_client, load_emr_skill_config
 
@@ -18,7 +12,9 @@ def _parse_json(value: Optional[str]) -> Dict[str, Any]:
     return json.loads(value)
 
 
-def _merge_conf(base: Optional[Dict[str, Any]], override: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+def _merge_conf(
+    base: Optional[Dict[str, Any]], override: Optional[Dict[str, Any]]
+) -> Dict[str, Any]:
     merged: Dict[str, Any] = {}
     if base:
         merged.update(base)
@@ -37,7 +33,9 @@ def _add_spark_credential(conf: Dict[str, Any]) -> Dict[str, Any]:
     return conf
 
 
-def _add_compute_group(conf: Dict[str, Any], compute_group: Optional[str]) -> Dict[str, Any]:
+def _add_compute_group(
+    conf: Dict[str, Any], compute_group: Optional[str]
+) -> Dict[str, Any]:
     if compute_group:
         conf["serverless.compute.group.name"] = compute_group
     return conf
@@ -101,7 +99,9 @@ def _cmd_sql(args: argparse.Namespace) -> str:
         try:
             from serverless.task import SparkSQLTask  # type: ignore
         except Exception as exc:
-            raise RuntimeError("未安装 serverless SDK 或缺少 serverless.task.SparkSQLTask") from exc
+            raise RuntimeError(
+                "未安装 serverless SDK 或缺少 serverless.task.SparkSQLTask"
+            ) from exc
         task = _try_construct(
             SparkSQLTask,
             [
@@ -113,7 +113,9 @@ def _cmd_sql(args: argparse.Namespace) -> str:
         try:
             from serverless.task import PrestoSQLTask  # type: ignore
         except Exception as exc:
-            raise RuntimeError("未安装 serverless SDK 或缺少 serverless.task.PrestoSQLTask") from exc
+            raise RuntimeError(
+                "未安装 serverless SDK 或缺少 serverless.task.PrestoSQLTask"
+            ) from exc
         task = _try_construct(
             PrestoSQLTask,
             [
@@ -123,7 +125,9 @@ def _cmd_sql(args: argparse.Namespace) -> str:
         )
     return _submit(task)
 
+
 spark_jar_jobs = [("serverless.task", "SparkJarTask"), ("serverless.task", "JarTask")]
+
 
 def _cmd_jar(args: argparse.Namespace) -> str:
     conf = _merge_conf({}, _parse_json(args.conf))
@@ -148,7 +152,7 @@ def _cmd_jar(args: argparse.Namespace) -> str:
     elif isinstance(main_args, list):
         main_args_list = [str(x) for x in main_args]
     else:
-        raise RuntimeError("--main-args 需要是形如 {\"args\":[...]} 的 JSON")
+        raise RuntimeError('--main-args 需要是形如 {"args":[...]} 的 JSON')
 
     depend_jars = _parse_json(args.depend_jars).get("items") if args.depend_jars else []
     files = _parse_json(args.files).get("items") if args.files else []
@@ -198,11 +202,13 @@ def _cmd_pyspark(args: argparse.Namespace) -> str:
     try:
         from serverless.task import PySparkTask  # type: ignore
     except Exception as exc:
-        raise RuntimeError("未安装 serverless SDK 或缺少 serverless.task.PySparkTask") from exc
+        raise RuntimeError(
+            "未安装 serverless SDK 或缺少 serverless.task.PySparkTask"
+        ) from exc
 
     script_args = _parse_json(args.args).get("args") if args.args else []
     if not isinstance(script_args, list):
-        raise RuntimeError("--args 需要是形如 {\"args\":[...]} 的 JSON")
+        raise RuntimeError('--args 需要是形如 {"args":[...]} 的 JSON')
 
     pyfiles = _parse_json(args.pyfiles).get("items") if args.pyfiles else []
     depend_jars = _parse_json(args.depend_jars).get("items") if args.depend_jars else []
@@ -235,7 +241,9 @@ def _cmd_pyspark(args: argparse.Namespace) -> str:
     )
     return _submit(task)
 
+
 ray_jobs = [("serverless.task", "RayJobTask"), ("serverless.task", "RayTask")]
+
 
 def _cmd_ray(args: argparse.Namespace) -> str:
     conf = _merge_conf({}, _parse_json(args.conf))
@@ -324,12 +332,16 @@ def main() -> None:
 
     p_ray = sub.add_parser("ray")
     p_ray.add_argument("--entrypoint-cmd", dest="entrypoint_cmd", required=True)
-    p_ray.add_argument("--entrypoint-resource", dest="entrypoint_resource", required=True)
+    p_ray.add_argument(
+        "--entrypoint-resource", dest="entrypoint_resource", required=True
+    )
     p_ray.add_argument("--head-cpu", dest="head_cpu")
     p_ray.add_argument("--head-memory", dest="head_memory")
     p_ray.add_argument("--worker-cpu", dest="worker_cpu")
     p_ray.add_argument("--worker-memory", dest="worker_memory")
-    p_ray.add_argument("--worker-replicas", dest="worker_replicas", type=int, default=None)
+    p_ray.add_argument(
+        "--worker-replicas", dest="worker_replicas", type=int, default=None
+    )
     p_ray.add_argument("--runtime-env", dest="runtime_env")
     p_ray.add_argument("--name", default="ray")
     p_ray.add_argument("--queue")

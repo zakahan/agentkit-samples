@@ -14,35 +14,19 @@
 
 from __future__ import annotations
 
-"""EMR Skill 配置管理。
-
-本模块提供统一的 EMR Serverless 访问配置加载能力，支持：
-
-- 从环境变量读取 AK/SK、Region、Endpoint、Service；
-- 可选从简单的本地配置文件中读取缺省值（KEY=VALUE 格式）；
-- 提供默认队列名，方便上层 Skill 在未显式指定队列时回退使用；
-- 在出现配置问题时给出清晰的错误提示，但不会打印任何 AK/SK 明文。
-
-- 环境变量约定（统一使用 `VOLCENGINE_*` 前缀）：
-
-- ``VOLCENGINE_AK`` / ``VOLCENGINE_SK``：访问凭证（必填）；
-- ``VOLCENGINE_REGION``：区域，默认为 ``cn-beijing``；
-- ``VOLCENGINE_ENDPOINT``：服务 Endpoint，未设置时根据 Region 推导
-  （形如 ``emr-serverless.{region}.volcengineapi.com``）；
-- ``VOLCENGINE_SERVICE``：服务名称，默认为 ``emr_serverless``；
-- ``EMR_DEFAULT_QUEUE``：默认队列名称（可选）；
-- ``EMR_SKILL_CONFIG`` 或 ``EMR_SKILLS_CONFIG``：可选配置文件路径，
-  文件格式为 ``KEY=VALUE``，键名沿用上述环境变量名。
-"""
-
 import os
+import urllib
+import urllib.request
 from dataclasses import dataclass
-from typing import Dict, Optional, Iterable, Any
+from typing import Any
 
 try:
     from serverless.client import ServerlessClient
-except Exception as e:
+except Exception:
     ServerlessClient = Any
+
+from typing import Dict, Optional, Iterable
+
 
 class EMRSkillConfigError(Exception):
     """在加载 EMR Skill 配置时发生错误。"""
@@ -95,9 +79,9 @@ def _load_simple_kv_file(path: str) -> Dict[str, str]:
 
 
 def _get_with_fallback(
-        key: str,
-        file_cfg: Dict[str, str],
-        default: Optional[str] = None,
+    key: str,
+    file_cfg: Dict[str, str],
+    default: Optional[str] = None,
 ) -> Optional[str]:
     """优先从环境变量读取，其次从配置文件，最后使用默认值。"""
 
@@ -105,9 +89,9 @@ def _get_with_fallback(
 
 
 def _get_any_of(
-        keys: Iterable[str],
-        file_cfg: Dict[str, str],
-        default: Optional[str] = None,
+    keys: Iterable[str],
+    file_cfg: Dict[str, str],
+    default: Optional[str] = None,
 ) -> Optional[str]:
     """按顺序从多组键中选择首个有效值。
 
@@ -142,26 +126,35 @@ def load_emr_skill_config(config_file: Optional[str] = None) -> EMRSkillConfig:
     """
 
     file_path = (
-            config_file
-            or os.getenv("EMR_SKILL_CONFIG")
-            or os.getenv("EMR_SKILLS_CONFIG")
+        config_file or os.getenv("EMR_SKILL_CONFIG") or os.getenv("EMR_SKILLS_CONFIG")
     )
     file_cfg: Dict[str, str] = _load_simple_kv_file(file_path) if file_path else {}
 
     ak = _get_with_fallback("VOLCENGINE_AK", file_cfg)
     sk = _get_with_fallback("VOLCENGINE_SK", file_cfg)
-    region = _get_with_fallback("VOLCENGINE_REGION", file_cfg, "cn-beijing") or "cn-beijing"
+    region = (
+        _get_with_fallback("VOLCENGINE_REGION", file_cfg, "cn-beijing") or "cn-beijing"
+    )
 
     # Endpoint：优先使用显式配置，其次根据 Region 推导
     endpoint = _get_with_fallback("VOLCENGINE_ENDPOINT", file_cfg)
     if not endpoint:
         endpoint = f"emr-serverless.{region}.volcengineapi.com"
 
-    service = _get_with_fallback("VOLCENGINE_SERVICE", file_cfg, "emr_serverless") or "emr_serverless"
+    service = (
+        _get_with_fallback("VOLCENGINE_SERVICE", file_cfg, "emr_serverless")
+        or "emr_serverless"
+    )
     default_queue = _get_with_fallback("EMR_DEFAULT_QUEUE", file_cfg)
 
-    missing = [name for name, value in (("VOLCENGINE_AK", ak), ("VOLCENGINE_SK", sk)) if not value]
-    if missing:
+    api_host = os.getenv("ARK_SKILL_API_BASE")
+    api_key = os.getenv("ARK_SKILL_API_KEY")
+    missing = [
+        name
+        for name, value in (("VOLCENGINE_AK", ak), ("VOLCENGINE_SK", sk))
+        if not value
+    ]
+    if (not api_key or not api_host) and missing:
         # 注意：这里仅提示缺失字段名，不打印任何密钥内容
         raise EMRSkillConfigError(
             "缺少必要的访问凭证: {}。请通过环境变量或配置文件进行设置。".format(
@@ -183,6 +176,7 @@ def build_serverless_client() -> ServerlessClient:
     from serverless.auth import StaticCredentials
     from scripts.config import load_emr_skill_config
     from scripts.config import EMRSkillConfigError
+
     try:
         skill_cfg = load_emr_skill_config()
     except EMRSkillConfigError as exc:
@@ -201,6 +195,19 @@ def build_serverless_client() -> ServerlessClient:
     except Exception as exc:  # noqa: BLE001
         raise RuntimeError(f"初始化 EMR Serverless SDK Client 失败: {exc}") from exc
     return client
+
+
+def detect_site() -> str:
+    try:
+        req = urllib.request.Request("http://100.96.0.96/volcstack/latest/site_name")
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            return resp.read().decode().strip()
+    except Exception:
+        return "unknown"
+
+
+def id_byteplus() -> bool:
+    return detect_site() == "BytePlus"
 
 
 # 半托管region-endpoint映射
@@ -235,5 +242,22 @@ cloud_monitor_endpoint_map = {
     "cn-shanghai": "cloudmonitor.cn-shanghai.volcengineapi.com",
     "cn-guangzhou": "cloudmonitor.cn-guangzhou.volcengineapi.com",
     "cn-beijing-selfdrive": "cloudmonitor.cn-beijing-selfdrive.volcengineapi.com",
-    "cn-shanghai-autodriving": "cloudmonitor.cn-shanghai-autodriving.volcengineapi.com"
+    "cn-shanghai-autodriving": "cloudmonitor.cn-shanghai-autodriving.volcengineapi.com",
 }
+
+if id_byteplus():
+    semi_managed_region_endpoint_map = {
+        "ap-southeast-1": "emr.ap-southeast-1.byteplusapi.com",
+    }
+    full_managed_region_endpoint_map = {
+        "cn-hongkong": "emr-serverless.cn-hongkong.byteplusapi.com",
+        "ap-southeast-1": "emr-serverless.ap-southeast-1.byteplusapi.com",
+        "ap-southeast-3": "emr-serverless.ap-southeast-3.byteplusapi.com",
+        "cn-beijing": "emr-serverless.cn-beijing.byteplusapi.com.cn",
+    }
+    cloud_monitor_endpoint_map = {
+        "cn-hongkong": "cloudmonitor.cn-hongkong.byteplusapi.com",
+        "ap-southeast-1": "cloudmonitor.ap-southeast-1.byteplusapi.com",
+        "ap-southeast-3": "cloudmonitor.ap-southeast-3.byteplusapi.com",
+        "cn-beijing": "cloudmonitor.cn-beijing.byteplusapi.com.cn",
+    }

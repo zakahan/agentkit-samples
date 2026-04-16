@@ -16,11 +16,8 @@ import datetime
 import hashlib
 import hmac
 import json
-import os
-import sys
 from typing import Any, Dict, Optional, Generator
 from urllib.parse import quote
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))  # 添加父目录
 
 import requests
 
@@ -28,6 +25,7 @@ from scripts.client.tmp_file_manager import clean_tmp_dir
 from scripts.config import load_emr_skill_config
 
 skill_cfg = load_emr_skill_config()
+
 
 class StreamResponseEvent:
     def __init__(self, response_header: Dict[str, Any], event_data: str):
@@ -70,8 +68,10 @@ def hash_sha256(content: str) -> str:
 def utc_now():
     try:
         from datetime import timezone
+
         return datetime.datetime.now(timezone.utc)
     except ImportError:
+
         class UTC(datetime.tzinfo):
             def utcoffset(self, dt):
                 return datetime.timedelta(0)
@@ -86,20 +86,22 @@ def utc_now():
 
 
 def request(
-        service: str,
-        action: str,
-        version: str,
-        region: str,
-        endpoint: str,
-        method: str = "POST",
-        query: Optional[Dict[str, Any]] = None,
-        body: Any = None,
-        timeout = 30,
-        headers=None,
+    service: str,
+    action: str,
+    version: str,
+    region: str,
+    endpoint: str,
+    method: str = "POST",
+    query: Optional[Dict[str, Any]] = None,
+    body: Any = None,
+    timeout=30,
+    headers=None,
 ):
     headers = headers or {}
     clean_tmp_dir(hours=6)
-    body_text, method_u, request_query = _sign(action, body, endpoint, headers, method, query, region, service, version)
+    body_text, method_u, request_query = _sign(
+        action, body, endpoint, headers, method, query, region, service, version
+    )
 
     r = requests.request(
         method=method_u,
@@ -107,30 +109,32 @@ def request(
         headers=headers,
         params=request_query,
         data=body_text,
-        timeout = timeout
+        timeout=timeout,
     )
     try:
         return r.json()
-    except Exception as e:
+    except Exception:
         return r.text
 
+
 def stream_request(
-        service: str,
-        action: str,
-        version: str,
-        region: str,
-        endpoint: str,
-        method: str = "POST",
-        query: Optional[Dict[str, Any]] = None,
-        body: Any = None,
-        timeout = 30,
-        headers=None,
+    service: str,
+    action: str,
+    version: str,
+    region: str,
+    endpoint: str,
+    method: str = "POST",
+    query: Optional[Dict[str, Any]] = None,
+    body: Any = None,
+    timeout=30,
+    headers=None,
 ) -> Generator[StreamResponseEvent, None, None]:
     headers = headers or {}
     headers.setdefault("Accept", "text/event-stream")
     clean_tmp_dir(hours=6)
-    body_text, method_u, request_query = _sign(action, body, endpoint, headers, method, query, region, service, version)
-
+    body_text, method_u, request_query = _sign(
+        action, body, endpoint, headers, method, query, region, service, version
+    )
 
     with requests.request(
         method=method_u,
@@ -138,8 +142,8 @@ def stream_request(
         headers=headers,
         params=request_query,
         data=body_text,
-        timeout = timeout,
-        stream = True,
+        timeout=timeout,
+        stream=True,
     ) as response:
         response.raise_for_status()
         for line in response.iter_lines(decode_unicode=True):
@@ -150,6 +154,7 @@ def stream_request(
             if not line:  # 空行表示事件结束
                 continue
             yield StreamResponseEvent(dict(response.headers), line)
+
 
 def _sign(action, body, endpoint, headers, method, query, region, service, version):
     ak = skill_cfg.access_key
@@ -192,20 +197,22 @@ def _sign(action, body, endpoint, headers, method, query, region, service, versi
     )
     hashed_canonical_request = hash_sha256(canonical_request_str)
     credential_scope = "/".join([short_x_date, region, service, "request"])
-    string_to_sign = "\n".join(["HMAC-SHA256", x_date, credential_scope, hashed_canonical_request])
+    string_to_sign = "\n".join(
+        ["HMAC-SHA256", x_date, credential_scope, hashed_canonical_request]
+    )
     k_date = hmac_sha256(sk.encode("utf-8"), short_x_date)
     k_region = hmac_sha256(k_date, region)
     k_service = hmac_sha256(k_region, service)
     k_signing = hmac_sha256(k_service, "request")
     signature = hmac_sha256(k_signing, string_to_sign).hex()
-    authorization = (
-        f"HMAC-SHA256 Credential={ak}/{credential_scope}, SignedHeaders={signed_headers_str}, Signature={signature}"
+    authorization = f"HMAC-SHA256 Credential={ak}/{credential_scope}, SignedHeaders={signed_headers_str}, Signature={signature}"
+    headers.update(
+        {
+            "Host": endpoint,
+            "Content-Type": content_type,
+            "X-Date": x_date,
+            "X-Content-Sha256": payload_hash,
+            "Authorization": authorization,
+        }
     )
-    headers.update({
-        "Host": endpoint,
-        "Content-Type": content_type,
-        "X-Date": x_date,
-        "X-Content-Sha256": payload_hash,
-        "Authorization": authorization,
-    })
     return body_text, method_u, request_query

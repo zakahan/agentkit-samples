@@ -15,13 +15,7 @@
 import argparse
 import json
 import os
-import sys
-from pathlib import Path
 from typing import Any, Dict, Optional
-
-root = Path(__file__).resolve().parents[2]
-if str(root) not in sys.path:
-    sys.path.insert(0, str(root))
 
 from scripts.on_ecs.emr_on_ecs_manager import manage_emr_on_ecs
 
@@ -51,8 +45,11 @@ def main() -> None:
     parser.add_argument("--service", help="服务名称，默认为 emr")
     parser.add_argument("--version", help="API 版本，默认为 2023-08-15")
     parser.add_argument("--action", required=True, help="API 操作名称")
-    parser.add_argument("--region", default=os.getenv("VOLCENGINE_REGION", "cn-beijing"),
-                        help="区域，默认为环境变量 VOLCENGINE_REGION 或 cn-beijing")
+    parser.add_argument(
+        "--region",
+        default=os.getenv("VOLCENGINE_REGION", "cn-beijing"),
+        help="区域，默认为环境变量 VOLCENGINE_REGION 或 cn-beijing",
+    )
     parser.add_argument("--method", default="POST", help="HTTP 方法，默认为 POST")
     parser.add_argument("--query", default=None, help="查询参数，JSON 格式")
     parser.add_argument("--body", default=None, help="请求体，JSON 格式")

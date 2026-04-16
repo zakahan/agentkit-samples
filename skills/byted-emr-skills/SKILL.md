@@ -1,12 +1,14 @@
 ---
 name: byted-emr-skills
-description: byted-emr-skills提供管理火山引擎EMR（火山引擎 E-MapReduce（简称“EMR”）是开源Hadoop生态的企业级大数据分析系统，完全兼容开源）的技能，包括管理EMR serverless队列、计算组、作业模板/实例、日志、监控并提供 EMR Agent 智能诊断与知识问答能力。当用户提及“Serverless 队列”、“Serverless 作业”、“SparkSQL/PrestoSQL/Ray/PySpark/SparkJar 作业”、“作业日志”、“作业监控”、“作业诊断”等需求时，应优先使用此技能。
+description: byted-emr-skills提供管理火山引擎EMR（火山引擎 E-MapReduce（简称“EMR”）是开源Hadoop生态的企业级大数据分析系统，完全兼容开源）的技能，包括管理EMR on ECS集群、EMR on VKE集群、EMR serverless队列、计算组、作业模板/实例、日志、监控并提供 EMR Agent 智能诊断与知识问答能力。当用户提及“EMR on ECS集群”、“EMR on VKE集群”、“Serverless 队列”、“Serverless 作业”、“SparkSQL/PrestoSQL/Ray/PySpark/SparkJar 作业”、“作业日志”、“作业监控”、“作业诊断”等需求时，应优先使用此技能。
 ---
 
 # EMR Skills
 - 何时使用（触发短语）
 - 当用户提出以下任何类似需求时，立即调用该技能：
   ```
+  “查询EMR集群的服务列表”
+  “重启Spark服务”
   “获取 EMR 作业日志”
   “查看EMR serverless队列列表”
   “查看EMR serverless队列详情”
@@ -28,9 +30,31 @@ description: byted-emr-skills提供管理火山引擎EMR（火山引擎 E-MapRed
 - EMR Agent
   - 交互式诊断与知识问答
   - 会话与报告管理
+- EMR on ECS
+  - 集群：查看集群详情、集群列表、更新集群属性
+  - 节点组：列出节点组、更新节点组属性、节点列表、扩容节点组磁盘、更新节点组ECS规格
+  - 服务：列出应用、组件列表、组件实例列表、执行应用操作
+  - 服务配置：配置文件列表、配置文件详情、配置项列表、配置项修改历史列表、修改配置项
+  - 操作审计：操作列表查询
+  - 用户：创建集群用户、修改已创建用户信息、获取集群用户列表、获取用户详情、更新集群用户密码
+  - 用户组：获取集群用户组列表、集群用户组详情、创建集群用户组、更新集群用户组
+- EMR on VKE
+  - 集群：查看集群列表、集群详情
+  - 服务（应用）：查看服务列表、服务组件实例、重启服务或组件实例、查看服务配置参数、修改服务配置参数
+  - 操作日志：查看操作日志列表、操作日志详情
 
 # Initial Setup
-- 确保已配置火山引擎 API 凭证：
+## 环境变量配置
+
+### 方式一：使用ARK_SKILL_API环境变量（推荐）
+如果已配置以下环境变量，则无需配置火山引擎API凭证：
+```bash
+export ARK_SKILL_API_BASE="your-api-base-url"
+export ARK_SKILL_API_KEY="your-api-key"
+```
+
+### 方式二：使用火山引擎API凭证
+如果未配置ARK_SKILL_API环境变量，且需要使用serverless sdk能力或出现sdk报错，则需要配置火山引擎API凭证：
 ```bash
 export VOLCENGINE_AK="your-access-key"
 export VOLCENGINE_SK="your-secret-key"
@@ -159,6 +183,8 @@ export VOLCENGINE_REGION="cn-beijing"
   - 更新集群用户组：修改指定集群中已存在用户组的描述或成员信息，必须使用OpenAPI`UpdateClusterUserGroup`更新集群用户组。
 - 所有用户组管理操作详情，请严格按照`references/emr_on_ecs/user_group/emr_on_ecs_user_group_guide.md`中的说明进行操作。
 
+## EMR on VKE 集群管理
+- 所有集群管理操作详情，请严格按照`references/emr_on_vke/emr_on_vke_guide.md`中的说明进行操作。
 
 # Available Scripts
 - `scripts/on_serverless/emr_serverless_manager.py`：统一的 EMR Serverless OpenAPI 调用入口（manage_emr_serverless），用于队列/作业实例/计算组等运维类接口调用。
@@ -168,6 +194,7 @@ export VOLCENGINE_REGION="cn-beijing"
 - `scripts/bin/install_serverless_sdk.sh`：安装 EMR on Serverless 形态的 Python SDK，用于 Serverless 队列管理、作业提交等操作。
 - `scripts/on_ecs/emr_on_ecs_manager.py`：统一的 EMR on ECS 形态的 OpenAPI 调用入口（manage_emr_on_ecs），用于集群/节点组/应用等运维类接口调用。
 - `scripts/on_ecs/emr_on_ecs_cli.py`：EMR on ECS 形态的命令行工具，用于集群/节点组/应用等运维类接口调用。
+- `scripts/on_vke/emr_on_vke_manager.py`：EMR on VKE 形态 产品的管理脚本
 
 # References
 - `references/emr_serverless/queue/emr_serverless_queue_guide.md`：EMR on Serverless形态的资源队列详细管理操作指南
@@ -182,6 +209,7 @@ export VOLCENGINE_REGION="cn-beijing"
 - `references/emr_on_ecs/operation/emr_on_ecs_operation_guide.md`：EMR on ECS 操作审计管理操作指南，包括操作列表查询等。
 - `references/emr_on_ecs/user/emr_on_ecs_user_guide.md`：EMR on ECS 用户管理操作指南，包括创建用户、修改用户信息、查询用户列表、查询用户详情、更新用户密码等。
 - `references/emr_on_ecs/group/emr_on_ecs_group_guide.md`：EMR on ECS 用户组管理操作指南，包括查询用户组列表、查询用户组详情、创建用户组、更新用户组等。
+- `references/emr_on_vke/emr_on_vke_guide.md`：EMR on VKE集群管理操作指南。包括查询集群列表和详情、查询服务列表与详情、查询操作日志列表与详情、重启服务、查询和更新服务配置参数等。
 
 # Assets
 - `assets/libs/python_serverless-1.*-py3-none-any.whl`: EMR on Serverless 形态的 Python SDK 包，用于 EMR Serverless 作业提交等操作。

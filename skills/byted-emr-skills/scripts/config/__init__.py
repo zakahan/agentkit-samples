@@ -4,11 +4,16 @@
 供 openclaw skill 或其他集成代码复用。
 """
 
-from .config import EMRSkillConfig, EMRSkillConfigError, load_emr_skill_config, build_serverless_client
+from .config import (
+    EMRSkillConfig,
+    EMRSkillConfigError,
+    load_emr_skill_config,
+    build_serverless_client,
+)
 
 __all__ = [
     "EMRSkillConfig",
     "EMRSkillConfigError",
     "load_emr_skill_config",
-    "build_serverless_client"
+    "build_serverless_client",
 ]

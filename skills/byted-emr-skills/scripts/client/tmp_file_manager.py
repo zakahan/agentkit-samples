@@ -32,20 +32,18 @@ def clean_tmp_dir(target_dir: str = None, hours: int = 6):
 
         cutoff_time = time.time() - hours * 3600
 
-        for file_path in target_path.rglob('*'):
+        for file_path in target_path.rglob("*"):
             if file_path.is_file():
                 # 使用 st_mtime（最后修改时间）
                 file_mtime = file_path.stat().st_mtime
                 if file_mtime < cutoff_time:
                     try:
                         file_path.unlink(missing_ok=True)
-                    except Exception as e:
+                    except Exception:
                         pass
-    except Exception as e:
+    except Exception:
         pass
+
 
 def _get_tmp_dir():
     return str(Path(__file__).resolve().parent.parent.parent / "tmp")
-
-
-

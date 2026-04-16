@@ -15,9 +15,7 @@
 import argparse
 import json
 import os
-import sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))  # 添加父目录
 from pathlib import Path
 from scripts.client.tmp_file_manager import _get_tmp_dir
 
@@ -65,6 +63,7 @@ def _call_api(action: str, body, timeout=30):
     #     collection_formats={}
     # )
 
+
 def _stream_call_api(action: str, body, timeout=30):
     task_id = ""
     result_events = []
@@ -81,12 +80,12 @@ def _stream_call_api(action: str, body, timeout=30):
             {},
             body,
             timeout=timeout,
-            headers={'Accept': 'text/event-stream'},
+            headers={"Accept": "text/event-stream"},
         ):
             if not task_id:
                 header = event.get_response_header()
                 task_id = header["X-Task-Id"]
-            if not event.get_event_data().startswith('data:'):
+            if not event.get_event_data().startswith("data:"):
                 continue
             result_events.append(event.get_event_data())
 
@@ -111,15 +110,15 @@ def _stream_call_api(action: str, body, timeout=30):
             body,
             timeout=timeout,
             headers={
-                'Accept': 'text/event-stream',
-                'X-Resume-Task-Id': task_id,
-                'X-Resume-From-Index': '0'
+                "Accept": "text/event-stream",
+                "X-Resume-Task-Id": task_id,
+                "X-Resume-From-Index": "0",
             },
         ):
             if not task_id:
                 header = event.get_response_header()
                 task_id = header["X-Task-Id"]
-            if not event.get_event_data().startswith('data:'):
+            if not event.get_event_data().startswith("data:"):
                 continue
             result_events.append(event.get_event_data())
     return "\n".join(result_events)
@@ -127,7 +126,7 @@ def _stream_call_api(action: str, body, timeout=30):
 
 def _parse_and_format(raw):
     if isinstance(raw, bytes):
-        text = raw.decode('utf-8', errors='ignore')
+        text = raw.decode("utf-8", errors="ignore")
     else:
         text = str(raw)
     chat_id = None
@@ -139,23 +138,23 @@ def _parse_and_format(raw):
         s = line.strip()
         if not s:
             continue
-        if not s.startswith('data:'):
+        if not s.startswith("data:"):
             continue
-        payload = s[len('data:'):].strip()
+        payload = s[len("data:") :].strip()
         try:
             evt = json.loads(payload)
         except Exception:
             continue
         if not chat_id:
-            chat_id = evt.get('threadId')
-        match evt.get('type'):
-            case 'ARTIFACT_CONTENT':
-                report_id = evt.get('delta', {}).get('id')
-            case 'STEP_STARTED':
+            chat_id = evt.get("threadId")
+        match evt.get("type"):
+            case "ARTIFACT_CONTENT":
+                report_id = evt.get("delta", {}).get("id")
+            case "STEP_STARTED":
                 parts.append(f"\n========{evt.get('title', '')}========\n")
-            case 'TEXT_MESSAGE_CONTENT':
-                text_content += evt.get('delta')
-            case 'TEXT_MESSAGE_END':
+            case "TEXT_MESSAGE_CONTENT":
+                text_content += evt.get("delta")
+            case "TEXT_MESSAGE_END":
                 parts.append(text_content)
                 text_content = ""
 
@@ -166,20 +165,23 @@ def _parse_and_format(raw):
         meta += f"chat-id: {chat_id}\n"
     return "\n".join([meta] + parts).strip()
 
+
 def _staging_file_name(output_dir: str, file_id: str) -> Path:
     out_dir = Path(output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     return out_dir / f"{file_id}.staging"
+
 
 def _final_file_name(output_dir: str, file_id: str) -> Path:
     out_dir = Path(output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     return out_dir / f"{file_id}.txt"
 
+
 def _chat(question: str, chat_id: str = None):
     if not chat_id:
         resp = _call_api("CreateChat", {"Verbose": False})
-        chat_id = resp.get("Result",{}).get("ChatId")
+        chat_id = resp.get("Result", {}).get("ChatId")
     file_id = str(os.getpid())
     print(f"pid: {file_id}")
     output_dir = _get_tmp_dir()
@@ -187,28 +189,29 @@ def _chat(question: str, chat_id: str = None):
     final_file_name = _final_file_name(output_dir, file_id)
     Path(output_dir).mkdir(parents=True, exist_ok=True)
     try:
-        with open(staging_file_name, 'w', encoding='utf-8') as f:
+        with open(staging_file_name, "w", encoding="utf-8") as f:
             f.write("")
             f.flush()
 
         res = _stream_call_api(
             action="ChatCompletions",
             body={"Content": question, "ChatId": chat_id, "Verbose": False},
-            timeout=600
+            timeout=600,
         )
         formatted = _parse_and_format(res)
         print(formatted)
-        with open(staging_file_name, 'w', encoding='utf-8') as f:
+        with open(staging_file_name, "w", encoding="utf-8") as f:
             f.write(formatted)
         os.replace(staging_file_name, final_file_name)
     except Exception as e:
         err = f"SessionID: {chat_id or '无'}\n请求失败: {str(e)}"
         try:
-            with open(staging_file_name, 'w', encoding='utf-8') as f:
+            with open(staging_file_name, "w", encoding="utf-8") as f:
                 f.write(err)
             os.replace(staging_file_name, final_file_name)
         except Exception:
             pass
+
 
 def _get_result(file_id: str):
     output_dir = _get_tmp_dir()
@@ -218,7 +221,7 @@ def _get_result(file_id: str):
         print("still running, please fetch result later.")
     elif final_file_name.exists():
         result = ""
-        with open(final_file_name, 'r', encoding='utf-8') as f:
+        with open(final_file_name, "r", encoding="utf-8") as f:
             result = f.readlines()
         final_file_name.unlink(missing_ok=True)
         print(result)

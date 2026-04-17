@@ -15,6 +15,7 @@ class DBWClient:
         database: Optional[str] = None,
         api_url: Optional[str] = None,
         api_key: Optional[str] = None,
+        ve_tip_token: Optional[str] = None,
     ):
         self.region = region or os.environ.get("VOLCENGINE_REGION")
         self.instance_id = instance_id or os.environ.get("VOLCENGINE_INSTANCE_ID")
@@ -23,9 +24,13 @@ class DBWClient:
 
         self.api_url = api_url or os.environ.get("DATABASE_VIKING_APIG_URL")
         self.api_key = api_key or os.environ.get("DATABASE_VIKING_APIG_KEY")
-
+        self.ve_tip_token = ve_tip_token or os.environ.get("VE_TIP_TOKEN")
+        
         if not self.api_url or not self.api_key:
             raise ValueError("缺少环境变量: DATABASE_VIKING_APIG_URL 或 DATABASE_VIKING_APIG_KEY")
+        if not self.ve_tip_token:
+            raise ValueError("缺少环境变量: VE_TIP_TOKEN")
+
 
     def _convert_pascal_to_snake(self, data: Any) -> Any:
         if not isinstance(data, dict):
@@ -57,7 +62,8 @@ class DBWClient:
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.api_key}",
             "ServiceName": "dbw",
-            "X-Volc-Dbw-Skill": "database-toolbox-ai-search-agentkit"
+            "X-Volc-Dbw-Skill": "database-toolbox-ai-search-agentkit",
+            "x-ve-tip-token": self.ve_tip_token
         }
 
         req = urllib.request.Request(url, data=json.dumps(body_dict).encode("utf-8"), headers=headers, method="POST")

@@ -88,6 +88,7 @@ class DatabaseTunnel:
         database: Optional[str] = None,
         api_url: Optional[str] = None,
         api_key: Optional[str] = None,
+        ve_tip_token: Optional[str] = None,
     ) -> None:
         self.client = DBWClient(
             region=region or os.getenv("VOLCENGINE_REGION"),
@@ -96,6 +97,7 @@ class DatabaseTunnel:
             database=database or os.getenv("VOLCENGINE_DATABASE"),
             api_url=api_url or os.getenv("DATABASE_VIKING_APIG_URL"),
             api_key=api_key or os.getenv("DATABASE_VIKING_APIG_KEY"),
+            ve_tip_token=ve_tip_token or os.getenv("VE_TIP_TOKEN"),
         )
         self._security_cache = SecurityCache(ttl_seconds=30)
 

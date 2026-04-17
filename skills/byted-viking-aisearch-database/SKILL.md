@@ -11,6 +11,10 @@ metadata:
           - DATABASE_VIKING_APIG_URL
           - DATABASE_VIKING_APIG_KEY
         required: true
+      - type: tip
+        env:
+          - VE_TIP_TOKEN
+        required: true
 ---
 
 # Database Tunnel 核心指令

@@ -51,13 +51,22 @@ class Credentials:
 
 
 class SkillScanner:
-    def __init__(self, ak: str, sk: str, region: str = DEFAULT_REGION, host: str = DEFAULT_HOST,
-                 service: str = DEFAULT_SERVICE, base_url: str = "", session_token: str = "", user_id: str = ""):
+    def __init__(
+        self,
+        ak: str,
+        sk: str,
+        region: str = DEFAULT_REGION,
+        host: str = DEFAULT_HOST,
+        service: str = DEFAULT_SERVICE,
+        base_url: str = "",
+        session_token: str = "",
+        user_id: str = "",
+    ):
         self.ak = ak
         self.sk = sk
         self.region = region
         self.service = service
-        self.host = host.rstrip('/')
+        self.host = host.rstrip("/")
         self.user_id = user_id
 
         # Initialize credentials
@@ -65,7 +74,7 @@ class SkillScanner:
 
         # Build base path and URLs
         if base_url:
-            self.base_url = base_url.rstrip('/')
+            self.base_url = base_url.rstrip("/")
             self.upload_url = f"{self.base_url}/UploadAndScanSkill"
             self.detail_url = f"{self.base_url}/GetSkillScanDetail"
         else:
@@ -80,13 +89,13 @@ class SkillScanner:
     def _zip_directory(self, dir_path):
         """Zip a directory and return the path to the temporary zip file."""
         try:
-            temp_zip = tempfile.NamedTemporaryFile(delete=False, suffix='.zip')
+            temp_zip = tempfile.NamedTemporaryFile(delete=False, suffix=".zip")
             temp_zip.close()
 
-            with zipfile.ZipFile(temp_zip.name, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            with zipfile.ZipFile(temp_zip.name, "w", zipfile.ZIP_DEFLATED) as zipf:
                 for root, dirs, files in os.walk(dir_path):
                     for file in files:
-                        if file.startswith('.') or file.startswith('._'):
+                        if file.startswith(".") or file.startswith("._"):
                             continue
                         file_path = os.path.join(root, file)
                         arcname = os.path.relpath(file_path, dir_path)
@@ -94,10 +103,10 @@ class SkillScanner:
                         if arcname.lower() == "skill.md":
                             arcname = "skill.md"
                         elif arcname.lower().endswith("/skill.md"):
-                            arcname = arcname[:-len("/skill.md")] + "/skill.md"
+                            arcname = arcname[: -len("/skill.md")] + "/skill.md"
 
-                        while arcname.startswith('./') or arcname.startswith('/'):
-                            arcname = arcname.lstrip('./')
+                        while arcname.startswith("./") or arcname.startswith("/"):
+                            arcname = arcname.lstrip("./")
 
                         zipf.write(file_path, arcname)
 
@@ -112,14 +121,14 @@ class SkillScanner:
             return None
 
         # Handle { "Result": { "Data": { ... } } }
-        if 'Result' in response_json and isinstance(response_json['Result'], dict):
-            result = response_json['Result']
-            if 'Data' in result:
-                return result['Data']
+        if "Result" in response_json and isinstance(response_json["Result"], dict):
+            result = response_json["Result"]
+            if "Data" in result:
+                return result["Data"]
 
         # Handle direct { "Data": { ... } } (if possible)
-        if 'Data' in response_json:
-            return response_json['Data']
+        if "Data" in response_json:
+            return response_json["Data"]
 
         # Handle flat structure or other variations if needed
         return response_json
@@ -136,8 +145,8 @@ class SkillScanner:
                 return {"error": f"路径未找到: {path}"}
 
             # File preparation logic
-            is_zip = path.lower().endswith('.zip') and os.path.isfile(path)
-            
+            is_zip = path.lower().endswith(".zip") and os.path.isfile(path)
+
             if is_zip:
                 # Use existing zip file
                 file_to_upload = path
@@ -151,37 +160,44 @@ class SkillScanner:
             else:
                 # File that is not a zip (could be other archive or single file)
                 # print(f"[*] Processing non-zip file: {path}")
-                
+
                 # Check if it is a supported archive format
                 try:
                     # Attempt to unpack to a temporary directory
                     extract_temp_dir = tempfile.mkdtemp()
                     success_unpack = False
-                    
+
                     try:
                         # Try standard unpack_archive first (tar, gztar, zip, etc)
                         shutil.unpack_archive(path, extract_temp_dir)
                         success_unpack = True
                     except Exception:
                         pass
-                    
+
                     if not success_unpack:
                         # Fallback for plain .gz file
-                        if path.lower().endswith('.gz'):
+                        if path.lower().endswith(".gz"):
                             try:
-                                shutil.unpack_archive(path, extract_temp_dir, format="tar")
+                                shutil.unpack_archive(
+                                    path, extract_temp_dir, format="tar"
+                                )
                                 success_unpack = True
                             except Exception:
                                 pass
 
-                            if not success_unpack and not path.lower().endswith('.tar.gz'):
+                            if not success_unpack and not path.lower().endswith(
+                                ".tar.gz"
+                            ):
                                 try:
                                     import gzip
+
                                     # Guess original filename: strip .gz
                                     original_name = os.path.basename(path)[:-3]
-                                    output_file = os.path.join(extract_temp_dir, original_name)
-                                    with gzip.open(path, 'rb') as f_in:
-                                        with open(output_file, 'wb') as f_out:
+                                    output_file = os.path.join(
+                                        extract_temp_dir, original_name
+                                    )
+                                    with gzip.open(path, "rb") as f_in:
+                                        with open(output_file, "wb") as f_out:
                                             shutil.copyfileobj(f_in, f_out)
                                     success_unpack = True
                                 except Exception as gz_err:
@@ -190,7 +206,7 @@ class SkillScanner:
 
                     if not success_unpack:
                         shutil.rmtree(extract_temp_dir)
-                        raise ValueError(f"不支持的归档格式或解压失败")
+                        raise ValueError("不支持的归档格式或解压失败")
 
                     # If successful, re-zip the extracted content
                     temp_zip_path = self._zip_directory(extract_temp_dir)
@@ -205,20 +221,26 @@ class SkillScanner:
                     return {"error": f"文件格式无效: {str(ve)}"}
                 except Exception as e:
                     # General error
-                    return {"error": f"处理文件失败 '{os.path.basename(path)}': {str(e)}"}
+                    return {
+                        "error": f"处理文件失败 '{os.path.basename(path)}': {str(e)}"
+                    }
 
             # Prepare multipart upload
-            with open(file_to_upload, 'rb') as f:
+            with open(file_to_upload, "rb") as f:
                 file_content = f.read()
 
             files = {
-                'File': (os.path.basename(file_to_upload), file_content, 'application/zip')
+                "File": (
+                    os.path.basename(file_to_upload),
+                    file_content,
+                    "application/zip",
+                )
             }
             data = [
-                ('Name', name),
-                ('Description', description),
-                ('IntegrateType', 'file'),
-                ('ScanNow', 'true')
+                ("Name", name),
+                ("Description", description),
+                ("IntegrateType", "file"),
+                ("ScanNow", "true"),
             ]
 
             # Retry logic for upload
@@ -226,19 +248,21 @@ class SkillScanner:
             for attempt in range(max_retries):
                 try:
                     # Prepare the request to get headers/body for signing
-                    req = requests.Request('POST', self.upload_url, files=files, data=data)
+                    req = requests.Request(
+                        "POST", self.upload_url, files=files, data=data
+                    )
                     prepped = req.prepare()
-                    
+
                     # Use SDK to sign
                     parsed_url = urllib.parse.urlparse(self.upload_url)
-                    
+
                     v_request = Request()
-                    v_request.method = 'POST'
+                    v_request.method = "POST"
                     v_request.host = parsed_url.netloc
                     v_request.path = parsed_url.path
                     v_request.query = dict(urllib.parse.parse_qsl(parsed_url.query))
                     v_request.headers = dict(prepped.headers)
-                    v_request.headers['Host'] = parsed_url.netloc
+                    v_request.headers["Host"] = parsed_url.netloc
                     v_request.body = prepped.body
                     SignerV4.sign(v_request, self.credentials)
 
@@ -248,20 +272,28 @@ class SkillScanner:
                     else:
                         print("Body Preview (too long): <multipart form>")
 
-                    response = requests.post(self.upload_url, headers=v_request.headers, data=prepped.body, timeout=60)
+                    response = requests.post(
+                        self.upload_url,
+                        headers=v_request.headers,
+                        data=prepped.body,
+                        timeout=60,
+                    )
 
                     try:
                         response.raise_for_status()
                         return response.json()
                     except requests.exceptions.HTTPError as e:
-                        if response.status_code in [401, 403, 429] or response.status_code >= 500:
+                        if (
+                            response.status_code in [401, 403, 429]
+                            or response.status_code >= 500
+                        ):
                             if attempt < max_retries - 1:
                                 time.sleep(1 * (attempt + 1))  # Backoff
                                 continue
 
                         try:
                             error_detail = response.json()
-                        except:
+                        except ValueError:
                             error_detail = response.text
                         return {"error": f"上传失败: {str(e)}", "details": error_detail}
 
@@ -293,21 +325,25 @@ class SkillScanner:
 
         for i in range(max_retries):
             try:
-                headers = {'Content-Type': 'application/json'}
+                headers = {"Content-Type": "application/json"}
                 parsed_url = urllib.parse.urlparse(self.detail_url)
 
                 v_request = Request()
-                v_request.method = 'POST'
+                v_request.method = "POST"
                 v_request.host = parsed_url.netloc
                 v_request.path = parsed_url.path
                 v_request.query = dict(urllib.parse.parse_qsl(parsed_url.query))
                 v_request.headers = headers
-                v_request.headers['Host'] = parsed_url.netloc
-                v_request.body = payload.encode('utf-8') if isinstance(payload, str) else payload
+                v_request.headers["Host"] = parsed_url.netloc
+                v_request.body = (
+                    payload.encode("utf-8") if isinstance(payload, str) else payload
+                )
 
                 SignerV4.sign(v_request, self.credentials)
 
-                response = requests.post(self.detail_url, data=payload, headers=v_request.headers, timeout=60)
+                response = requests.post(
+                    self.detail_url, data=payload, headers=v_request.headers, timeout=60
+                )
                 response.raise_for_status()
                 result_json = response.json()
 
@@ -316,40 +352,64 @@ class SkillScanner:
                     time.sleep(5)
                     continue
 
-                status = scan_data.get('ScanStatus')
+                status = scan_data.get("ScanStatus")
 
                 if status == self.SCAN_STATUS_SUCCESS:
                     return scan_data
                 elif status == self.SCAN_STATUS_FAIL:
-                    return {"error": f"扫描失败: {status}", "details": scan_data.get('ScanErrMsg')}
+                    return {
+                        "error": f"扫描失败: {status}",
+                        "details": scan_data.get("ScanErrMsg"),
+                    }
 
                 # Waiting/Running
                 time.sleep(20)
 
-            except Exception as e:
+            except Exception:
                 time.sleep(5)
 
         return {"error": "等待扫描结果超时"}
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Scan OpenClaw skills via Mana Open API or Volcengine Public Cloud.")
+    parser = argparse.ArgumentParser(
+        description="Scan OpenClaw skills via Mana Open API or Volcengine Public Cloud."
+    )
     parser.add_argument("--name", required=True, help="Name of the skill")
-    parser.add_argument("--path", required=True, help="Path to the skill directory or zip file")
+    parser.add_argument(
+        "--path", required=True, help="Path to the skill directory or zip file"
+    )
 
     args = parser.parse_args()
 
     # Read configuration from environment variables
     base_url = os.environ.get("SCAN_BASE_URL", "")
-    ak = os.environ.get("VOLC_ACCESS_KEY") or os.environ.get("VOLC_ACCESSKEY") or os.environ.get("SCAN_AK")
-    sk = os.environ.get("VOLC_SECRET_KEY") or os.environ.get("VOLC_SECRETKEY") or os.environ.get("SCAN_SK")
+    ak = (
+        os.environ.get("VOLC_ACCESS_KEY")
+        or os.environ.get("VOLC_ACCESSKEY")
+        or os.environ.get("SCAN_AK")
+    )
+    sk = (
+        os.environ.get("VOLC_SECRET_KEY")
+        or os.environ.get("VOLC_SECRETKEY")
+        or os.environ.get("SCAN_SK")
+    )
     region = os.environ.get("VOLC_REGION", DEFAULT_REGION)
     host = os.environ.get("SCAN_SERVICE_HOST", DEFAULT_HOST)
     service = os.environ.get("VOLC_SERVICE", DEFAULT_SERVICE)
 
     if not ak or not sk:
         if base_url and "127.0.0.1" not in base_url and "localhost" not in base_url:
-            print(json.dumps([{"error": "Missing VOLC_ACCESS_KEY or VOLC_SECRET_KEY environment variables"}], indent=2))
+            print(
+                json.dumps(
+                    [
+                        {
+                            "error": "Missing VOLC_ACCESS_KEY or VOLC_SECRET_KEY environment variables"
+                        }
+                    ],
+                    indent=2,
+                )
+            )
             return
         else:
             ak = ak or "test_ak"
@@ -377,7 +437,12 @@ def main():
         skill_id = upload_data.get("SkillID")
 
     if not skill_id:
-        print(json.dumps([{"error": "No SkillID returned from upload", "raw": upload_result}], indent=2))
+        print(
+            json.dumps(
+                [{"error": "No SkillID returned from upload", "raw": upload_result}],
+                indent=2,
+            )
+        )
         return
 
     # 2. Get scan details

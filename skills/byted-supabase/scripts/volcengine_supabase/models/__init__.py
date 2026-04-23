@@ -17,14 +17,14 @@ from .storage import StorageBucket, StorageConfig
 from .database import Table, Column, Migration
 
 __all__ = [
-    'Workspace',
-    'Branch',
-    'ApiKey',
-    'EdgeFunction',
-    'EdgeFunctionDeployment',
-    'StorageBucket',
-    'StorageConfig',
-    'Table',
-    'Column',
-    'Migration',
+    "Workspace",
+    "Branch",
+    "ApiKey",
+    "EdgeFunction",
+    "EdgeFunctionDeployment",
+    "StorageBucket",
+    "StorageConfig",
+    "Table",
+    "Column",
+    "Migration",
 ]

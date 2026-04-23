@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import json
 import logging
 from functools import wraps
 from typing import Any, Callable
@@ -34,15 +33,16 @@ def handle_errors(func: Callable) -> Callable:
             if isinstance(result, str):
                 return result
             if isinstance(result, list):
-                if result and hasattr(result[0], 'model_dump'):
+                if result and hasattr(result[0], "model_dump"):
                     result = [item.model_dump() for item in result]
-            elif hasattr(result, 'model_dump'):
+            elif hasattr(result, "model_dump"):
                 result = result.model_dump()
             return to_json(result)
         except Exception as e:
             error_msg = format_error(e)
             logger.error(f"Error in {func.__name__}: {error_msg}")
             return to_json({"error": error_msg})
+
     return wrapper
 
 
@@ -50,7 +50,11 @@ def read_only_check(func: Callable) -> Callable:
     @wraps(func)
     async def wrapper(*args, **kwargs) -> Any:
         from ..config import READ_ONLY
+
         if READ_ONLY:
-            return to_json({"error": f"Cannot execute {func.__name__} in read-only mode"})
+            return to_json(
+                {"error": f"Cannot execute {func.__name__} in read-only mode"}
+            )
         return await func(*args, **kwargs)
+
     return wrapper

@@ -27,7 +27,7 @@ class Table(BaseModel):
     schema_name: str = Field(alias="schema")
     name: str
     columns: List[Column] = []
-    
+
     class Config:
         populate_by_name = True
 

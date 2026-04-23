@@ -96,13 +96,39 @@ def build_parser() -> argparse.ArgumentParser:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("action", help="执行动作")
-    parser.add_argument("--region", default=os.getenv("VOLCENGINE_REGION", "cn-beijing"), help="火山引擎地域")
-    parser.add_argument("--default-workspace-id", default=os.getenv("DEFAULT_WORKSPACE_ID"), help="默认 workspace ID")
-    parser.add_argument("--read-only", choices=["true", "false"], default=os.getenv("READ_ONLY", "false"), help="是否只读")
-    parser.add_argument("--workspace-slug", default=os.getenv("SUPABASE_WORKSPACE_SLUG", "default"), help="Edge Functions 项目 slug")
-    parser.add_argument("--endpoint-scheme", default=os.getenv("SUPABASE_ENDPOINT_SCHEME", "http"), help="workspace URL 协议")
+    parser.add_argument(
+        "--region",
+        default=os.getenv("VOLCENGINE_REGION", "cn-beijing"),
+        help="火山引擎地域",
+    )
+    parser.add_argument(
+        "--default-workspace-id",
+        default=os.getenv("DEFAULT_WORKSPACE_ID"),
+        help="默认 workspace ID",
+    )
+    parser.add_argument(
+        "--read-only",
+        choices=["true", "false"],
+        default=os.getenv("READ_ONLY", "false"),
+        help="是否只读",
+    )
+    parser.add_argument(
+        "--workspace-slug",
+        default=os.getenv("SUPABASE_WORKSPACE_SLUG", "default"),
+        help="Edge Functions 项目 slug",
+    )
+    parser.add_argument(
+        "--endpoint-scheme",
+        default=os.getenv("SUPABASE_ENDPOINT_SCHEME", "http"),
+        help="workspace URL 协议",
+    )
     parser.add_argument("--workspace-id", help="workspace ID 或 branch ID")
-    parser.add_argument("--log-level", default="INFO", choices=["DEBUG", "INFO", "WARNING", "ERROR"], help="日志级别")
+    parser.add_argument(
+        "--log-level",
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
+        help="日志级别",
+    )
 
     parser.add_argument("--workspace-name")
     parser.add_argument("--engine-version", default="Supabase_1_24")
@@ -119,7 +145,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--function-name")
     parser.add_argument("--source-code")
     parser.add_argument("--source-file")
-    parser.add_argument("--verify-jwt", dest="verify_jwt", action="store_true", default=True)
+    parser.add_argument(
+        "--verify-jwt", dest="verify_jwt", action="store_true", default=True
+    )
     parser.add_argument("--no-verify-jwt", dest="verify_jwt", action="store_false")
     parser.add_argument("--runtime", default="native-node20/v1")
     parser.add_argument("--import-map")
@@ -155,7 +183,9 @@ async def run_action(args: argparse.Namespace) -> str:
     if action == "create-workspace":
         if not args.workspace_name:
             raise ValueError("--workspace-name is required")
-        return await workspace_tools.create_workspace(args.workspace_name, args.engine_version, args.engine_type)
+        return await workspace_tools.create_workspace(
+            args.workspace_name, args.engine_version, args.engine_type
+        )
     if action == "pause-workspace":
         return await workspace_tools.pause_workspace(args.workspace_id)
     if action == "restore-workspace":
@@ -163,11 +193,15 @@ async def run_action(args: argparse.Namespace) -> str:
     if action == "get-workspace-url":
         return await workspace_tools.get_workspace_url(args.workspace_id)
     if action == "get-keys":
-        return await workspace_tools.get_publishable_keys(args.workspace_id, args.reveal)
+        return await workspace_tools.get_publishable_keys(
+            args.workspace_id, args.reveal
+        )
     if action == "list-branches":
         return await workspace_tools.list_branches(args.workspace_id)
     if action == "create-branch":
-        return await workspace_tools.create_branch(args.name or "develop", args.workspace_id)
+        return await workspace_tools.create_branch(
+            args.name or "develop", args.workspace_id
+        )
     if action == "delete-branch":
         if not args.branch_id:
             raise ValueError("--branch-id is required")
@@ -175,13 +209,17 @@ async def run_action(args: argparse.Namespace) -> str:
     if action == "reset-branch":
         if not args.branch_id:
             raise ValueError("--branch-id is required")
-        return await workspace_tools.reset_branch(args.branch_id, args.migration_version, args.workspace_id)
+        return await workspace_tools.reset_branch(
+            args.branch_id, args.migration_version, args.workspace_id
+        )
 
     if action == "execute-sql":
         query = _read_text(args.query, args.query_file, "--query")
         return await database_tools.execute_sql(query, args.workspace_id)
     if action == "list-tables":
-        schemas = [schema.strip() for schema in args.schemas.split(",") if schema.strip()]
+        schemas = [
+            schema.strip() for schema in args.schemas.split(",") if schema.strip()
+        ]
         return await database_tools.list_tables(schemas, args.workspace_id)
     if action == "list-migrations":
         return await database_tools.list_migrations(args.workspace_id)
@@ -193,8 +231,12 @@ async def run_action(args: argparse.Namespace) -> str:
         query = _read_text(args.query, args.query_file, "--query")
         return await database_tools.apply_migration(args.name, query, args.workspace_id)
     if action == "generate-typescript-types":
-        schemas = [schema.strip() for schema in args.schemas.split(",") if schema.strip()]
-        return await database_tools.generate_typescript_types(schemas, args.workspace_id)
+        schemas = [
+            schema.strip() for schema in args.schemas.split(",") if schema.strip()
+        ]
+        return await database_tools.generate_typescript_types(
+            schemas, args.workspace_id
+        )
 
     if action == "list-edge-functions":
         return await edge_tools.list_edge_functions(args.workspace_id)
@@ -208,7 +250,9 @@ async def run_action(args: argparse.Namespace) -> str:
         source_code = _read_text(args.source_code, args.source_file, "--source-code")
         import_map = None
         if args.import_map or args.import_map_file:
-            import_map = _read_text(args.import_map, args.import_map_file, "--import-map")
+            import_map = _read_text(
+                args.import_map, args.import_map_file, "--import-map"
+            )
         return await edge_tools.deploy_edge_function(
             args.function_name,
             source_code,
@@ -220,7 +264,9 @@ async def run_action(args: argparse.Namespace) -> str:
     if action == "delete-edge-function":
         if not args.function_name:
             raise ValueError("--function-name is required")
-        return await edge_tools.delete_edge_function(args.function_name, args.workspace_id)
+        return await edge_tools.delete_edge_function(
+            args.function_name, args.workspace_id
+        )
 
     if action == "list-storage-buckets":
         return await storage_tools.list_storage_buckets(args.workspace_id)
@@ -237,12 +283,18 @@ async def run_action(args: argparse.Namespace) -> str:
     if action == "delete-storage-bucket":
         if not args.bucket_name:
             raise ValueError("--bucket-name is required")
-        return await storage_tools.delete_storage_bucket(args.bucket_name, args.workspace_id)
+        return await storage_tools.delete_storage_bucket(
+            args.bucket_name, args.workspace_id
+        )
     if action == "get-storage-config":
         return await storage_tools.get_storage_config(args.workspace_id)
 
-    supported = sorted(WORKSPACE_ACTIONS | DATABASE_ACTIONS | EDGE_ACTIONS | STORAGE_ACTIONS)
-    raise ValueError(f"Unsupported action: {action}. Available actions: {', '.join(supported)}")
+    supported = sorted(
+        WORKSPACE_ACTIONS | DATABASE_ACTIONS | EDGE_ACTIONS | STORAGE_ACTIONS
+    )
+    raise ValueError(
+        f"Unsupported action: {action}. Available actions: {', '.join(supported)}"
+    )
 
 
 def main() -> int:

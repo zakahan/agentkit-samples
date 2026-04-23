@@ -1,6 +1,8 @@
 ---
 name: byted-supabase
 description: Manage Volcengine Supabase workspaces, branches, SQL queries, migrations, Edge Functions, Storage, and TypeScript type generation via a local CLI. Run uv run ./scripts/call_volcengine_supabase.py to get real-time results. Use this skill when the user needs to create, inspect, or manage Volcengine Supabase resources (workspaces, databases, branches, Edge Functions, Storage, API keys, or type generation). Do NOT use it for general database discussions, non-Supabase services, or pure client-side coding unrelated to Supabase backend management.
+version: 1.0.1
+license: Apache-2.0
 metadata: {"clawdbot":{"emoji":"🧩","homepage":"https://www.volcengine.com/","requires":{"bins":["uv"]},"os":["darwin","linux"]},"openclaw":{"emoji":"🧩","homepage":"https://www.volcengine.com/","requires":{"bins":["uv"]},"os":["darwin","linux"]},"moltbot":{"emoji":"🧩","homepage":"https://www.volcengine.com/","requires":{"bins":["uv"]},"os":["darwin","linux"]}}
 ---
 

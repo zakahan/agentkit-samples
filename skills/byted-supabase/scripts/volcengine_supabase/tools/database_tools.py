@@ -22,18 +22,27 @@ logger = logging.getLogger(__name__)
 
 class DatabaseTools(BaseTools):
     """使用 REST API 方式执行 SQL"""
-    async def _execute_sql_raw(self, query: str, workspace_id: Optional[str] = None) -> List[dict]:
+
+    async def _execute_sql_raw(
+        self, query: str, workspace_id: Optional[str] = None
+    ) -> List[dict]:
         if not query or not query.strip():
             raise ValueError("SQL query cannot be empty")
 
         ws_id, branch_id = await self._resolve_target(workspace_id)
         logger.info(
             "Executing SQL query",
-            extra={"workspace_id": ws_id, "branch_id": branch_id, "query_length": len(query)}
+            extra={
+                "workspace_id": ws_id,
+                "branch_id": branch_id,
+                "query_length": len(query),
+            },
         )
 
         client = await self._get_client(ws_id, branch_id)
-        result = await client.call_api("/pg/query", method="POST", json_data={"query": query})
+        result = await client.call_api(
+            "/postgres/query", method="POST", json_data={"query": query}
+        )
 
         if isinstance(result, dict) and isinstance(result.get("data"), list):
             result = result["data"]
@@ -44,17 +53,21 @@ class DatabaseTools(BaseTools):
         return result
 
     @handle_errors
-    async def execute_sql(self, query: str, workspace_id: Optional[str] = None) -> List[dict]:
+    async def execute_sql(
+        self, query: str, workspace_id: Optional[str] = None
+    ) -> List[dict]:
         return await self._execute_sql_raw(query, workspace_id)
-    
+
     @handle_errors
-    async def list_tables(self, schemas: List[str] = None, workspace_id: Optional[str] = None) -> List[dict]:
+    async def list_tables(
+        self, schemas: List[str] = None, workspace_id: Optional[str] = None
+    ) -> List[dict]:
         if schemas is None:
             schemas = ["public"]
 
         # 验证 schema 名称，防止 SQL 注入
         for schema in schemas:
-            if not schema.replace('_', '').isalnum():
+            if not schema.replace("_", "").isalnum():
                 raise ValueError(f"Invalid schema name: {schema}")
 
         schema_list = "', '".join(schemas)
@@ -68,7 +81,7 @@ class DatabaseTools(BaseTools):
         """
 
         return await self._execute_sql_raw(query, workspace_id)
-    
+
     @handle_errors
     async def list_migrations(self, workspace_id: Optional[str] = None) -> List[dict]:
         query = """
@@ -96,10 +109,12 @@ class DatabaseTools(BaseTools):
         ORDER BY e.extname
         """
         return await self._execute_sql_raw(query, workspace_id)
-    
+
     @handle_errors
     @read_only_check
-    async def apply_migration(self, name: str, query: str, workspace_id: Optional[str] = None) -> dict:
+    async def apply_migration(
+        self, name: str, query: str, workspace_id: Optional[str] = None
+    ) -> dict:
         if not name or not name.strip():
             raise ValueError("Migration name cannot be empty")
         if not query or not query.strip():
@@ -132,21 +147,47 @@ class DatabaseTools(BaseTools):
     def _to_ts_type(self, data_type: str, udt_name: str) -> str:
         normalized_data_type = (data_type or "").lower()
         normalized_udt_name = (udt_name or "").lower()
-        if normalized_data_type in {"smallint", "integer", "bigint", "numeric", "decimal", "real", "double precision"}:
+        if normalized_data_type in {
+            "smallint",
+            "integer",
+            "bigint",
+            "numeric",
+            "decimal",
+            "real",
+            "double precision",
+        }:
             return "number"
         if normalized_data_type in {"boolean"}:
             return "boolean"
         if normalized_data_type in {"json", "jsonb"}:
             return "Json"
-        if normalized_data_type in {"date", "timestamp without time zone", "timestamp with time zone", "time without time zone", "time with time zone"}:
+        if normalized_data_type in {
+            "date",
+            "timestamp without time zone",
+            "timestamp with time zone",
+            "time without time zone",
+            "time with time zone",
+        }:
             return "string"
         if normalized_data_type in {"bytea"}:
             return "string"
         if normalized_data_type == "array":
-            base = normalized_udt_name[1:] if normalized_udt_name.startswith("_") else normalized_udt_name
+            base = (
+                normalized_udt_name[1:]
+                if normalized_udt_name.startswith("_")
+                else normalized_udt_name
+            )
             item_type = self._to_ts_type(base, base)
             return f"{item_type}[]"
-        if normalized_udt_name in {"uuid", "varchar", "text", "bpchar", "name", "citext", "inet"}:
+        if normalized_udt_name in {
+            "uuid",
+            "varchar",
+            "text",
+            "bpchar",
+            "name",
+            "citext",
+            "inet",
+        }:
             return "string"
         if normalized_udt_name in {"int2", "int4", "int8", "float4", "float8"}:
             return "number"
@@ -164,14 +205,12 @@ class DatabaseTools(BaseTools):
 
     @handle_errors
     async def generate_typescript_types(
-        self,
-        schemas: List[str] = None,
-        workspace_id: Optional[str] = None
+        self, schemas: List[str] = None, workspace_id: Optional[str] = None
     ) -> str:
         if schemas is None:
             schemas = ["public"]
         for schema in schemas:
-            if not schema.replace('_', '').isalnum():
+            if not schema.replace("_", "").isalnum():
                 raise ValueError(f"Invalid schema name: {schema}")
 
         schema_list = "', '".join(schemas)
@@ -200,7 +239,9 @@ class DatabaseTools(BaseTools):
             grouped[schema_name][table_name].append(column)
 
         lines: list[str] = []
-        lines.append("export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]")
+        lines.append(
+            "export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]"
+        )
         lines.append("")
         lines.append("export type Database = {")
 
@@ -216,7 +257,9 @@ class DatabaseTools(BaseTools):
                 for column in table_columns:
                     col_name = column.get("column_name")
                     ts_key = self._to_ts_key(col_name)
-                    base_type = self._to_ts_type(column.get("data_type", ""), column.get("udt_name", ""))
+                    base_type = self._to_ts_type(
+                        column.get("data_type", ""), column.get("udt_name", "")
+                    )
                     nullable = column.get("is_nullable") == "YES"
                     row_type = f"{base_type} | null" if nullable else base_type
                     lines.append(f"          {ts_key}: {row_type}")
@@ -225,7 +268,9 @@ class DatabaseTools(BaseTools):
                 for column in table_columns:
                     col_name = column.get("column_name")
                     ts_key = self._to_ts_key(col_name)
-                    base_type = self._to_ts_type(column.get("data_type", ""), column.get("udt_name", ""))
+                    base_type = self._to_ts_type(
+                        column.get("data_type", ""), column.get("udt_name", "")
+                    )
                     nullable = column.get("is_nullable") == "YES"
                     has_default = column.get("column_default") is not None
                     is_identity = column.get("is_identity") == "YES"
@@ -238,7 +283,9 @@ class DatabaseTools(BaseTools):
                 for column in table_columns:
                     col_name = column.get("column_name")
                     ts_key = self._to_ts_key(col_name)
-                    base_type = self._to_ts_type(column.get("data_type", ""), column.get("udt_name", ""))
+                    base_type = self._to_ts_type(
+                        column.get("data_type", ""), column.get("udt_name", "")
+                    )
                     nullable = column.get("is_nullable") == "YES"
                     update_type = f"{base_type} | null" if nullable else base_type
                     lines.append(f"          {ts_key}?: {update_type}")

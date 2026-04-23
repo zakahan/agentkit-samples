@@ -33,9 +33,13 @@ class BaseTools:
             )
         return result
 
-    async def _resolve_target(self, workspace_id: Optional[str]) -> tuple[str, Optional[str]]:
+    async def _resolve_target(
+        self, workspace_id: Optional[str]
+    ) -> tuple[str, Optional[str]]:
         target = self._get_workspace_id(workspace_id)
-        resolved_workspace_id, branch_id = await resolve_target(self.aidap, target, None)
+        resolved_workspace_id, branch_id = await resolve_target(
+            self.aidap, target, None
+        )
         if not resolved_workspace_id:
             raise ValueError(
                 "workspace_id is required: not provided as parameter and no default workspace_id configured. "
@@ -43,14 +47,18 @@ class BaseTools:
             )
         return resolved_workspace_id, branch_id
 
-    async def _get_client(self, workspace_id: str, branch_id: Optional[str] = None) -> SupabaseClient:
+    async def _get_client(
+        self, workspace_id: str, branch_id: Optional[str] = None
+    ) -> SupabaseClient:
         """Get Supabase client for workspace"""
         endpoint = await self.aidap.get_endpoint(workspace_id, branch_id=branch_id)
         if not endpoint:
             target = branch_id or workspace_id
             raise ValueError(f"Could not get endpoint for target {target}")
 
-        api_key = await self.aidap.get_api_key(workspace_id, "service_role", branch_id=branch_id)
+        api_key = await self.aidap.get_api_key(
+            workspace_id, "service_role", branch_id=branch_id
+        )
         if not api_key:
             target = branch_id or workspace_id
             raise ValueError(f"Could not get API key for target {target}")

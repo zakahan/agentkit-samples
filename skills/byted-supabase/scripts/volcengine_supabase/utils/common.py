@@ -24,7 +24,13 @@ def compact_dict(payload: dict) -> dict:
 
 
 def pick_value(source: Any, *field_names: str) -> Any:
-    source_dict = source.to_dict() if hasattr(source, "to_dict") else source if isinstance(source, dict) else {}
+    source_dict = (
+        source.to_dict()
+        if hasattr(source, "to_dict")
+        else source
+        if isinstance(source, dict)
+        else {}
+    )
     for field_name in field_names:
         value = None
         if isinstance(source, dict):

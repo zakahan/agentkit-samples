@@ -79,7 +79,9 @@ def clear_endpoint_cache(workspace_id: str = None, branch_id: str = None):
         _endpoint_cache.pop(f"{workspace_id}:{branch_id}", None)
     elif workspace_id:
         _endpoint_cache.pop(workspace_id, None)
-        keys_to_delete = [key for key in _endpoint_cache if key.startswith(f"{workspace_id}:")]
+        keys_to_delete = [
+            key for key in _endpoint_cache if key.startswith(f"{workspace_id}:")
+        ]
         for key in keys_to_delete:
             _endpoint_cache.pop(key, None)
     else:
@@ -88,11 +90,19 @@ def clear_endpoint_cache(workspace_id: str = None, branch_id: str = None):
 
 def clear_api_key_cache(workspace_id: str = None, branch_id: str = None):
     if workspace_id and branch_id:
-        keys_to_delete = [key for key in _api_key_cache if key.startswith(f"{workspace_id}:") and key.endswith(f":{branch_id}")]
+        keys_to_delete = [
+            key
+            for key in _api_key_cache
+            if key.startswith(f"{workspace_id}:") and key.endswith(f":{branch_id}")
+        ]
         for key in keys_to_delete:
             _api_key_cache.pop(key, None)
     elif workspace_id:
-        keys_to_delete = [key for key in _api_key_cache if key == workspace_id or key.startswith(f"{workspace_id}:")]
+        keys_to_delete = [
+            key
+            for key in _api_key_cache
+            if key == workspace_id or key.startswith(f"{workspace_id}:")
+        ]
         for key in keys_to_delete:
             _api_key_cache.pop(key, None)
     else:
@@ -103,7 +113,11 @@ def clear_branch_workspace_cache(workspace_id: str = None, branch_id: str = None
     if branch_id:
         _branch_workspace_cache.pop(branch_id, None)
     elif workspace_id:
-        branch_ids = [key for key, value in _branch_workspace_cache.items() if value == workspace_id]
+        branch_ids = [
+            key
+            for key, value in _branch_workspace_cache.items()
+            if value == workspace_id
+        ]
         for key in branch_ids:
             _branch_workspace_cache.pop(key, None)
     else:

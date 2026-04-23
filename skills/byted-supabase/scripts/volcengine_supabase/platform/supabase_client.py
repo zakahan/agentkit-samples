@@ -50,7 +50,7 @@ class SupabaseClient:
         if self._client is None or self._client.is_closed:
             self._client = httpx.AsyncClient(
                 timeout=30.0,
-                limits=httpx.Limits(max_keepalive_connections=5, max_connections=10)
+                limits=httpx.Limits(max_keepalive_connections=5, max_connections=10),
             )
         return self._client
 
@@ -67,7 +67,7 @@ class SupabaseClient:
         headers: Optional[Dict] = None,
         params: Optional[Dict] = None,
         content: Optional[bytes] = None,
-        timeout: float = 30.0
+        timeout: float = 30.0,
     ) -> Any:
         url = f"{self.endpoint}{path}"
         logger.info(f"[DEBUG] Calling API: method={method}, url={url}, path={path}")
@@ -84,13 +84,21 @@ class SupabaseClient:
             try:
                 if content:
                     response = await client.request(
-                        method, url, content=content, headers=default_headers,
-                        params=params, timeout=timeout
+                        method,
+                        url,
+                        content=content,
+                        headers=default_headers,
+                        params=params,
+                        timeout=timeout,
                     )
                 else:
                     response = await client.request(
-                        method, url, json=json_data, headers=default_headers,
-                        params=params, timeout=timeout
+                        method,
+                        url,
+                        json=json_data,
+                        headers=default_headers,
+                        params=params,
+                        timeout=timeout,
                     )
                 response.raise_for_status()
 
@@ -122,7 +130,9 @@ class SupabaseClient:
                     await asyncio.sleep(0.5 * (attempt + 1))
                     continue
                 detail = str(e) or type(e).__name__
-                raise Exception(f"{detail} [endpoint: {self.endpoint}, path: {path}]") from e
+                raise Exception(
+                    f"{detail} [endpoint: {self.endpoint}, path: {path}]"
+                ) from e
             except Exception as e:
                 if isinstance(e, SupabaseApiError):
                     raise
@@ -130,4 +140,6 @@ class SupabaseClient:
                 if hasattr(e, "__cause__") and e.__cause__:
                     cause_detail = str(e.__cause__) or type(e.__cause__).__name__
                     detail += f" | Cause: {cause_detail}"
-                raise Exception(f"{detail} [endpoint: {self.endpoint}, path: {path}]") from e
+                raise Exception(
+                    f"{detail} [endpoint: {self.endpoint}, path: {path}]"
+                ) from e

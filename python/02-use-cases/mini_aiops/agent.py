@@ -39,12 +39,8 @@ short_term_memory = ShortTermMemory(backend="local")
 
 ### control center mcp server
 server_parameters = StdioServerParameters(
-    command="uvx",
-    args=[
-        "--from",
-        "git+https://github.com/volcengine/mcp-server#subdirectory=server/mcp_server_ccapi",
-        "mcp-server-ccapi",
-    ],
+    command="mcp-server-ccapi",
+    args=[],
     env=env_dict,
 )
 

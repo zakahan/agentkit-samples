@@ -5,6 +5,8 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "agentkit-sdk-python==0.4.3",
-    "veadk-python==0.5.15",
+    "agentkit-sdk-python==0.2.0",
+    "veadk-python==0.5.0",
+    "a2a-sdk==0.3.7",
+    "google-adk==1.19",
 ]
